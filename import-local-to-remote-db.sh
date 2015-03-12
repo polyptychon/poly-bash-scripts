@@ -13,6 +13,7 @@ sed "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g" exports/remote.sql > exports/local.sql
 git add exports/.
 git commit -m "backup remote db"
 
+# import local db to remote
 wp db export exports/temp.sql --path=./wordpress
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' exports/temp.sql > exports/local.sql
 sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" exports/local.sql > exports/remote.sql
