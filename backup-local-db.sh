@@ -7,4 +7,8 @@ source .env
 # " > exports/temp.sql
 wp db export exports/temp.sql --path=./wordpress
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' exports/temp.sql > ./exports/local.sql
-sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" exports/local.sql > exports/remote.sql
+
+set +e
+git add exports/.
+git commit -m "backup local db"
+set -e
