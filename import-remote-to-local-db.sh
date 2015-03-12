@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 source .env
 ssh -p 2222 xarisd@polyptychon.gr bash -c "'
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 source .env
 # expect -c "
 # spawn mysqldump -p -u $LOCAL_DATABASE_USERNAME $LOCAL_DATABASE
