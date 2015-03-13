@@ -15,3 +15,4 @@ wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
 exit
 '"
 git checkout $PATH_TO_EXPORTS/local.sql
+git checkout $PATH_TO_EXPORTS/remote.sql

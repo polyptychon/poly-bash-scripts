@@ -11,3 +11,4 @@ sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server versio
 sed "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g" $PATH_TO_EXPORTS/remote.sql > $PATH_TO_EXPORTS/local.sql
 wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
 git checkout $PATH_TO_EXPORTS/remote.sql
+git checkout $PATH_TO_EXPORTS/local.sql
