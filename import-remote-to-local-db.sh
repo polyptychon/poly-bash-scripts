@@ -3,7 +3,7 @@ set -e
 source .env
 ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 cd $REMOTE_PATH
-wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-dump-date
+wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-dump-date --compact --add-drop-table
 exit
 '"
 scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $PATH_TO_EXPORTS/
