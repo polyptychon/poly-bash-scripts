@@ -2,10 +2,6 @@
 set -e
 source .env
 
-set +e
-git stash
-set -e
-
 # backup remote db
 ssh -p 2222 xarisd@polyptychon.gr bash -c "'
 cd $REMOTE_PATH
@@ -18,6 +14,4 @@ sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server versio
 set +e
 git add exports/.
 git commit -m "backup remote db"
-git push
-git stash pop
 set -e
