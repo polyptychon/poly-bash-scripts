@@ -7,16 +7,16 @@ git stash
 set -e
 
 # backup remote db
-ssh -p 2222 xarisd@polyptychon.gr bash -c "'
+ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 cd $REMOTE_PATH
-wp db export exports/temp.sql --path=./wordpress
+wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
 exit
 '"
-scp -CP 2222 $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/exports/temp.sql ./exports/
-sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' exports/temp.sql > ./exports/remote.sql
+scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $PATH_TO_EXPORTS/
+sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/remote.sql
 
 set +e
-git add exports/.
+git add $PATH_TO_EXPORTS/remote.sql
 git commit -m "backup remote db"
 git stash pop
 set -e

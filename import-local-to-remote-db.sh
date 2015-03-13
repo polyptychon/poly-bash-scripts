@@ -4,13 +4,13 @@ source .env
 backup-remote-db.sh
 
 # import local db to remote
-wp db export exports/temp.sql --path=./wordpress
-sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' exports/temp.sql > exports/local.sql
-sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" exports/local.sql > exports/remote.sql
-scp -rCP 2222 exports/remote.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/exports/temp.sql"
+wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
+sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
+sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" $PATH_TO_EXPORTS/local.sql > $PATH_TO_EXPORTS/remote.sql
+scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
 
-ssh -p 2222 xarisd@polyptychon.gr bash -c "'
+ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 cd $REMOTE_PATH
-wp db import exports/temp.sql --path=./wordpress
+wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
 exit
 '"

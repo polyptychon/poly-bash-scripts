@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 source .env
-scp -rCP 2222 wordpress/wp-content/uploads "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/wordpress/wp-content/"
+scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
