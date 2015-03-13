@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 source .env
+read -p "You want to replace remote db with local. Are you sure? Y/N " -n 1 -r
+echo    # (optional) move to a new line
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
 backup-remote-db.sh
 
 # import local db to remote
@@ -16,3 +20,4 @@ exit
 '"
 git checkout $PATH_TO_EXPORTS/local.sql
 git checkout $PATH_TO_EXPORTS/remote.sql
+fi
