@@ -12,3 +12,4 @@ sed "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g" $PATH_TO_EXPORTS/remote.temp.sql > $PATH_
 wp db import $PATH_TO_EXPORTS/local.temp.sql --path=$PATH_TO_WORDPRESS
 rm -rf exports/local.temp.sql
 rm -rf exports/remote.temp.sql
+rm -rf exports/temp.sql

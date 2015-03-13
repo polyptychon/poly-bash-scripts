@@ -20,4 +20,5 @@ exit
 '"
 rm -rf exports/local.temp.sql
 rm -rf exports/remote.temp.sql
+rm -rf exports/temp.sql
 fi

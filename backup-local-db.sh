@@ -10,8 +10,9 @@ set +e
 git stash
 set -e
 
-wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-comments --skip-dump-date --skip-opt
+wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-dump-date
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
+rm -rf exports/temp.sql
 
 set +e
 git add $PATH_TO_EXPORTS/local.sql
