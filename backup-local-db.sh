@@ -6,10 +6,15 @@ source .env
 # expect -nocase \"password:\" {send \"$LOCAL_DATABASE_PASSWORD\r\"; interact}
 # " > exports/temp.sql
 
-wp db export exports/temp.sql --path=./wordpress
-sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' exports/temp.sql > ./exports/local.sql
+set +e
+git stash
+set -e
+
+wp db export exports/temp.sql --path=$PATH_TO_WORDPRESS
+sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
 
 set +e
-git add exports/.
+git add $PATH_TO_EXPORTS/.
 git commit -m "backup local db"
+git stash pop
 set -e
