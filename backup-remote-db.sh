@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+
+# load variables
 source .env
 
 function clean_up
