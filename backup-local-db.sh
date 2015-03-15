@@ -10,12 +10,12 @@ function clean_up
   git stash drop --quiet
 }
 
+# perform clean up on error
+trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT
+
 set +e
 git stash
 set -e
-
-# perform clean up on error
-trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT
 
 # export local db to sql dump file
 wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-comments --skip-dump-date --skip-opt --add-drop-table
