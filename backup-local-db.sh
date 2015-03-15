@@ -12,6 +12,7 @@ source .env
 function clean_up
 {
   rm -rf $PATH_TO_EXPORTS/temp.sql
+  git stash drop --quiet
 }
 
 set +e
@@ -27,12 +28,12 @@ wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-comments
 # clean up local sql dump file for less commits
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
 
-# perform clean up
-clean_up
-
 # commit changes
 set +e
 git add $PATH_TO_EXPORTS/local.sql
 git commit -m "backup local db"
 git stash pop
 set -e
+
+# perform clean up
+clean_up

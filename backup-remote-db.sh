@@ -7,6 +7,7 @@ source .env
 function clean_up
 {
   rm -rf $PATH_TO_EXPORTS/temp.sql
+  git stash drop --quiet
 }
 
 set +e
@@ -22,14 +23,15 @@ exit
 # perform clean up on error
 trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT
 
+set +e
+git stash
+set -e
+
 #download remote sql dump file
 scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $PATH_TO_EXPORTS/
 
 # clean up local sql dump file for less commits
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/remote.sql
-
-# perform clean up
-clean_up
 
 # commit changes
 set +e
@@ -37,3 +39,6 @@ git add $PATH_TO_EXPORTS/remote.sql
 git commit -m "backup remote db"
 git stash pop
 set -e
+
+# perform clean up
+clean_up
