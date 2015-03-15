@@ -4,11 +4,6 @@ set -e
 # load variables
 source .env
 
-# expect -c "
-# spawn mysqldump -p -u $LOCAL_DATABASE_USERNAME $LOCAL_DATABASE
-# expect -nocase \"password:\" {send \"$LOCAL_DATABASE_PASSWORD\r\"; interact}
-# " > exports/temp.sql
-
 function clean_up
 {
   rm -rf $PATH_TO_EXPORTS/temp.sql
