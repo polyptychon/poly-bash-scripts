@@ -14,7 +14,7 @@ function clean_up
 trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT
 
 set +e
-git stash
+git stash --quiet
 set -e
 
 #create remote sql dump file
