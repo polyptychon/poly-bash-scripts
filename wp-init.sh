@@ -13,7 +13,7 @@ if [ -f wp-cli.local.yml ]; then
   exit;
 fi
 
-#Getting the app key and secret from the user
+#Prompt user for settings
 while (true); do
 
   echo -n " # Local Database name: "
@@ -33,8 +33,8 @@ while (true); do
   read WP_USER
 
   echo " # Wordpress admin password: $WP_USER_PASSWORD"
-
-  echo -n "Continue? [y/n]: "
+  FOLDER="$(pwd)"
+  echo -n "You are in folder $FOLDER.Do you want to continue? [y/n]: "
   read answer
   if [[ $answer == "y" ]]; then
     break;
