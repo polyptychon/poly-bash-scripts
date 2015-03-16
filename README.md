@@ -1,6 +1,34 @@
-Wordpress scripts
+#Wordpress scripts
 
-Create ".env" file in project root directory
+Install wp-cli: http://wp-cli.org/
+
+Clone project in user root folder.
+
+Give scripts permission to execute.
+
+```
+cd ~/wp_scripts
+sudo chmod 755 *.sh
+```
+
+###Update .bash_profile
+
+```
+#my scripts
+export WP_SCRIPTS=~/wp_scripts
+export PATH="$WP_SCRIPTS:$PATH"
+
+#wp-cli
+export MAMP_PHP=/Applications/MAMP/bin/php/php5.6.2/bin
+export PATH="$MAMP_PHP:$PATH"
+
+export MAMP_APACHE=/Applications/MAMP/bin/apache2/bin
+export PATH="$MAMP_APACHE:$PATH"
+```
+
+
+
+###Create ".env" file in project root directory
 
 ```yaml
 SSH_HOST=domain.com
