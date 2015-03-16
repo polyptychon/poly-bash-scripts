@@ -1,8 +1,12 @@
 #!/bin/bash
 set -e
+if [ -f ~/wp_scripts/.global-env ]; then
+  source ~/wp_scripts/.global-env
+fi
 
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
+WP_USER_PASSWORD="$(openssl rand -base64 16)"
 
 if [ -f wp-cli.local.yml ]; then
   echo "ERROR: wp-cli.local.yml file already exists"
@@ -15,19 +19,22 @@ while (true); do
   echo -n " # Local Database name: "
   read DB_NAME
 
-  echo -n " # Local Database user: "
-  read DB_USER
+  if [ -z ${DB_USER+x} ]; then
+    echo -n " # Local Database user: "
+    read DB_USER
+  fi
 
-  echo -n " # Local Database password: "
-  read DB_PASSWORD
+  if [ -z ${DB_PASSWORD+x} ]; then
+    echo -n " # Local Database password: "
+    read DB_PASSWORD
+  fi
 
   echo -n " # Wordpress admin user: "
   read WP_USER
 
-  echo -n " # Wordpress admin password: "
-  read WP_USER_PASSWORD
+  echo " # Wordpress admin password: $WP_USER_PASSWORD"
 
-  echo "Continue? [y/n]: "
+  echo -n "Continue? [y/n]: "
   read answer
   if [[ $answer == "y" ]]; then
     break;
@@ -40,6 +47,18 @@ done
 PASSWORD_IS_OK=`mysqladmin --user=$DB_USER --password=$DB_PASSWORD ping | grep -c "mysqld is alive"`
 
 if [ $PASSWORD_IS_OK == 0 ]; then
+  exit;
+fi
+
+if [ ! -f ~/wp_scripts/.global-env ]; then
+  echo "DB_USER=$DB_USER" > ~/wp_scripts/.global-env
+  echo "DB_PASSWORD=$DB_PASSWORD" >> ~/wp_scripts/.global-env
+fi
+
+if [ ! -f wp-admin-password.txt ]; then
+  echo "WP_USER_PASSWORD: $WP_USER_PASSWORD" > ./wp-admin-password.txt
+else
+  echo "WARNING: wp-admin-password.txt file already exists"
   exit;
 fi
 
@@ -86,10 +105,11 @@ git commit -m "initial commit"
 
 set +e
 hub create -p polyptychon/$DIR_NAME
-git remote add origin git@github.com:polyptychon/$DIR_NAME.git
 git push -u origin master
 set -e
 
+set +e
 mkdir ./exports
 backup-local-db.sh
+set -e
 git push
