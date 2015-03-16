@@ -1,6 +1,7 @@
 #Wordpress scripts
 
 Install wp-cli: http://wp-cli.org/
+
 Install github/hub: https://github.com/github/hub
 
 Clone project in user root folder.
