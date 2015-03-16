@@ -3,7 +3,10 @@
 Install wp-cli: http://wp-cli.org/
 
 Clone project in user root folder.
-
+```
+cd ~
+git clone git@github.com:HarrisSidiropoulos/wp_scripts.git
+```
 Give scripts permission to execute.
 
 ```
