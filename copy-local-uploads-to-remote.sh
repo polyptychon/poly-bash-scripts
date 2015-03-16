@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 source .env
-read -p "You want replace remote uploads with local. Are you sure? Y/N " -n 1 -r
+read -p "You want to replace remote uploads with local. Are you sure? Y/N " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
