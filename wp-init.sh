@@ -52,14 +52,44 @@ else
   exit;
 fi
 
+if [ ! -f .env ]; then
+  echo "SSH_HOST=polyptychon.gr" > .env
+  echo "SSH_PORT=2222" >> .env
+  echo "SSH_USERNAME=xarisd" >> .env
+  echo "REMOTE_DOMAIN=$DIR_NAME.polyptychon.gr" >> .env
+  echo "REMOTE_DOMAIN=$DIR_NAME.local:8888" >> .env
+  echo "REMOTE_PATH=./domains/$DIR_NAME" >> .env
+  echo "PATH_TO_WORDPRESS=./wordpress" >> .env
+  echo "PATH_TO_EXPORTS=./exports" >> .env
+else
+  echo "WARNING: .env file already exists"
+  exit;
+fi
+
 git clone git@github.com:HarrisSidiropoulos/wp-init.git
 cp wp-init/*.* ./
 cp wp-init/.gitignore ./.gitignore
 rm -rf wp-init
+
+echo "#$WP_SITE_TITLE" > ./README.md
+echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
+
 wp core download
 wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
 wp core install --title=$WP_SITE_TITLE --admin_user=$WP_USER --admin_password=$WP_USER_PASSWORD --admin_email=webadmin@polyptychon.gr
 wp plugin update --all
 
+git init
+git add --all
+git commit -m "initial commit"
+
+set +e
+hub create -p polyptychon/$DIR_NAME
+git remote add origin git@github.com:polyptychon/$DIR_NAME.git
+git push -u origin master
+set -e
+
+mkdir ./exports
 backup-local-db.sh
+git push
