@@ -83,6 +83,9 @@ fi
 #Prompt user for settings
 while (true); do
 
+  echo -n "Do you want to create remote git repository? [y/n]: "
+  read CREATE_REMOTE_GIT
+
   echo -n " # SSH HOST ($SSH_HOST): "
   read SSH_HOST_TEMP
   if [ ! -z ${SSH_HOST_TEMP} ]; then
@@ -233,7 +236,12 @@ mkdir ./exports
 backup-local-db.sh
 set -e
 
-set +e
-hub create -p polyptychon/$DIR_NAME
-git push -u origin master
-set -e
+if [[ $CREATE_REMOTE_GIT == "y" ]]; then
+  set +e
+  hub create -p polyptychon/$DIR_NAME
+  git push -u origin master
+  set -e
+elif [[ $CREATE_REMOTE_GIT == "n" ]]; then
+  exit;
+fi
+
