@@ -12,7 +12,7 @@ fi
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
 WP_USER_PASSWORD="$(date | md5)"
-DB_NAME="$DIR_NAME"_db
+DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 WP_USER=admin
 
 #Prompt user for settings
@@ -79,7 +79,7 @@ while (true); do
   fi
 
   echo -n " # Wordpress admin password ($WP_USER_PASSWORD):"
-  read WP_USER_PASSWORD
+  read WP_USER_PASSWORD_TEMP
   if [ ! -z ${WP_USER_PASSWORD_TEMP} ]; then
     WP_USER_PASSWORD=$WP_USER_PASSWORD_TEMP
   fi
@@ -147,13 +147,17 @@ cp wp-init/*.* ./
 cp wp-init/.gitignore ./.gitignore
 rm -rf wp-init
 
+sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" .gitignore > .gitignore.tmp
+sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" .gitignore.tmp > .gitignore
+rm -rf .gitignore.tmp
+
 echo "#$WP_SITE_TITLE" > ./README.md
 echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
 
 wp core download
 wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
-wp core install --title=$WP_SITE_TITLE --admin_user=$WP_USER --admin_password=$WP_USER_PASSWORD --admin_email=webadmin@polyptychon.gr
+wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
 wp plugin update --all
 
 git init
