@@ -4,9 +4,8 @@ if [ -f ~/wp_scripts/.global-env ]; then
   source ~/wp_scripts/.global-env
 fi
 
-if [ -f wp-cli.local.yml ]; then
-  echo "ERROR: wp-cli.local.yml file already exists"
-  exit;
+if [ -f .env ]; then
+  source .env
 fi
 
 DIR_NAME=${PWD##*/}
@@ -14,6 +13,72 @@ WP_SITE_TITLE=$DIR_NAME
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 WP_USER=admin
+
+if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
+  set +e
+  RESULT=`mysql -u$DB_USER -p$DB_PASSWORD -e "SHOW DATABASES" | grep -Fo $DB_NAME`
+  set -e
+  if [ ! -z ${RESULT} ]; then
+    DATABASE_EXISTS=1
+  else
+    DATABASE_EXISTS=0
+  fi
+else
+  DATABASE_EXISTS=0
+fi
+
+if [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS == 1 ]]; then
+  echo "Initialization is already done"
+  exit
+elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ ! -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS == 0 ]]; then
+  echo "Do special init"
+  echo -n " # Local Database name ($DB_NAME): "
+  read DB_NAME_TEMP
+  if [ ! -z ${DB_NAME_TEMP} ]; then
+    DB_NAME=$DB_NAME_TEMP
+  fi
+
+  echo -n " # Local Database user ($DB_USER): "
+  read DB_USER_TEMP
+  if [ ! -z ${DB_USER_TEMP} ]; then
+    DB_USER=$DB_USER_TEMP
+  fi
+
+  echo -n " # Local Database password ($DB_PASSWORD): "
+  read DB_PASSWORD_TEMP
+  if [ ! -z ${DB_PASSWORD_TEMP} ]; then
+    DB_PASSWORD=$DB_PASSWORD_TEMP
+  fi
+  wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
+  wp db create
+  wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
+  exit
+fi
+
+if [[ $DATABASE_EXISTS == 1 ]]; then
+  echo "Database $DB_NAME already exists!"
+  exit
+fi
+
+if [[ -f $PATH_TO_WORDPRESS/wp-config.php ]]; then
+  echo "$PATH_TO_WORDPRESS/wp-config.php already exists"
+  exit
+fi
+
+if [[ -f .env ]]; then
+  echo ".env file already exists"
+  exit
+fi
+
+if [[ -f wp-cli.local.yml ]]; then
+  echo "wp-cli.local.yml file already exists"
+  exit
+fi
+
+if [[ -f $PATH_TO_EXPORTS/local.sql ]]; then
+  echo "Database local sql dump already exists"
+  exit
+fi
 
 #Prompt user for settings
 while (true); do
@@ -164,12 +229,13 @@ git add --all
 git commit -m "initial commit"
 
 set +e
-hub create -p polyptychon/$DIR_NAME
-git push -u origin master
-set -e
-
-set +e
 mkdir ./exports
 backup-local-db.sh
 set -e
-git push
+
+exit
+
+set +e
+hub create -p polyptychon/$DIR_NAME
+git push -u origin master
+set -e
