@@ -83,7 +83,7 @@ fi
 #Prompt user for settings
 while (true); do
 
-  echo -n "Do you want to create remote git repository? [y/n]: "
+  echo -n "Do you want to create private github repository? [y/n]: "
   read CREATE_REMOTE_GIT
 
   echo -n " # SSH HOST ($SSH_HOST): "
