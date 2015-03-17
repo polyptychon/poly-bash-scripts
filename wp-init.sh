@@ -233,8 +233,6 @@ mkdir ./exports
 backup-local-db.sh
 set -e
 
-exit
-
 set +e
 hub create -p polyptychon/$DIR_NAME
 git push -u origin master
