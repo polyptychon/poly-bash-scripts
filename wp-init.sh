@@ -147,9 +147,8 @@ cp wp-init/*.* ./
 cp wp-init/.gitignore ./.gitignore
 rm -rf wp-init
 
-sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" .gitignore > .gitignore.tmp
-sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" .gitignore.tmp > .gitignore
-rm -rf .gitignore.tmp
+sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" ./.gitignore > ./.gitignore.tmp
+mv -f ./.gitignore.tmp ./.gitignore
 
 echo "#$WP_SITE_TITLE" > ./README.md
 echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
