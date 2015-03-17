@@ -215,6 +215,9 @@ cp wp-init/*.* ./
 cp wp-init/.gitignore ./.gitignore
 rm -rf wp-init
 
+git clone git@github.com:HarrisSidiropoulos/static.git
+rm -rf static/.git
+
 sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" ./.gitignore > ./.gitignore.tmp
 mv -f ./.gitignore.tmp ./.gitignore
 
