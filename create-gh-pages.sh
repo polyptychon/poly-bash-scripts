@@ -27,6 +27,8 @@ set +e
 git stash
 set -e
 
+trap 'git checkout -f master; git stash pop' INT TERM EXIT
+
 git checkout --orphan gh-pages
 cp -Rf ./static/builds/production/. ./
 git rm -rf wordpress
@@ -49,6 +51,5 @@ git add --all
 git commit -m 'update gh-pages'
 git push --set-upstream origin gh-pages
 
-trap 'git stash pop' INT TERM EXIT
 git checkout master
 git stash pop
