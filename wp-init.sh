@@ -249,6 +249,7 @@ do
     mv -f $f.tmp $f
   fi
 done
+wp theme activate $DIR_NAME
 
 git init
 git add --all
