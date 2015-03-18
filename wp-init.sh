@@ -244,7 +244,7 @@ mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
 THEME_FILES=$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*
 for f in $THEME_FILES
 do
-  if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp ]]; then
+  if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp && ! -d $f ]]; then
     sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
     mv -f $f.tmp $f
   fi
