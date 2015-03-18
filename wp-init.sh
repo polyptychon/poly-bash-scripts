@@ -230,6 +230,19 @@ wp db create
 wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
 wp plugin update --all
 
+git clone git@github.com:polyptychon/wp-theme-template.git
+rm -rf wp-theme-template/.git
+mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
+
+THEME_FILES=$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*
+for f in $THEME_FILES
+do
+  if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp ]]; then
+    sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
+    mv -f $f.tmp $f
+  fi
+done
+
 git init
 git add --all
 git commit -m "initial commit"
