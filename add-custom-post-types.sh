@@ -9,15 +9,22 @@ if [ -f .env ]; then
 fi
 
 DIR_NAME=${PWD##*/}
+ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
 
 wp scaffold plugin $DIR_NAME-custom-post-types --activate
 
 
 #Prompt user for post types
 while (true); do
-  echo -n "The name of custom post type: "
+  echo -n "The singular name of custom post type: "
   read CUSTOM_POST_TYPE_NAME
   wp scaffold post-type $CUSTOM_POST_TYPE_NAME --plugin=$DIR_NAME-custom-post-types
+  if [[ -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single.php ]]; then
+    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php
+  fi
+  if [[ -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive.php ]]; then
+    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php
+  fi
 
   echo -n "Do you want to create another custom post type? [y/n]: "
   read answer
@@ -48,5 +55,3 @@ do
     echo "require_once CUSTOM_POST_TYPES_PLUGIN_DIR . '/taxonomies/$FNAME';" >> $PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/$DIR_NAME-custom-post-types.php
   fi
 done
-
-wp rewrite structure --hard
