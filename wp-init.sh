@@ -228,6 +228,13 @@ wp core download
 wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
 wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
+
+wp plugin install contact-form-7 --activate
+wp plugin install contact-form-7-success-page-redirects --activate
+wp plugin install regenerate-thumbnails --activate
+wp plugin install wp-super-cache --activate
+wp plugin install wp-super-cache-clear-cache-menu --activate
+
 wp plugin update --all
 
 git clone git@github.com:polyptychon/wp-theme-template.git
