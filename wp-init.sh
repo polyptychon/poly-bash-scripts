@@ -235,6 +235,11 @@ wp plugin install regenerate-thumbnails --activate
 wp plugin install wp-super-cache --activate
 wp plugin install wp-super-cache-clear-cache-menu --activate
 
+git clone git@bitbucket.org:polyptychon/wp-paid-plugins.git
+rm -rf wp-paid-plugins/.git
+mv -f wp-paid-plugins/* $PATH_TO_WORDPRESS/wp-content/plugins
+rm -rf wp-paid-plugins
+
 wp plugin update --all
 
 git clone git@github.com:polyptychon/wp-theme-template.git
