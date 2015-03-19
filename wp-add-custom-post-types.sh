@@ -20,10 +20,14 @@ while (true); do
   read CUSTOM_POST_TYPE_NAME
   wp scaffold post-type $CUSTOM_POST_TYPE_NAME --plugin=$DIR_NAME-custom-post-types
   if [[ -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single.php ]]; then
-    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php
+    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php.tmp
+    sed -e "s/single.php/single-$CUSTOM_POST_TYPE_NAME.php/g" $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php.tmp > $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php
+    rm -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/single-$CUSTOM_POST_TYPE_NAME.php.tmp
   fi
   if [[ -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive.php ]]; then
-    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php
+    cp $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive.php $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php.tmp
+    sed -e "s/archive.php/archive-$CUSTOM_POST_TYPE_NAME.php/g" $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php.tmp > $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php
+    rm -f $PATH_TO_WORDPRESS/wp-content/themes/$ACTIVE_THEME/archive-$CUSTOM_POST_TYPE_NAME.php.tmp
   fi
 
   echo -n "Do you want to create another custom post type? [y/n]: "

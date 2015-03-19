@@ -16,7 +16,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
 
   #backup remote db
-  backup-remote-db.sh
+  wp-backup-remote-db.sh
 
   # perform clean up on error
   trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT

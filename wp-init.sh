@@ -229,18 +229,28 @@ wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
 wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
 
-wp plugin install contact-form-7 --activate
-wp plugin install contact-form-7-success-page-redirects --activate
-wp plugin install regenerate-thumbnails --activate
-wp plugin install wp-super-cache --activate
-wp plugin install wp-super-cache-clear-cache-menu --activate
+# wp plugin install contact-form-7 --activate
+# wp plugin install contact-form-7-success-page-redirects --activate
+# wp plugin install regenerate-thumbnails
+# wp plugin install wp-super-cache
+# wp plugin install wp-super-cache-clear-cache-menu
 
 git clone git@bitbucket.org:polyptychon/wp-paid-plugins.git
 rm -rf wp-paid-plugins/.git
 mv -f wp-paid-plugins/* $PATH_TO_WORDPRESS/wp-content/plugins
 rm -rf wp-paid-plugins
 
-wp plugin update --all
+set +e
+  wp plugin activate advanced-custom-fields-pro
+  wp plugin activate sitepress-multilingual-cms
+  wp plugin activate wpml-string-translation
+  wp plugin activate wpml-xliff
+  wp plugin activate contact-form-7
+  wp plugin activate contact-form-7-success-page-redirects
+  wp plugin activate regenerate-thumbnails
+
+  wp plugin update --all
+set -e
 
 git clone git@github.com:polyptychon/wp-theme-template.git
 rm -rf wp-theme-template/.git
@@ -262,7 +272,7 @@ git commit -m "initial commit"
 
 set +e
 mkdir ./exports
-backup-local-db.sh
+wp-backup-local-db.sh
 set -e
 
 if [[ $CREATE_REMOTE_GIT == "y" ]]; then
