@@ -181,7 +181,7 @@ echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> ~/wp_scripts/.global-env
 
 
 if [ ! -f wp-admin-password.txt ]; then
-  echo "WP_USER_PASSWORD: $WP_USER_PASSWORD" > ./wp-admin-password.txt
+  echo "WP_USER_PASSWORD: $WP_USER_PASSWORD" > ./admin-password.txt
 else
   echo "WARNING: wp-admin-password.txt file already exists"
   exit;
