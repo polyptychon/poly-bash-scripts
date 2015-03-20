@@ -28,6 +28,7 @@ git stash
 set -e
 
 trap 'git checkout -f master; git stash pop' INT TERM EXIT
+
 if [[ `git branch | grep -Fo gh-pages`=='gh-pages' ]]; then
   git checkout gh-pages
   cp -Rf ./static/builds/production/. ./

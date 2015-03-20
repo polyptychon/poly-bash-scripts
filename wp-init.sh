@@ -218,6 +218,23 @@ rm -rf wp-init
 git clone git@github.com:HarrisSidiropoulos/static.git
 rm -rf static/.git
 
+cleanup_static() {
+  if [[ ! -d $1 ]]; then
+    exit
+  fi
+  for f in $1;
+  do
+    if [[ -d $f ]]; then
+      cleanup_static "$f/*"
+    fi
+    if [[ ! "$f" =~ .png &&  ! "$f" =~ .jpg && ! "$f" =~ .gif && ! "$f" =~ .ai && ! "$f" =~ .eot && ! "$f" =~ .ttf && ! "$f" =~ .woff && ! "$f" =~ .tmp && ! -d $f ]]; then
+      sed -e "s/site_name/$DIR_NAME/g" $f > $f.tmp
+      mv -f $f.tmp $f
+    fi
+  done
+}
+cleanup_static "static/*"
+
 sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" ./.gitignore > ./.gitignore.tmp
 mv -f ./.gitignore.tmp ./.gitignore
 
@@ -256,14 +273,23 @@ git clone git@github.com:polyptychon/wp-theme-template.git
 rm -rf wp-theme-template/.git
 mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
 
-THEME_FILES=$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*
-for f in $THEME_FILES
-do
-  if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp && ! -d $f ]]; then
-    sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
-    mv -f $f.tmp $f
+cleanup_theme() {
+  if [[ ! -d $1 ]]; then
+    exit
   fi
-done
+  for f in $1;
+  do
+    if [[ -d $f ]]; then
+      cleanup_theme "$f/*"
+    fi
+    if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp && ! -d $f ]]; then
+      sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
+      mv -f $f.tmp $f
+    fi
+  done
+}
+cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
+
 wp theme activate $DIR_NAME
 
 git init
