@@ -28,24 +28,30 @@ git stash
 set -e
 
 trap 'git checkout -f master; git stash pop' INT TERM EXIT
+if [[ `git branch | grep -Fo gh-pages`=='gh-pages' ]]; then
+  git checkout gh-pages
+  cp -Rf ./static/builds/production/. ./
+else
+  git checkout --orphan gh-pages
+  cp -Rf ./static/builds/production/. ./
+  git rm -rf $PATH_TO_WORDPRESS
+  git rm -rf static
+  git rm -rf $PATH_TO_EXPORTS
+  git rm -f .gitignore
+  git rm -f .env
+  git rm -f README.md
+  git rm -f wp-cli.local.ymlß
+fi
 
-git checkout --orphan gh-pages
-cp -Rf ./static/builds/production/. ./
-git rm -rf wordpress
-git rm -rf static
-git rm -rf exports
-git rm -f .gitignore
-git rm -f .env
-git rm -f README.md
-git rm -f wp-cli.local.yml
-
-echo ".idea" > .gitignore
-echo "static" >> .gitignore
-echo "wordpress" >> .gitignore
-echo "exports" >> .gitignore
-echo ".env" >> .gitignore
-echo "README.md" >> .gitignore
-echo "wp-cli.local.yml" >> .gitignore
+if [[ ! -f .gitignore ]]; then
+  echo ".idea" > .gitignore
+  echo "static" >> .gitignore
+  echo "$PATH_TO_WORDPRESS" >> .gitignore
+  echo "$PATH_TO_EXPORTS" >> .gitignore
+  echo ".env" >> .gitignore
+  echo "README.md" >> .gitignore
+  echo "wp-cli.local.yml" >> .gitignore
+fi
 
 git add --all
 git commit -m 'update gh-pages'
