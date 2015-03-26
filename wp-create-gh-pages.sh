@@ -59,4 +59,7 @@ git commit -m 'update gh-pages'
 git push --set-upstream origin gh-pages
 
 git checkout master
+set +e
+rm assets
+set -e
 git stash pop
