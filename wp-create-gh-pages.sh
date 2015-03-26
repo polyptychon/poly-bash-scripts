@@ -60,6 +60,6 @@ git push --set-upstream origin gh-pages
 
 git checkout master
 set +e
-rm assets
+rm -r assets
 set -e
 git stash pop
