@@ -5,6 +5,14 @@ elif [[ -f ../.env ]]; then
   source ../.env
 fi
 
+function restore_master() {
+  git checkout master
+  set +e
+  rm -r assets
+  set -e
+  git stash pop
+}
+
 set -e
 DIR_NAME=${PWD##*/}
 
@@ -27,7 +35,7 @@ set +e
 git stash
 set -e
 
-trap 'git checkout -f master; git stash pop' INT TERM EXIT
+trap 'restore_master' INT TERM EXIT
 
 if [[ `git branch | grep -Fo gh-pages`=='gh-pages' ]]; then
   git checkout gh-pages
@@ -56,10 +64,7 @@ fi
 
 git add --all
 git commit -m 'update gh-pages'
+
 git push --set-upstream origin gh-pages
 
-git checkout master
-set +e
-rm -r assets
-set -e
-git stash pop
+restore_master
