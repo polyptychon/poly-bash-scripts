@@ -218,9 +218,9 @@ rm -rf wp-init
 git clone git@github.com:HarrisSidiropoulos/static.git
 rm -rf static/.git
 
-cleanup_static() {
+function cleanup_static {
   if [[ ! -d $1 ]]; then
-    exit
+    return
   fi
   for f in $1;
   do
@@ -273,9 +273,9 @@ git clone git@github.com:polyptychon/wp-theme-template.git
 rm -rf wp-theme-template/.git
 mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
 
-cleanup_theme() {
+function cleanup_theme {
   if [[ ! -d $1 ]]; then
-    exit
+    return
   fi
   for f in $1;
   do
