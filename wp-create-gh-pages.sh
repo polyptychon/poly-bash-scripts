@@ -6,11 +6,11 @@ elif [[ -f ../.env ]]; then
 fi
 
 function restore_master() {
-  git checkout master
   set +e
+  git checkout master
   rm -r assets
-  set -e
   git stash pop
+  set -e
 }
 
 set -e
@@ -35,7 +35,7 @@ set +e
 git stash
 set -e
 
-trap 'restore_master' INT TERM EXIT
+trap 'echo "an error occurred"; restore_master' INT TERM EXIT
 
 if [[ `git branch | grep -Fo gh-pages`=='gh-pages' ]]; then
   git checkout gh-pages
@@ -49,7 +49,7 @@ else
   git rm -f .gitignore
   git rm -f .env
   git rm -f README.md
-  git rm -f wp-cli.local.ymlß
+  git rm -f wp-cli.local.yml
 fi
 
 if [[ ! -f .gitignore ]]; then
@@ -62,9 +62,11 @@ if [[ ! -f .gitignore ]]; then
   echo "wp-cli.local.yml" >> .gitignore
 fi
 
+set +e
+git status
 git add --all
 git commit -m 'update gh-pages'
-
 git push --set-upstream origin gh-pages
+set -e
 
 restore_master
