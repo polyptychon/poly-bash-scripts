@@ -298,6 +298,7 @@ git commit -m "initial commit"
 
 set +e
 mkdir ./exports
+wp db optimize
 wp-backup-local-db.sh
 set -e
 
