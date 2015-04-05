@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
-if [ -f ~/wp_scripts/.global-env ]; then
+if [[ -f ~/wp_scripts/.global-env ]]; then
   source ~/wp_scripts/.global-env
 fi
 
-if [ -f .env ]; then
+if [[ -f .env ]]; then
   source .env
 fi
 

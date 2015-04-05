@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
-if [ -f ~/wp_scripts/.global-env ]; then
+if [[ -f ~/wp_scripts/.global-env ]]; then
   source ~/wp_scripts/.global-env
 fi
 
-if [ -f .env ]; then
+if [[ -f .env ]]; then
   source .env
 fi
 
@@ -42,7 +42,7 @@ echo "define( 'CUSTOM_POST_TYPES_PLUGIN', __FILE__ );" >> $PATH_TO_WORDPRESS/wp-
 echo "define( 'CUSTOM_POST_TYPES_PLUGIN_DIR', untrailingslashit( dirname( CUSTOM_POST_TYPES_PLUGIN ) ) );" >> $PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/$DIR_NAME-custom-post-types.php
 for f in $PLUGIN_POST_TYPES_FILES
 do
-  if [ -d "$PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/post-types" ]; then
+  if [[ -d "$PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/post-types" ]]; then
     FNAME="${f##*/}"
     echo "require_once CUSTOM_POST_TYPES_PLUGIN_DIR . '/post-types/$FNAME';" >> $PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/$DIR_NAME-custom-post-types.php
   fi
@@ -53,7 +53,7 @@ PLUGIN_TAXONOMY_FILES=$PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-pos
 
 for f in $PLUGIN_TAXONOMY_FILES
 do
-  if [ -d "$PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/taxonomies" ]; then
+  if [[ -d "$PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/taxonomies" ]]; then
     FNAME="${f##*/}"
     echo "require_once CUSTOM_POST_TYPES_PLUGIN_DIR . '/taxonomies/$FNAME';" >> $PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/$DIR_NAME-custom-post-types.php
   fi
