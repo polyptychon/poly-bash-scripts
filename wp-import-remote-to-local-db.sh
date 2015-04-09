@@ -14,7 +14,7 @@ function clean_up
 trap 'echo "Removing temp files..."; clean_up' INT TERM EXIT
 
 #create remote sql dump file
-ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
 cd $REMOTE_PATH
 
 export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+DB_NAME'.?.?'//g" | sed -E "s/'.+//g")
