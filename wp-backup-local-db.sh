@@ -17,8 +17,15 @@ set +e
 git stash --quiet
 set -e
 
+function get_wp_config_value {
+  echo `sed -n "/$1/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+$1'.?.?'//g" | sed -E "s/');$//g"`
+}
+DB_NAME=`get_wp_config_value 'DB_NAME'`
+DB_USER=`get_wp_config_value 'DB_USER'`
+DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
+
 # export local db to sql dump file
-wp db export $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS --skip-comments --skip-dump-date --skip-opt --add-drop-table
+mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > $PATH_TO_EXPORTS/temp.sql
 
 # clean up local sql dump file for less commits
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
