@@ -43,7 +43,6 @@ then
   ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
   cd $REMOTE_PATH
   wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
-  wp db repair
   exit
   '"
   # perform clean up

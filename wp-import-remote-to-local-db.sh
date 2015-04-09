@@ -32,7 +32,6 @@ sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpre
 
 #import converted sql dump file to local db
 wp db import $PATH_TO_EXPORTS/local.temp.sql --path=$PATH_TO_WORDPRESS
-wp db optimize
 
 # perform clean up
 clean_up
