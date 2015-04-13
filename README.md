@@ -24,7 +24,8 @@ export WP_SCRIPTS=~/wp_scripts
 export PATH="$WP_SCRIPTS:$PATH"
 
 #wp-cli
-export MAMP_PHP=/Applications/MAMP/bin/php/php5.6.2/bin
+MAMP_PHP_LATEST=$(ls -t /Applications/MAMP/bin/php/ | head -1)
+export MAMP_PHP=/Applications/MAMP/bin/php/$MAMP_PHP_LATEST/bin
 export PATH="$MAMP_PHP:$PATH"
 
 export MAMP_APACHE=/Applications/MAMP/bin/apache2/bin
