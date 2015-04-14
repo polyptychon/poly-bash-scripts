@@ -12,16 +12,18 @@ git clone git@github.com:HarrisSidiropoulos/wp_scripts.git
 Give scripts permission to execute.
 
 ```
-cd ~/wp_scripts
+cd ~/poly-bash-scripts
 sudo chmod 755 *.sh
 ```
 
 ###Update .bash_profile
 
 ```
-#my scripts
-export WP_SCRIPTS=~/wp_scripts
-export PATH="$WP_SCRIPTS:$PATH"
+#poly scripts
+export POLY_SCRIPTS=~/poly-bash-scripts
+export PATH="$POLY_SCRIPTS:$PATH"
+alias poly="poly.sh"
+source ~/poly-bash-scripts/.poly-completion.bash
 
 #wp-cli
 MAMP_PHP_LATEST=$(ls -t /Applications/MAMP/bin/php/ | head -1)
