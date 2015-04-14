@@ -1,23 +1,31 @@
 #!/bin/bash
 # set -e
 
-source ~/wp_scripts/imports/add-custom-post-types.sh
-source ~/wp_scripts/imports/add-taxonomies.sh
-source ~/wp_scripts/imports/backup-local-db.sh
-source ~/wp_scripts/imports/backup-remote-db.sh
-source ~/wp_scripts/imports/copy-local-uploads-to-remote.sh
-source ~/wp_scripts/imports/copy-remote-uploads-to-local.sh
-source ~/wp_scripts/imports/copy-static-assets-to-wordpress.sh
-source ~/wp_scripts/imports/copy-static-fonts-to-wordpress.sh
-source ~/wp_scripts/imports/copy-static-images-to-wordpress.sh
-source ~/wp_scripts/imports/copy-static-scripts-to-wordpress.sh
-source ~/wp_scripts/imports/copy-static-styles-to-wordpress.sh
-source ~/wp_scripts/imports/create-gh-pages.sh
-source ~/wp_scripts/imports/import-local-to-remote-db.sh
-source ~/wp_scripts/imports/import-remote-to-local-db.sh
+POLY_SCRIPTS_FOLDER=~/wp_scripts
+
+if [[ -f $POLY_SCRIPTS_FOLDER/.global-env ]]; then
+  source $POLY_SCRIPTS_FOLDER/.global-env
+fi
+
+source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
+source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-local-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-local-uploads-to-remote.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-remote-uploads-to-local.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-static-assets-to-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-static-fonts-to-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-static-images-to-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-static-scripts-to-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/copy-static-styles-to-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages.sh
+source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
 
 function init {
   echo "init"
+  init-poly
 }
 
 #IMPORT

@@ -2,9 +2,6 @@
 
 function add-taxonomies {
   set -e
-  if [[ -f ~/wp_scripts/.global-env ]]; then
-    source ~/wp_scripts/.global-env
-  fi
 
   if [[ -f .env ]]; then
     source .env

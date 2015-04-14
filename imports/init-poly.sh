@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
-if [ -f ~/wp_scripts/.global-env ]; then
-  source ~/wp_scripts/.global-env
-fi
+function init-poly {
 
 if [ -f .env ]; then
   source .env
@@ -170,14 +168,14 @@ if [ $PASSWORD_IS_OK == 0 ]; then
 fi
 
 
-echo "SSH_HOST=$SSH_HOST" > ~/wp_scripts/.global-env
-echo "SSH_PORT=$SSH_PORT" >> ~/wp_scripts/.global-env
-echo "SSH_USERNAME=$SSH_USERNAME" >> ~/wp_scripts/.global-env
-echo "DB_USER=$DB_USER" >> ~/wp_scripts/.global-env
-echo "DB_PASSWORD=$DB_PASSWORD" >> ~/wp_scripts/.global-env
-echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> ~/wp_scripts/.global-env
-echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> ~/wp_scripts/.global-env
-echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> ~/wp_scripts/.global-env
+echo "SSH_HOST=$SSH_HOST" > $POLY_SCRIPTS_FOLDER/.global-env
+echo "SSH_PORT=$SSH_PORT" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "SSH_USERNAME=$SSH_USERNAME" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "DB_USER=$DB_USER" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "DB_PASSWORD=$DB_PASSWORD" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> $POLY_SCRIPTS_FOLDER/.global-env
 
 
 if [ ! -f wp-admin-password.txt ]; then
@@ -299,7 +297,8 @@ git commit -m "initial commit"
 set +e
 mkdir ./exports
 wp db optimize
-wp-backup-local-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-local-db.sh
+backup-local-db
 set -e
 
 if [[ $CREATE_REMOTE_GIT == "y" ]]; then
@@ -310,4 +309,4 @@ if [[ $CREATE_REMOTE_GIT == "y" ]]; then
 elif [[ $CREATE_REMOTE_GIT == "n" ]]; then
   exit;
 fi
-
+}

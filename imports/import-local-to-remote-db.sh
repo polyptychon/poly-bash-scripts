@@ -19,7 +19,8 @@ then
 
   #backup remote db
   set +e
-  wp-backup-remote-db.sh
+  source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh
+  backup-remote-db
   set -e
 
   # perform clean up on error
