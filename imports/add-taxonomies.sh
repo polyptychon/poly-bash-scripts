@@ -57,6 +57,4 @@ function add-taxonomies {
       echo "require_once CUSTOM_POST_TYPES_PLUGIN_DIR . '/taxonomies/$FNAME';" >> $PATH_TO_WORDPRESS/wp-content/plugins/$DIR_NAME-custom-post-types/$DIR_NAME-custom-post-types.php
     fi
   done
-
-  wp rewrite structure --hard
 }
