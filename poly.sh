@@ -23,6 +23,7 @@ source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
 
+#INIT
 function init {
   echo "init"
   init-poly
@@ -30,116 +31,114 @@ function init {
 
 #IMPORT
 function import {
+  function local-database-to-remote {
+    echo "local-database-to-remote"
+    import-local-to-remote-db
+  }
+  function remote-database-to-local {
+    echo "remote-database-to-local"
+    import-remote-to-local-db
+  }
   options=("local-database-to-remote" "remote-database-to-local")
   exec_arguments options[@]
-}
-function local-database-to-remote {
-  echo "local-database-to-remote"
-  import-local-to-remote-db
-}
-function remote-database-to-local {
-  echo "remote-database-to-local"
-  import-remote-to-local-db
 }
 
 #BACKUP
 function backup {
+  function local-database {
+    echo "local-database"
+    backup-local-db
+  }
+  function remote-database {
+    echo "remote-database"
+    backup-remote-db
+  }
   options=("local-database" "remote-database")
   exec_arguments options[@]
-}
-function local-database {
-  echo "local-database"
-  backup-local-db
-}
-function remote-database {
-  echo "remote-database"
-  backup-remote-db
 }
 
 #COPY
 function copy {
+  function local {
+    function uploads-to-remote {
+      echo "uploads-to-remote"
+      copy-local-uploads-to-remote
+    }
+    options=("uploads-to-remote")
+    exec_arguments options[@]
+  }
+  function remote {
+    function uploads-to-local {
+      echo "uploads-to-local"
+      copy-remote-uploads-to-local
+    }
+    options=("uploads-to-local")
+    exec_arguments options[@]
+  }
+  function static {
+    function assets {
+      echo "assets"
+      copy-static-assets-to-wordpress
+    }
+    function styles {
+      echo "styles"
+      copy-static-styles-to-wordpress
+    }
+    function scripts {
+      echo "scripts"
+      copy-static-scripts-to-wordpress
+    }
+    function fonts {
+      echo "fonts"
+      copy-static-fonts-to-wordpress
+    }
+    function images {
+      echo "images"
+      copy-static-images-to-wordpress
+    }
+    options=("assets" "styles" "scripts" "fonts" "images")
+    exec_arguments options[@]
+  }
   options=("local" "remote" "static")
   exec_arguments options[@]
-}
-function remote {
-  options=("uploads-to-local")
-  exec_arguments options[@]
-}
-#COPY -> REMOTE
-function uploads-to-local {
-  echo "uploads-to-local"
-  copy-remote-uploads-to-local
-}
-function local {
-  options=("uploads-to-remote")
-  exec_arguments options[@]
-}
-#COPY -> LOCAL
-function uploads-to-remote {
-  echo "uploads-to-remote"
-  copy-local-uploads-to-remote
-}
-function static {
-  options=("assets" "styles" "scripts" "fonts" "images")
-  exec_arguments options[@]
-}
-#COPY -> STATIC
-function assets {
-  echo "assets"
-  copy-static-assets-to-wordpress
-}
-function styles {
-  echo "styles"
-  copy-static-styles-to-wordpress
-}
-function scripts {
-  echo "scripts"
-  copy-static-scripts-to-wordpress
-}
-function fonts {
-  echo "fonts"
-  copy-static-fonts-to-wordpress
-}
-function images {
-  echo "images"
-  copy-static-images-to-wordpress
 }
 
 #CREATE
 function create {
+  function gh-pages {
+    echo "gh-pages"
+    create-gh-pages
+  }
   options=("gh-pages")
   exec_arguments options[@]
-}
-function gh-pages {
-  echo "gh-pages"
-  create-gh-pages
 }
 
 #ADD
 function add {
+  function custom-post-types {
+    echo "custom-post-types"
+    add-custom-post-types
+  }
+  function taxonomies {
+    echo "taxonomies"
+    add-taxonomies
+  }
   options=("custom-post-types" "taxonomies")
   exec_arguments options[@]
-}
-function custom-post-types {
-  echo "custom-post-types"
-  add-custom-post-types
-}
-function taxonomies {
-  echo "taxonomies"
-  add-taxonomies
 }
 
 #DEPLOY
 function deploy {
+  function stage {
+    echo "not yet implemented stage deploy"
+  }
+  function production {
+    echo "not yet implemented production deploy"
+  }
   options=("stage" "production")
   exec_arguments options[@]
 }
-function stage {
-  echo "not yet implemented stage deploy"
-}
-function production {
-  echo "not yet implemented production deploy"
-}
+
 
 function main {
   options=("init" "import" "backup" "copy" "create" "add" "deploy")
