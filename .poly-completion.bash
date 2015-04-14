@@ -15,7 +15,7 @@ _poly_complete() {
     elif [[ ${COMP_WORDS[2]} == "remote" ]]; then
       COMPREPLY=( $( compgen -W 'uploads-to-local' -- $cur ) );
     elif [[ ${COMP_WORDS[2]} == "static" ]]; then
-      COMPREPLY=( $( compgen -W 'assets styles scripts' -- $cur ) );
+      COMPREPLY=( $( compgen -W 'assets styles scripts fonts images' -- $cur ) );
     else
       COMPREPLY=( $( compgen -W 'local remote static' -- $cur ) );
     fi

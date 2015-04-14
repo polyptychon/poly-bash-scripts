@@ -1,6 +1,21 @@
 #!/bin/bash
 # set -e
 
+source ~/wp_scripts/imports/add-custom-post-types.sh
+source ~/wp_scripts/imports/add-taxonomies.sh
+source ~/wp_scripts/imports/backup-local-db.sh
+source ~/wp_scripts/imports/backup-remote-db.sh
+source ~/wp_scripts/imports/copy-local-uploads-to-remote.sh
+source ~/wp_scripts/imports/copy-remote-uploads-to-local.sh
+source ~/wp_scripts/imports/copy-static-assets-to-wordpress.sh
+source ~/wp_scripts/imports/copy-static-fonts-to-wordpress.sh
+source ~/wp_scripts/imports/copy-static-images-to-wordpress.sh
+source ~/wp_scripts/imports/copy-static-scripts-to-wordpress.sh
+source ~/wp_scripts/imports/copy-static-styles-to-wordpress.sh
+source ~/wp_scripts/imports/create-gh-pages.sh
+source ~/wp_scripts/imports/import-local-to-remote-db.sh
+source ~/wp_scripts/imports/import-remote-to-local-db.sh
+
 function init {
   echo "init"
 }
@@ -12,9 +27,11 @@ function import {
 }
 function local-database-to-remote {
   echo "local-database-to-remote"
+  import-local-to-remote-db
 }
 function remote-database-to-local {
   echo "remote-database-to-local"
+  import-remote-to-local-db
 }
 
 #BACKUP
@@ -24,9 +41,11 @@ function backup {
 }
 function local-database {
   echo "local-database"
+  backup-local-db
 }
 function remote-database {
   echo "remote-database"
+  backup-remote-db
 }
 
 #COPY
@@ -41,6 +60,7 @@ function remote {
 #COPY -> REMOTE
 function uploads-to-local {
   echo "uploads-to-local"
+  copy-remote-uploads-to-local
 }
 function local {
   options=("uploads-to-remote")
@@ -49,20 +69,32 @@ function local {
 #COPY -> LOCAL
 function uploads-to-remote {
   echo "uploads-to-remote"
+  copy-local-uploads-to-remote
 }
 function static {
-  options=("assets" "styles" "scripts")
+  options=("assets" "styles" "scripts" "fonts" "images")
   exec_arguments options[@]
 }
 #COPY -> STATIC
 function assets {
   echo "assets"
+  copy-static-assets-to-wordpress
 }
 function styles {
   echo "styles"
+  copy-static-styles-to-wordpress
 }
 function scripts {
   echo "scripts"
+  copy-static-scripts-to-wordpress
+}
+function fonts {
+  echo "fonts"
+  copy-static-fonts-to-wordpress
+}
+function images {
+  echo "images"
+  copy-static-images-to-wordpress
 }
 
 #CREATE
@@ -72,6 +104,7 @@ function create {
 }
 function gh-pages {
   echo "gh-pages"
+  create-gh-pages
 }
 
 #ADD
@@ -81,9 +114,11 @@ function add {
 }
 function custom-post-types {
   echo "custom-post-types"
+  add-custom-post-types
 }
 function taxonomies {
   echo "taxonomies"
+  add-taxonomies
 }
 
 #DEPLOY
@@ -92,10 +127,10 @@ function deploy {
   exec_arguments options[@]
 }
 function stage {
-  echo "stage"
+  echo "not yet implemented stage deploy"
 }
 function production {
-  echo "production"
+  echo "not yet implemented production deploy"
 }
 
 function main {

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+function backup-remote-db {
 set -e
 
 # load variables
@@ -40,3 +42,5 @@ git commit -m "backup remote db"
 
 # perform clean up
 clean_up
+
+}

@@ -1,4 +1,6 @@
 #!/bin/bash
+
+function import-remote-to-local-db {
 set -e
 
 # load variables
@@ -35,3 +37,4 @@ wp db import $PATH_TO_EXPORTS/local.temp.sql --path=$PATH_TO_WORDPRESS
 
 # perform clean up
 clean_up
+}

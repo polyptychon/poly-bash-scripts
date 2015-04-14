@@ -1,4 +1,6 @@
 #!/bin/bash
+
+function import-local-to-remote-db {
 set -e
 
 # load variables
@@ -49,3 +51,4 @@ then
   # clean_up
 
 fi
+}
