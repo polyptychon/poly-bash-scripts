@@ -208,12 +208,12 @@ else
   exit;
 fi
 
-git clone git@github.com:HarrisSidiropoulos/wp-init.git
+git clone git@github.com:polyptychon/wp-init.git
 cp wp-init/*.* ./
 cp wp-init/.gitignore ./.gitignore
 rm -rf wp-init
 
-git clone git@github.com:HarrisSidiropoulos/static.git
+git clone git@github.com:polyptychon/static.git
 rm -rf static/.git
 
 function cleanup_static {
