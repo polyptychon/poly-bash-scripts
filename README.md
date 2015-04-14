@@ -7,7 +7,7 @@ Install github/hub: https://github.com/github/hub
 Clone project in user root folder.
 ```
 cd ~
-git clone git@github.com:HarrisSidiropoulos/wp_scripts.git
+git clone git@github.com:polyptychon/poly-bash-scripts.git
 ```
 Give scripts permission to execute.
 
