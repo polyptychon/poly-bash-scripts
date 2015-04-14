@@ -1,7 +1,7 @@
 #!/bin/bash
 # set -e
 
-POLY_SCRIPTS_FOLDER=~/wp_scripts
+POLY_SCRIPTS_FOLDER=~/poly-bash-scripts
 
 if [[ -f $POLY_SCRIPTS_FOLDER/.global-env ]]; then
   source $POLY_SCRIPTS_FOLDER/.global-env
