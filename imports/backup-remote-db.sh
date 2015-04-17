@@ -8,8 +8,11 @@ source .env
 
 function clean_up
 {
+  set +e
+  rm -rf $PATH_TO_EXPORTS/remote.temp.sql
   rm -rf $PATH_TO_EXPORTS/temp.sql
   git stash pop --quiet
+  set -e
 }
 
 # perform clean up on error
@@ -37,9 +40,10 @@ scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql
 sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/remote.sql
 
 # commit changes
+set +e
 git add $PATH_TO_EXPORTS/remote.sql
 git commit -m "backup remote db"
-
+set -e
 # perform clean up
 clean_up
 

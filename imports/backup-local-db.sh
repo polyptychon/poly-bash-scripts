@@ -8,6 +8,7 @@ function backup-local-db {
 
   function clean_up
   {
+    rm -rf $PATH_TO_EXPORTS/local.temp.sql
     rm -rf $PATH_TO_EXPORTS/temp.sql
     git stash pop --quiet
   }
@@ -33,8 +34,10 @@ function backup-local-db {
   sed -e '/-- Dump completed on/d;/-- MySQL dump/d;/-- Host\: /d;/-- Server version/d' $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.sql
 
   # commit changes
+  set +e
   git add $PATH_TO_EXPORTS/local.sql
   git commit -m "backup local db"
+  set -e
 
   # perform clean up
   clean_up

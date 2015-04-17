@@ -8,8 +8,10 @@ source .env
 
 function clean_up
 {
+  set +e
   rm -rf $PATH_TO_EXPORTS/remote.temp.sql
   rm -rf $PATH_TO_EXPORTS/temp.sql
+  set -e
 }
 
 read -p "You want to replace remote db with local. Are you sure? Y/N " -n 1 -r
@@ -29,6 +31,7 @@ then
   function get_wp_config_value {
     echo `sed -n "/$1/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+$1'.?.?'//g" | sed -E "s/');$//g"`
   }
+
   DB_NAME=`get_wp_config_value 'DB_NAME'`
   DB_USER=`get_wp_config_value 'DB_USER'`
   DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
@@ -49,7 +52,7 @@ then
   exit
   '"
   # perform clean up
-  # clean_up
+  clean_up
 
 fi
 }
