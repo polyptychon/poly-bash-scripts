@@ -4,7 +4,12 @@ function deploy-stage {
 set -e
 
 # load variables
-source .env
+if [ -f .env ]; then
+  source .env
+else
+  echo ".env file does not exist. Exiting..."
+  exit
+fi
 
 DIR_NAME=${PWD##*/}
 
@@ -22,7 +27,6 @@ if [[ -d $REMOTE_PATH ]]; then
 else
 
   cd $REMOTE_SSH_ROOT_PATH
-  pwd
   git clone git@github.com:polyptychon/$DIR_NAME.git
 
 fi
