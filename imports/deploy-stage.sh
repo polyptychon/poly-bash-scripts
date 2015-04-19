@@ -8,7 +8,7 @@ source .env
 
 DIR_NAME=${PWD##*/}
 
-ssh -t -p 2222 xarisd@polyptychon.gr bash -c "'
+ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
 if [[ -d $REMOTE_PATH ]]; then
 
