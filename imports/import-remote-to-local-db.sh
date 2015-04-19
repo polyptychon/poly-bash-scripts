@@ -8,8 +8,10 @@ source .env
 
 function clean_up
 {
+  set +e
   rm -rf $PATH_TO_EXPORTS/local.temp.sql
   rm -rf $PATH_TO_EXPORTS/temp.sql
+  set -e
 }
 
 # perform clean up on error

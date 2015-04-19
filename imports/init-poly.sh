@@ -290,15 +290,16 @@ cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
 
 wp theme activate $DIR_NAME
 
+set +e
 git init
 git add --all
 git commit -m "initial commit"
 
-set +e
 mkdir ./exports
 wp db optimize
 source $POLY_SCRIPTS_FOLDER/imports/backup-local-db.sh
 backup-local-db
+
 set -e
 
 if [[ $CREATE_REMOTE_GIT == "y" ]]; then
@@ -307,6 +308,7 @@ if [[ $CREATE_REMOTE_GIT == "y" ]]; then
   git push -u origin master
   set -e
 elif [[ $CREATE_REMOTE_GIT == "n" ]]; then
+  echo "exiting"
   exit;
 fi
 }
