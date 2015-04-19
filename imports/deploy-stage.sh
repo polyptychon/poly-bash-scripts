@@ -62,11 +62,6 @@ else
 
   git clone git@github.com:polyptychon/$DIR_NAME.git
 
-  echo dbname: \$DB_NAME
-  echo dbuser: \$DB_USER
-  echo dbpass: \$DB_PASSWORD
-  echo wppath: $PATH_TO_WORDPRESS
-
   cd $DIR_NAME
   wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS
 
