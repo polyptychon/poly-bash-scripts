@@ -75,8 +75,7 @@ else
   elif [ -f $PATH_TO_EXPORTS/local.sql ]; then
     sed \"s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g\" $PATH_TO_EXPORTS/local.sql > $PATH_TO_EXPORTS/remote.sql
     wp db import $PATH_TO_EXPORTS/remote.sql --path=$PATH_TO_WORDPRESS
-    git add $PATH_TO_EXPORTS/remote.sql
-    git commit -m \"backup remote db\"
+    rm -rf $PATH_TO_EXPORTS/remote.sql
   fi
 fi
 
