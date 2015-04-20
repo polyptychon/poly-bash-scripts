@@ -12,17 +12,26 @@ else
 fi
 
 DIR_NAME=${PWD##*/}
+LOCAL_COMMIT_HASH=$(git rev-parse HEAD)
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
 if [[ -d $REMOTE_PATH ]]; then
 
   cd $REMOTE_PATH
-  git stash --quiet
-  git status
-  git pull
-  git stash pop --quiet
-  exit
+  REMOTE_COMMIT_HASH=\$(git rev-parse HEAD)
+
+  if [ $LOCAL_COMMIT_HASH == \$REMOTE_COMMIT_HASH ]; then
+    echo \"Everything is up to date. No action is required\"
+    exit
+  else
+    echo \"Remember to git push your local changes first!\"
+    git stash --quiet
+    git status
+    git pull
+    git stash pop --quiet
+    exit
+  fi
 
 else
   cd $REMOTE_SSH_ROOT_PATH
