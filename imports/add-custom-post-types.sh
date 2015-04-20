@@ -7,6 +7,11 @@ function add-custom-post-types {
     source .env
   fi
 
+  if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
+    echo "Can not find wordpress installation. Exiting..."
+    exit;
+  fi
+
   DIR_NAME=${PWD##*/}
   ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
 

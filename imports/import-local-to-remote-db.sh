@@ -14,11 +14,15 @@ function clean_up
   set -e
 }
 
+if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
+  echo "Can not find wordpress installation. Exiting..."
+  exit;
+fi
+
 echo -n "You want to replace remote db with local. Are you sure? Y/N "
 read REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-
   #backup remote db
   set +e
   source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh

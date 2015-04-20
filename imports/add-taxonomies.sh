@@ -7,6 +7,10 @@ function add-taxonomies {
     source .env
   fi
 
+  if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
+    echo "Can not find wordpress installation. Exiting..."
+    exit;
+  fi
   DIR_NAME=${PWD##*/}
 
   wp scaffold plugin $DIR_NAME-custom-post-types --activate

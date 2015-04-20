@@ -22,12 +22,27 @@ function backup-local-db {
   git stash --quiet
   set -e
 
+  function get_drupal_config_value {
+    echo `sed -n "/\'$1\'.\=\>/p" $PATH_TO_DRUPAL/sites/default/settings.php | sed -E "s/.+\'$1\'.\=\>//g" | sed -E "s/\'\,$//g" | sed -E "s/\'//g" | sed -E "s/$1|password|username|databasename|(\/path\/to\/databasefilename)//g"`
+  }
+
   function get_wp_config_value {
     echo `sed -n "/$1/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+$1'.?.?'//g" | sed -E "s/');$//g"`
   }
-  DB_NAME=`get_wp_config_value 'DB_NAME'`
-  DB_USER=`get_wp_config_value 'DB_USER'`
-  DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
+
+  if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
+    DB_NAME=`get_wp_config_value 'DB_NAME'`
+    DB_USER=`get_wp_config_value 'DB_USER'`
+    DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
+  elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
+    DB_NAME=`get_drupal_config_value 'database'`
+    DB_USER=`get_drupal_config_value 'username'`
+    DB_PASSWORD=`get_drupal_config_value 'password'`
+  else
+    clean_up
+    echo "Can not backup local database"
+    exit;
+  fi
 
   # export local db to sql dump file
   mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > $PATH_TO_EXPORTS/temp.sql

@@ -7,6 +7,11 @@ function create-gh-pages {
     source ../.env
   fi
 
+  if [ ! -d static/node_modules ] && [ ! -d node_modules ]; then
+    echo "Please run 'npm install' first. Exiting..."
+    exit;
+  fi
+
   function restore_master() {
     set +e
     git checkout master

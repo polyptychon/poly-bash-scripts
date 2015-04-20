@@ -3,6 +3,12 @@
 function copy-local-uploads-to-remote {
   set -e
   source .env
+
+  if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
+    echo "Can not find wordpress installation. Exiting..."
+    exit;
+  fi
+
   read -p "You want to replace remote uploads with local. Are you sure? Y/N " -n 1 -r
   echo    # (optional) move to a new line
   if [[ $REPLY =~ ^[Yy]$ ]]
