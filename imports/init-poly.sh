@@ -8,9 +8,9 @@ fi
 
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
+WP_USER=admin
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
-WP_USER=admin
 
 if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
   set +e
@@ -291,6 +291,7 @@ cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
 wp theme activate $DIR_NAME
 
 set +e
+
 git init
 git add --all
 git commit -m "initial commit"
