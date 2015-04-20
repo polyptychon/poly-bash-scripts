@@ -14,8 +14,8 @@ function clean_up
   set -e
 }
 
-read -p "You want to replace remote db with local. Are you sure? Y/N " -n 1 -r
-echo    # (optional) move to a new line
+echo -n "You want to replace remote db with local. Are you sure? Y/N "
+read REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 
