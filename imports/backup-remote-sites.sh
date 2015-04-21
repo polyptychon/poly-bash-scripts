@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function backup-all-remote-sites {
+function backup-remote-sites {
   set -e
 
   if [ -f .env ]; then
@@ -116,18 +116,47 @@ function backup-all-remote-sites {
         mkdir $e/$PATH_TO_WORDPRESS
         mkdir $e/$PATH_TO_WORDPRESS/wp-content/
       fi
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads" $e/$PATH_TO_WORDPRESS/wp-content/uploads
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php" $e/$PATH_TO_WORDPRESS/wp-config.php
+      # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads" $e/$PATH_TO_WORDPRESS/wp-content/uploads
+      # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php" $e/$PATH_TO_WORDPRESS/wp-config.php
+ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+cd $REMOTE_PATH
+
+export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+DB_NAME'.?.?'//g" | sed -E "s/'.+//g")
+export DB_USER=\$(sed -n "/DB_USER/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+DB_USER'.?.?'//g" | sed -E "s/'.+//g")
+export DB_PASSWORD=\$(sed -n "/DB_PASSWORD/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+DB_PASSWORD'.?.?'//g" | sed -E "s/'.+//g")
+mysqldump -u\$DB_USER -p\$DB_PASSWORD \$DB_NAME > $PATH_TO_EXPORTS/temp.sql
+exit
+EOF
+      if [ ! -d $e/$PATH_TO_EXPORTS ]; then
+        mkdir $e/$PATH_TO_EXPORTS
+      fi
+      scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
+
     elif ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/$PATH_TO_DRUPAL ]; then # if is a drupal site
       if [ ! -d $e/$PATH_TO_DRUPAL ]; then
         mkdir $e/$PATH_TO_DRUPAL
         mkdir $e/$PATH_TO_DRUPAL/sites
       fi
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default" $e/$PATH_TO_DRUPAL/sites/default
-    fi
-    if ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/.env ]; then
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env
+      # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default" $e/$PATH_TO_DRUPAL/sites/default
+ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+cd $REMOTE_PATH
+
+export DB_NAME=\$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -E "s/^.+'database' => '//g" | sed -E "s/',$//g")
+export DB_USER=\$(sed -n "/'username' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -E "s/^.+'username' => '//g" | sed -E "s/',$//g")
+export DB_PASSWORD=\$(sed -n "/'password' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -E "s/^.+'password' => '//g" | sed -E "s/',$//g")
+mysqldump -u\$DB_USER -p\$DB_PASSWORD \$DB_NAME > $PATH_TO_EXPORTS/temp.sql
+exit
+EOF
+      if [ ! -d $e/$PATH_TO_EXPORTS ]; then
+        mkdir $e/$PATH_TO_EXPORTS
+      fi
+      scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
     fi
 
+    set +e
+    {
+      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env
+    } > /dev/null
+    set -e
   done
 }
