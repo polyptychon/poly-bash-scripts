@@ -10,6 +10,8 @@ source $POLY_SCRIPTS_FOLDER/imports/exec_arguments.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/commit-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-local-uploads-to-remote.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-remote-uploads-to-local.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-static-assets-to-wordpress.sh
@@ -19,8 +21,6 @@ source $POLY_SCRIPTS_FOLDER/imports/copy-static-scripts-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-static-styles-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages.sh
 source $POLY_SCRIPTS_FOLDER/imports/deploy-stage.sh
-source $POLY_SCRIPTS_FOLDER/imports/export-local-db.sh
-source $POLY_SCRIPTS_FOLDER/imports/export-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
@@ -112,14 +112,14 @@ function create {
 }
 
 #EXPORT
-function export {
+function commit {
   function local-database {
-    echo "local-database"
-    backup-local-db
+    echo "commit local-database"
+    commit-local-db
   }
   function remote-database {
-    echo "remote-database"
-    backup-remote-db
+    echo "commit remote-database"
+    commit-remote-db
   }
   options=("local-database" "remote-database")
 }
@@ -153,7 +153,7 @@ function deploy {
 
 
 function main {
-  options=("init" "import" "backup" "copy" "create" "export" "add" "deploy")
+  options=("init" "import" "backup" "commit" "copy" "create" "add" "deploy")
   exec_arguments options[@]
 }
 
