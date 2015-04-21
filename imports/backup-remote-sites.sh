@@ -154,9 +154,7 @@ EOF
     fi
 
     set +e
-    {
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env
-    } > /dev/null
+    scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env 2> /dev/null
     set -e
   done
 }
