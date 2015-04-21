@@ -9,6 +9,7 @@ fi
 source $POLY_SCRIPTS_FOLDER/imports/exec_arguments.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-all-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-local-uploads-to-remote.sh
@@ -54,7 +55,11 @@ function backup {
     echo "remote-database"
     backup-remote-db
   }
-  options=("local-database" "remote-database")
+  function all-remote-sites {
+    echo "backup all-remote-sites"
+    backup-all-remote-sites
+  }
+  options=("local-database" "remote-database" "all-remote-sites")
   exec_arguments options[@]
 }
 
