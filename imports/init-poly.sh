@@ -13,9 +13,7 @@ WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 
 if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
-  set +e
   RESULT=`mysql -u$DB_USER -p$DB_PASSWORD -e "SHOW DATABASES" | grep -Fo $DB_NAME`
-  set -e
   if [ ! -z ${RESULT} ]; then
     DATABASE_EXISTS=1
   else
