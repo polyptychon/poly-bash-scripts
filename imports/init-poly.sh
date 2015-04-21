@@ -224,8 +224,7 @@ function cleanup_static {
   do
     if [[ -d $f ]]; then
       cleanup_static "$f/*"
-    fi
-    if [[ ! "$f" =~ .png &&  ! "$f" =~ .jpg && ! "$f" =~ .gif && ! "$f" =~ .ai && ! "$f" =~ .eot && ! "$f" =~ .ttf && ! "$f" =~ .woff && ! "$f" =~ .tmp && ! -d $f ]]; then
+    elif [[ "$f" =~ .json || "$f" =~ .js || "$f" =~ .css || "$f" =~ .scss || "$f" =~ .less || "$f" =~ .html || "$f" =~ .jade || "$f" =~ .coffee || "$f" =~ .yml ]]; then
       sed -e "s/site_name/$DIR_NAME/g" $f > $f.tmp
       mv -f $f.tmp $f
     fi
