@@ -13,6 +13,11 @@ fi
 
 DIR_NAME=${PWD##*/}
 LOCAL_COMMIT_HASH=$(git rev-parse HEAD)
+if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
+  IS_WORDPRESS=1
+else
+  IS_WORDPRESS=0
+fi
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
@@ -34,7 +39,7 @@ if [[ -d $REMOTE_PATH ]]; then
   fi
 
 else
-  if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
+  if [ $IS_WORDPRESS==1 ]; then
     cd $REMOTE_SSH_ROOT_PATH
 
     while (true); do
