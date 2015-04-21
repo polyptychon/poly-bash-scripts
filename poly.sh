@@ -111,7 +111,7 @@ function create {
   exec_arguments options[@]
 }
 
-#EXPORT
+#Commit
 function commit {
   function local-database {
     echo "commit local-database"
@@ -122,6 +122,7 @@ function commit {
     commit-remote-db
   }
   options=("local-database" "remote-database")
+  exec_arguments options[@]
 }
 
 #ADD

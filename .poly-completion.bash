@@ -28,7 +28,7 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "deploy" ]]; then
     COMPREPLY=( $( compgen -W 'stage production' -- $cur ) );
   else
-    COMPREPLY=( $( compgen -W 'init import backup copy create add deploy' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'init import backup commit copy create add deploy' -- $cur ) );
   fi
 }
 complete -o nospace -F _poly_complete poly
