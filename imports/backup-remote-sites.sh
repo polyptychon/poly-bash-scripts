@@ -2,6 +2,8 @@
 
 function backup-remote-sites {
   set -e
+  now="$(date +'%d/%m/%Y')"
+  trap 'echo "backup failed to complete" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"' INT TERM EXIT
 
   if [ -f .env ]; then
     source .env
@@ -157,4 +159,12 @@ EOF
     scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env 2> /dev/null
     set -e
   done
+
+  if [ ! -d .git ]; then
+    git init
+  fi
+  git add --all
+  now="$(date +'%d/%m/%Y')"
+  git commit -m "backup at $now"
+  echo "backup completed successfully" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"
 }
