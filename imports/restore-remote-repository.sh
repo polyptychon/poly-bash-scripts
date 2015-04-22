@@ -19,6 +19,11 @@ function restore-remote-repository {
     fi
   done
 
+  if [ -z $REMOTE_PATH ]; then
+    echo "Variable REMOTE_PATH is not set"
+    exit
+  fi
+
   ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
   if [[ -d $REMOTE_PATH ]]; then
