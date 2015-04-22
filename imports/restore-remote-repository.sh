@@ -8,19 +8,21 @@ function restore-remote-repository {
     exit
   fi
 
-  while (true); do
-    FOLDER="$(pwd)"
-    echo "You are in folder $FOLDER."
-    echo -n "Do you want to restore repository to remote site? [y/n]: "
-    read answer
-    if [[ $answer == "y" ]]; then
-      break;
-    elif [[ $answer == "n" ]]; then
-      exit;
-    else
-      clear
-    fi
-  done
+  if [ -z $1 ] && [ $1=="quiet" ]; then
+    while (true); do
+      FOLDER="$(pwd)"
+      echo "You are in folder $FOLDER."
+      echo -n "Do you want to restore repository to remote site? [y/n]: "
+      read answer
+      if [[ $answer == "y" ]]; then
+        break;
+      elif [[ $answer == "n" ]]; then
+        exit;
+      else
+        clear
+      fi
+    done
+  fi
 
   if [ -z $REMOTE_PATH ]; then
     echo "Variable REMOTE_PATH is not set"

@@ -8,19 +8,21 @@ function restore-remote-uploads {
     exit
   fi
 
-  while (true); do
-    FOLDER="$(pwd)"
-    echo "You are in folder $FOLDER."
-    echo -n "Do you want to restore uploads to remote site? [y/n]: "
-    read answer
-    if [[ $answer == "y" ]]; then
-      break;
-    elif [[ $answer == "n" ]]; then
-      exit;
-    else
-      clear
-    fi
-  done
+  if [ -z $1 ] && [ $1=="quiet" ]; then
+    while (true); do
+      FOLDER="$(pwd)"
+      echo "You are in folder $FOLDER."
+      echo -n "Do you want to restore uploads to remote site? [y/n]: "
+      read answer
+      if [[ $answer == "y" ]]; then
+        break;
+      elif [[ $answer == "n" ]]; then
+        exit;
+      else
+        clear
+      fi
+    done
+  fi
 
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
     if [ -d $PATH_TO_WORDPRESS/wp-content/uploads/ ]; then
