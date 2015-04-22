@@ -3,6 +3,9 @@ function restore-remote-uploads {
 
   if [ -f .env ]; then
     source .env
+  else
+    echo ".env file does not exist"
+    exit
   fi
 
   while (true); do
@@ -20,9 +23,19 @@ function restore-remote-uploads {
   done
 
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
-    scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads/ "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
+    if [ -d $PATH_TO_WORDPRESS/wp-content/uploads/ ]; then
+      scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads/ "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
+    else
+      echo "Folder uploads does not exist"
+      exit
+    fi
   elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
-    scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/files "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/"
+    if [ -d $PATH_TO_DRUPAL/sites/default/files ]; then
+      scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/files "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/"
+    else
+      echo "Folder files does not exist"
+      exit
+    fi
   fi
 
 }

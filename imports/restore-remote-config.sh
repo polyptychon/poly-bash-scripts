@@ -3,6 +3,9 @@ function restore-remote-config {
 
   if [ -f .env ]; then
     source .env
+  else
+    echo ".env file does not exist"
+    exit
   fi
 
   while (true); do
