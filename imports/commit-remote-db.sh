@@ -49,7 +49,7 @@ EOF
 
 else
   clean_up
-  echo "Can not backup remote database"
+  echo "Can not commit remote database"
   exit;
 fi
 

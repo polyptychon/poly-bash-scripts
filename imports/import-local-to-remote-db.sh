@@ -26,7 +26,7 @@ then
   #backup remote db
   set +e
   source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh
-  backup-remote-db
+  commit-remote-db
   set -e
 
   # perform clean up on error

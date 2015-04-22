@@ -40,7 +40,7 @@ function commit-local-db {
     DB_PASSWORD=`get_drupal_config_value 'password'`
   else
     clean_up
-    echo "Can not backup local database"
+    echo "Can not commit local database"
     exit;
   fi
 

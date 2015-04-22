@@ -297,8 +297,8 @@ git commit -m "initial commit"
 
 mkdir ./exports
 wp db optimize
-source $POLY_SCRIPTS_FOLDER/imports/backup-local-db.sh
-backup-local-db
+source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
+commit-local-db
 
 set -e
 
