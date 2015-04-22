@@ -118,7 +118,7 @@ function backup-remote-sites {
         mkdir $e/$PATH_TO_WORDPRESS
         mkdir $e/$PATH_TO_WORDPRESS/wp-content/
       fi
-      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads" $e/$PATH_TO_WORDPRESS/wp-content/uploads
+      scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads" $e/$PATH_TO_WORDPRESS/wp-content/
       scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php" $e/$PATH_TO_WORDPRESS/wp-config.php
 ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
 cd $REMOTE_PATH
