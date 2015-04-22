@@ -19,9 +19,13 @@ function restore-remote-db {
     fi
   done
 
-  echo "restore database"
-  scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
-
+  if [ ! -z $PATH_TO_EXPORTS ] && [ -f $PATH_TO_EXPORTS/remote.sql ]; then
+    echo "restore database"
+    scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
+  else
+    echo "Can not find sql dump file!"
+    exit
+  fi
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
     #import local converted sql dump file to remote db
     ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
