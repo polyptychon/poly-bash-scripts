@@ -25,7 +25,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   #backup remote db
   set +e
-  source $POLY_SCRIPTS_FOLDER/imports/backup-remote-db.sh
+  source $POLY_SCRIPTS_FOLDER/imports/commit-remote-db.sh
   commit-remote-db
   set -e
 

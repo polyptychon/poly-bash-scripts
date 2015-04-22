@@ -55,10 +55,7 @@ function backup-remote-sites {
       fi
 
       echo -n " # Email status to ($EMAIL_BACKUP_STATUS): "
-      read EMAIL_BACKUP_STATUS_TEMP
-      if [ ! -z ${$EMAIL_BACKUP_STATUS} ]; then
-        EMAIL_BACKUP_STATUS=$EMAIL_BACKUP_STATUS
-      fi
+      read EMAIL_BACKUP_STATUS
 
       FOLDER="$(pwd)"
       echo -n "You are in folder $FOLDER. Do you want to continue? [y/n]: "
@@ -83,11 +80,11 @@ function backup-remote-sites {
   if [ ! -f sites.txt ]; then
     while (true); do
 
-      echo -n " # Add site for backup: "
+      echo -n " # Add remote site folder for backup: "
       read backup_site
       echo "$backup_site" >> sites.txt
 
-      echo -n "Do you want to add another site for backup? [y/n]: "
+      echo -n "Do you want to add another remote site for backup? [y/n]: "
       read answer
       if [[ $answer == "n" ]]; then
         break;
@@ -166,10 +163,10 @@ EOF
     set -e
   done
 
+  set +e
   if [ ! -d .git ]; then
     git init
   fi
-  set +e
   git add --all
   now="$(date +'%d/%m/%Y')"
   git commit -m "backup at $now"
