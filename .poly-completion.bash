@@ -28,7 +28,11 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "deploy" ]]; then
     COMPREPLY=( $( compgen -W 'stage production' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "restore" ]]; then
-    COMPREPLY=( $( compgen -W 'site repository config uploads database' -- $cur ) );
+    if [[ ${COMP_WORDS[2]} == "remote" ]]; then
+      COMPREPLY=( $( compgen -W 'site repository config uploads database' -- $cur ) );
+    else
+      COMPREPLY=( $( compgen -W 'remote' -- $cur ) );
+    fi
   else
     COMPREPLY=( $( compgen -W 'init import backup restore commit copy create add deploy' -- $cur ) );
   fi

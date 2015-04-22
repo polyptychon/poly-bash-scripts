@@ -25,10 +25,10 @@ source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-site.sh
-source $POLY_SCRIPTS_FOLDER/imports/restore-repository.sh
-source $POLY_SCRIPTS_FOLDER/imports/restore-config.sh
-source $POLY_SCRIPTS_FOLDER/imports/restore-uploads.sh
-source $POLY_SCRIPTS_FOLDER/imports/restore-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/restore-remote-repository.sh
+source $POLY_SCRIPTS_FOLDER/imports/restore-remote-config.sh
+source $POLY_SCRIPTS_FOLDER/imports/restore-remote-uploads.sh
+source $POLY_SCRIPTS_FOLDER/imports/restore-remote-db.sh
 
 #INIT
 function init {
@@ -159,27 +159,31 @@ function deploy {
 
 #DEPLOY
 function restore {
-  function site {
-    echo "restore remote site"
-    restore-remote-site
+  function remote {
+    function site {
+      echo "restore remote site"
+      restore-remote-site
+    }
+    function repository {
+      echo "restore repository"
+      restore-remote-repository
+    }
+    function config {
+      echo "restore config"
+      restore-remote-config
+    }
+    function uploads {
+      echo "restore uploads"
+      restore-remote-uploads
+    }
+    function database {
+      echo "restore database"
+      restore-remote-db
+    }
+    options=("site" "repository" "config" "uploads" "database")
+    exec_arguments options[@]
   }
-  function repository {
-    echo "restore repository"
-    restore-repository
-  }
-  function config {
-    echo "restore config"
-    restore-config
-  }
-  function uploads {
-    echo "restore uploads"
-    restore-uploads
-  }
-  function database {
-    echo "restore database"
-    restore-db
-  }
-  options=("site" "repository" "config" "uploads" "database")
+  options=("remote")
   exec_arguments options[@]
 }
 

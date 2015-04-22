@@ -1,4 +1,4 @@
-function restore-config {
+function restore-remote-config {
   set -e
 
   if [ -f .env ]; then
@@ -7,7 +7,8 @@ function restore-config {
 
   while (true); do
     FOLDER="$(pwd)"
-    echo -n "You are in folder $FOLDER. Do you want to restore config to remote site? [y/n]: "
+    echo "You are in folder $FOLDER."
+    echo -n "Do you want to restore config to remote site? [y/n]: "
     read answer
     if [[ $answer == "y" ]]; then
       break;

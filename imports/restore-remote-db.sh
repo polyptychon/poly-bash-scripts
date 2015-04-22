@@ -1,4 +1,4 @@
-function restore-db {
+function restore-remote-db {
   set -e
 
   if [ -f .env ]; then
@@ -7,7 +7,8 @@ function restore-db {
 
   while (true); do
     FOLDER="$(pwd)"
-    echo -n "You are in folder $FOLDER. Do you want to restore database to remote site? [y/n]: "
+    echo "You are in folder $FOLDER."
+    echo -n "Do you want to restore database to remote site? [y/n]: "
     read answer
     if [[ $answer == "y" ]]; then
       break;

@@ -1,4 +1,4 @@
-function restore-repository {
+function restore-remote-repository {
   set -e
 
   if [ -f .env ]; then
@@ -7,7 +7,8 @@ function restore-repository {
 
   while (true); do
     FOLDER="$(pwd)"
-    echo -n "You are in folder $FOLDER. Do you want to restore repository to remote site? [y/n]: "
+    echo "You are in folder $FOLDER."
+    echo -n "Do you want to restore repository to remote site? [y/n]: "
     read answer
     if [[ $answer == "y" ]]; then
       break;

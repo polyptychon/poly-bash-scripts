@@ -11,19 +11,19 @@ function restore-remote-site {
   RESTORE_DB=1
 
   if [ $RESTORE_REPOSITORY == 1 ]; then
-    restore-repository
+    restore-remote-repository
   fi
 
   if [ $RESTORE_UPLOADS == 1 ]; then
-    restore-uploads
+    restore-remote-uploads
   fi
 
   if [ $RESTORE_CONFIG == 1 ]; then
-    restore-config
+    restore-remote-config
   fi
 
   if [ $RESTORE_DB == 1 ]; then
-    restore-db
+    restore-remote-db
   fi
 
 }
