@@ -30,6 +30,7 @@ function restore-remote-repository {
   fi
 
   set +e
+  DIR_NAME=${PWD##*/}
   ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
   if [[ -d $REMOTE_PATH ]]; then
@@ -48,11 +49,13 @@ function restore-remote-repository {
 
     cd $REMOTE_SSH_ROOT_PATH
     if [ -z ${GIT_SSH_CLONE_URL} ]; then
-      echo -n \"git SSH clone URL: \"
+      echo -n \"git SSH clone URL (git@github.com:polyptychon/$DIR_NAME.git): \"
       read GIT_SSH_CLONE_URL
     fi
     if [ ! -z \${GIT_SSH_CLONE_URL} ]; then
       git clone \$GIT_SSH_CLONE_URL
+    else
+      git clone git@github.com:polyptychon/$DIR_NAME.git
     fi
 
   fi
