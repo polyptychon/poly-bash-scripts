@@ -29,6 +29,7 @@ function restore-remote-repository {
     exit
   fi
 
+  set +e
   ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
 
   if [[ -d $REMOTE_PATH ]]; then
@@ -57,5 +58,5 @@ function restore-remote-repository {
   fi
 
   '"
-
+  set -e
 }
