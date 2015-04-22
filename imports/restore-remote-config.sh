@@ -24,16 +24,15 @@ function restore-remote-config {
   fi
   if [ -d static ]; then
     echo "Warning. You should not copy local config"
-    exit
-  fi
-  if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
-    if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
-      scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-config.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php"
+  else
+    if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
+      if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
+        scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-config.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php"
+      fi
+    elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
+      if [ -f $PATH_TO_DRUPAL/sites/default/settings.php ]; then
+        scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/settings.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/settings.php"
+      fi
     fi
-  elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
-    if [ -f $PATH_TO_DRUPAL/sites/default/settings.php ]; then
-      scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/settings.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/settings.php"
-    fi
   fi
-
 }
