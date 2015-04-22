@@ -23,8 +23,7 @@ function restore-remote-site {
   done
 
   restore-remote-repository quiet
-  restore-remote-uploads quiet
   restore-remote-config quiet
   restore-remote-db quiet
-
+  restore-remote-uploads quiet
 }
