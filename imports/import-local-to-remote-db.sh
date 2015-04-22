@@ -19,7 +19,7 @@ if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
   exit;
 fi
 
-echo -n "You want to replace remote db with local. Are you sure? Y/N "
+echo -n "You want to replace remote db with local. Are you sure? Y/N: "
 read REPLY
 if [[ $REPLY =~ ^[Yy]$ ]]
 then

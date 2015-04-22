@@ -27,8 +27,10 @@ _poly_complete() {
     COMPREPLY=( $( compgen -W 'custom-post-types taxonomies' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "deploy" ]]; then
     COMPREPLY=( $( compgen -W 'stage production' -- $cur ) );
+  elif [[ ${COMP_WORDS[1]} == "restore" ]]; then
+    COMPREPLY=( $( compgen -W 'site repository config uploads database' -- $cur ) );
   else
-    COMPREPLY=( $( compgen -W 'init import backup commit copy create add deploy' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'init import backup restore commit copy create add deploy' -- $cur ) );
   fi
 }
 complete -o nospace -F _poly_complete poly
