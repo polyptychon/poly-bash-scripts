@@ -2,8 +2,6 @@
 
 function backup-remote-sites {
   set -e
-  now="$(date +'%d/%m/%Y')"
-  trap 'echo "backup failed to complete" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"' INT TERM EXIT
 
   if [ -f .env ]; then
     source .env
@@ -56,6 +54,12 @@ function backup-remote-sites {
         PATH_TO_EXPORTS=$PATH_TO_EXPORTS_TEMP
       fi
 
+      echo -n " # Email status to ($EMAIL_BACKUP_STATUS): "
+      read EMAIL_BACKUP_STATUS_TEMP
+      if [ ! -z ${$EMAIL_BACKUP_STATUS} ]; then
+        EMAIL_BACKUP_STATUS=$$EMAIL_BACKUP_STATUS
+      fi
+
       FOLDER="$(pwd)"
       echo -n "You are in folder $FOLDER. Do you want to continue? [y/n]: "
       read answer
@@ -91,6 +95,8 @@ function backup-remote-sites {
 
     done
   fi
+  now="$(date +'%d/%m/%Y')"
+  trap 'echo "backup failed to complete" | mail -s "Backup at $now" "$EMAIL_BACKUP_STATUS"' INT TERM EXIT
 
   sites=()
 
@@ -166,5 +172,5 @@ EOF
   git add --all
   now="$(date +'%d/%m/%Y')"
   git commit -m "backup at $now"
-  echo "backup completed successfully" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"
+  echo "backup completed successfully" | mail -s "Backup at $now" "$EMAIL_BACKUP_STATUS"
 }
