@@ -23,7 +23,7 @@ function restore-remote-config {
     done
   fi
   if [ -d static ]; then
-    echo "Warning. You should not copy local config"
+    echo "Warning. You should not copy local config to remote site"
   else
     if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
       if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
