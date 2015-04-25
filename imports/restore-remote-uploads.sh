@@ -26,14 +26,16 @@ function restore-remote-uploads {
 
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
     if [ -d $PATH_TO_WORDPRESS/wp-content/uploads/ ]; then
-      scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads/ "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
+      rsync -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads/ $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
+      # scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads/ "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
     else
       echo "Folder uploads does not exist"
       exit
     fi
   elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
     if [ -d $PATH_TO_DRUPAL/sites/default/files ]; then
-      scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/files "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/"
+      rsync -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_DRUPAL/sites/default/files $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/
+      # scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/files "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/"
     else
       echo "Folder files does not exist"
       exit
