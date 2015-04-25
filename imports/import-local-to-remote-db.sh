@@ -47,7 +47,8 @@ then
   sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/remote.temp.sql
 
   #upload local converted sql dump file to remote ssh server
-  scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.temp.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
+  rsync -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_EXPORTS/remote.temp.sql $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql
+  # scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.temp.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
 
   #import local converted sql dump file to remote db
   ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
