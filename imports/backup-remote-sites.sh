@@ -143,6 +143,7 @@ EOF
         mkdir $e/$PATH_TO_DRUPAL/sites
       fi
       rsync --delete -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default $e/$PATH_TO_DRUPAL/sites/
+      rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/.htaccess $e/$PATH_TO_DRUPAL/.htaccess
       # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default" $e/$PATH_TO_DRUPAL/sites/
 ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
 cd $REMOTE_PATH
