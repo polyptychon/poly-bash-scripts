@@ -33,6 +33,9 @@ function restore-remote-config {
       if [ -f $PATH_TO_DRUPAL/sites/default/settings.php ]; then
         scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/settings.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/settings.php"
       fi
+      if [ -f $PATH_TO_DRUPAL/.htaccess ]; then
+        scp -rCP $SSH_PORT $PATH_TO_DRUPAL/.htaccess "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/.htaccess"
+      fi
     fi
   fi
 }
