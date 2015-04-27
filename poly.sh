@@ -54,7 +54,7 @@ function import {
 function backup {
   function remote-sites {
     echo "backup remote-sites"
-    backup-remote-sites
+    backup-remote-sites ${arguments[0]}
   }
   options=("remote-sites")
   exec_arguments options[@]
