@@ -51,4 +51,3 @@ PATH_TO_WORDPRESS=./relative/path/to/wordpress
 PATH_TO_EXPORTS=./relative/path/to/sql/exports
 
 ```
-test
