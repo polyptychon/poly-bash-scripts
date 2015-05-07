@@ -74,10 +74,9 @@ function backup-remote-sites {
     echo "SSH_HOST=$SSH_HOST" > .env
     echo "SSH_PORT=$SSH_PORT" >> .env
     echo "SSH_USERNAME=$SSH_USERNAME" >> .env
-    echo "REMOTE_DOMAIN=$DIR_NAME.$SSH_HOST" >> .env
+    echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> .env
     echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> .env
     echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> .env
-    echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> .env
     echo "PATH_TO_DRUPAL=$PATH_TO_DRUPAL" >> .env
   fi
 
