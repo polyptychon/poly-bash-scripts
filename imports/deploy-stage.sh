@@ -12,6 +12,20 @@ else
 fi
 
 DIR_NAME=${PWD##*/}
+
+if [ -f .env ]; then
+  GIT_REMOTE_ORIGIN_URL_TEMP=$(git config --get remote.origin.url)
+  if [ -z $GIT_REMOTE_ORIGIN_URL ]; then
+    echo "GIT_REMOTE_ORIGIN_URL=$GIT_REMOTE_ORIGIN_URL_TEMP" >> .env
+    GIT_REMOTE_ORIGIN_URL=$GIT_REMOTE_ORIGIN_URL_TEMP
+    git add .env
+    git commit -m "add GIT_REMOTE_ORIGIN_URL variable"
+  fi
+fi
+if [ -z $GIT_REMOTE_ORIGIN_URL ]; then
+  echo "Git remote origin url is not defined! $GIT_REMOTE_ORIGIN_URL"
+  exit
+fi
 LOCAL_COMMIT_HASH=$(git rev-parse HEAD)
 if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   IS_WORDPRESS=1
@@ -75,7 +89,8 @@ else
       fi
     done
 
-    git clone git@github.com:polyptychon/$DIR_NAME.git
+    #git clone git@github.com:polyptychon/$DIR_NAME.git
+    git clone $GIT_REMOTE_ORIGIN_URL
 
     cd $DIR_NAME
     wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS

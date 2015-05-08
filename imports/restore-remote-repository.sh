@@ -48,15 +48,19 @@ function restore-remote-repository {
   else
 
     cd $REMOTE_SSH_ROOT_PATH
-    if [ -z ${GIT_SSH_CLONE_URL} ]; then
+    echo ${GIT_REMOTE_ORIGIN_URL}
+    if [ -z ${GIT_REMOTE_ORIGIN_URL} ]; then
       echo -n \"git SSH clone URL (git@github.com:polyptychon/$DIR_NAME.git): \"
-      read GIT_SSH_CLONE_URL
-    fi
-    if [ ! -z \${GIT_SSH_CLONE_URL} ]; then
-      git clone \$GIT_SSH_CLONE_URL
+      read GIT_REMOTE_ORIGIN_URL
+      if [ ! -z \${GIT_REMOTE_ORIGIN_URL} ]; then
+        git clone \$GIT_REMOTE_ORIGIN_URL
+      else
+        git clone git@github.com:polyptychon/$DIR_NAME.git
+      fi
     else
-      git clone git@github.com:polyptychon/$DIR_NAME.git
+      git clone $GIT_REMOTE_ORIGIN_URL
     fi
+
 
   fi
 

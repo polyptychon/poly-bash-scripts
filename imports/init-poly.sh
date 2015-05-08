@@ -306,6 +306,9 @@ if [[ $CREATE_REMOTE_GIT == "y" ]]; then
   set +e
   hub create -p polyptychon/$DIR_NAME
   git push -u origin master
+  if [ -f .env ]; then
+    echo "GIT_REMOTE_ORIGIN_URL=git@github.com:polyptychon/$DIR_NAME.git" >> .env
+  fi
   set -e
 elif [[ $CREATE_REMOTE_GIT == "n" ]]; then
   echo "exiting"
