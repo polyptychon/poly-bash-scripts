@@ -21,6 +21,8 @@ _poly_complete() {
     else
       COMPREPLY=( $( compgen -W 'local remote static' -- $cur ) );
     fi
+  elif [[ ${COMP_WORDS[1]} == "change" ]]; then
+    COMPREPLY=( $( compgen -W 'git-upstream' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "create" ]]; then
     COMPREPLY=( $( compgen -W 'gh-pages' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "add" ]]; then
@@ -34,7 +36,7 @@ _poly_complete() {
       COMPREPLY=( $( compgen -W 'remote' -- $cur ) );
     fi
   else
-    COMPREPLY=( $( compgen -W 'init import backup restore commit copy create add deploy' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'init import backup restore commit copy create add deploy change' -- $cur ) );
   fi
 }
 complete -o nospace -F _poly_complete poly

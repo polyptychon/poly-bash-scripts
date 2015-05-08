@@ -29,6 +29,7 @@ source $POLY_SCRIPTS_FOLDER/imports/restore-remote-repository.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-config.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
 
 #INIT
 function init {
@@ -186,9 +187,12 @@ function restore {
   options=("remote")
   exec_arguments options[@]
 }
-
+function change {
+  options=("git-upstream")
+  exec_arguments options[@]
+}
 function main {
-  options=("init" "import" "backup" "restore" "commit" "copy" "create" "add" "deploy")
+  options=("init" "import" "backup" "restore" "commit" "copy" "create" "add" "deploy" "change")
   exec_arguments options[@]
 }
 
