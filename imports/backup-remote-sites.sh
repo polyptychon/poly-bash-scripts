@@ -96,7 +96,6 @@ function backup-remote-sites {
     done
   fi
   now="$(date +'%d/%m/%Y')"
-  # trap 'echo "backup failed to complete" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"' INT TERM EXIT
 
   sites=()
 
@@ -187,6 +186,5 @@ EOF
   git add --all
   now="$(date +'%d/%m/%Y')"
   git commit -m "backup at $now"
-  # echo "backup completed successfully" | mail -s "Backup at $now" "sidiropoulos@polyptychon.gr"
   set -e
 }
