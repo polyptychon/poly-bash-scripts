@@ -116,6 +116,7 @@ function backup-remote-sites {
     if [ ! -d $e ]; then
       mkdir $e
     fi
+    echo "start backup of: $e"
     REMOTE_PATH=$REMOTE_SSH_ROOT_PATH/$e
 
     if ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/$PATH_TO_WORDPRESS ]; then # if is a wordpress site
@@ -177,6 +178,7 @@ EOF
     rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env $e/.env 2> /dev/null
     # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env 2> /dev/null
     set -e
+    sleep 10
   done
 
   set +e
