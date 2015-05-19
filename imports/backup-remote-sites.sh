@@ -178,7 +178,9 @@ EOF
     rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env $e/.env 2> /dev/null
     # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env 2> /dev/null
     set -e
-    sleep 10
+    sleep 30
+    echo ""
+    echo ""
   done
 
   set +e
