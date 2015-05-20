@@ -243,6 +243,9 @@ wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
 wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
 
+set +e
+wp plugin install ewww-image-optimizer
+set -e
 # wp plugin install contact-form-7 --activate
 # wp plugin install contact-form-7-success-page-redirects --activate
 # wp plugin install regenerate-thumbnails
