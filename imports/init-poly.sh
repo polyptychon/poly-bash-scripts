@@ -11,6 +11,7 @@ WP_SITE_TITLE=$DIR_NAME
 WP_USER=poly_admin
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
+DB_PREFIX="poly_"
 
 if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
   set +e
@@ -47,7 +48,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   if [ ! -z ${DB_PASSWORD_TEMP} ]; then
     DB_PASSWORD=$DB_PASSWORD_TEMP
   fi
-  wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
+  wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
   wp db create
   wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
   exit
