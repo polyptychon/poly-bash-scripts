@@ -8,7 +8,7 @@ fi
 
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
-WP_USER=admin
+WP_USER=poly_admin
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 
