@@ -211,6 +211,7 @@ if [ ! -f .env ]; then
   echo "REMOTE_PATH=$REMOTE_SSH_ROOT_PATH/$DIR_NAME" >> .env
   echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> .env
   echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> .env
+  echo "WP_USER_EMAIL=$WP_USER_EMAIL" >> .env
 else
   echo "WARNING: .env file already exists"
   exit;
