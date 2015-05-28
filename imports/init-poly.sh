@@ -151,6 +151,12 @@ while (true); do
     WP_USER_PASSWORD=$WP_USER_PASSWORD_TEMP
   fi
 
+  echo -n " # Wordpress admin email ($WP_USER_EMAIL):"
+  read WP_USER_EMAIL_TEMP
+  if [ ! -z ${WP_USER_EMAIL_TEMP} ]; then
+    WP_USER_EMAIL=$WP_USER_EMAIL_TEMP
+  fi
+
   FOLDER="$(pwd)"
   echo -n "You are in folder $FOLDER. Do you want to continue? [y/n]: "
   read answer
@@ -177,6 +183,7 @@ echo "DB_PASSWORD=$DB_PASSWORD" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "PATH_TO_EXPORTS=$PATH_TO_EXPORTS" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "WP_USER_EMAIL=$WP_USER_EMAIL" >> $POLY_SCRIPTS_FOLDER/.global-env
 
 
 if [ ! -f wp-admin-password.txt ]; then
@@ -242,8 +249,8 @@ echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
 wp core download
 wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 wp db create
-wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="webadmin@polyptychon.gr"
-
+wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="$WP_USER_EMAIL"
+wp user update $WP_USER --display_name=administrator --nickname=administrator
 set +e
 wp plugin install ewww-image-optimizer
 set -e
