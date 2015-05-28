@@ -273,6 +273,7 @@ set +e
   wp plugin activate contact-form-7
   wp plugin activate contact-form-7-success-page-redirects
   wp plugin activate regenerate-thumbnails
+  wp plugin activate ewww-image-optimizer
 
   wp plugin update --all
 set -e
