@@ -15,6 +15,7 @@ function copy-local-uploads-to-remote {
     rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
     if [[ $rsync_version != '3.1.0' ]]; then
       echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
+      open "https://selfsuperinit.com/2014/01/04/an-updated-rsync-3-1-0-for-mavericks/"
     fi
     rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
     # scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-content/uploads "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/"
