@@ -12,6 +12,7 @@ else
 fi
 
 DIR_NAME=${PWD##*/}
+DB_PREFIX="poly_"
 
 if [ -f .env ]; then
   GIT_REMOTE_ORIGIN_URL_TEMP=$(git config --get remote.origin.url)
@@ -93,7 +94,7 @@ else
     git clone $GIT_REMOTE_ORIGIN_URL
 
     cd $DIR_NAME
-    wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS
+    wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS  --dbprefix=$DB_PREFIX
 
     if [ -f $PATH_TO_EXPORTS/remote.sql ]; then
       wp db import $PATH_TO_EXPORTS/remote.sql --path=$PATH_TO_WORDPRESS
