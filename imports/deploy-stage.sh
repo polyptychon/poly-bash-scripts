@@ -12,7 +12,7 @@ else
 fi
 
 DIR_NAME=${PWD##*/}
-DB_PREFIX="poly_"
+REMOTE_DB_NAME_PREFIX="xarisd_"
 
 if [ -f .env ]; then
   GIT_REMOTE_ORIGIN_URL_TEMP=$(git config --get remote.origin.url)
@@ -32,6 +32,12 @@ if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   IS_WORDPRESS=1
 else
   IS_WORDPRESS=0
+fi
+if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
+  DB_PREFIX=`sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.table_prefix.?=.?'//g" | sed -E "s/'.+//g"`
+else
+  echo "$PATH_TO_WORDPRESS/wp-config.php does not exists! Exiting"
+  exit
 fi
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
@@ -58,20 +64,20 @@ else
     cd $REMOTE_SSH_ROOT_PATH
 
     while (true); do
-      echo -n \" Remote Database name (xarisd_$DIR_NAME): \"
+      echo -n \" Remote Database name ($REMOTE_DB_NAME_PREFIX$DIR_NAME): \"
       read DB_NAME_TEMP
       if [ ! -z \${DB_NAME_TEMP} ]; then
         DB_NAME=\$DB_NAME_TEMP
       else
-        DB_NAME=xarisd_$DIR_NAME
+        DB_NAME=$REMOTE_DB_NAME_PREFIX$DIR_NAME
       fi
 
-      echo -n \" Remote Database user (xarisd_$DIR_NAME): \"
+      echo -n \" Remote Database user ($REMOTE_DB_NAME_PREFIX$DIR_NAME): \"
       read DB_USER_TEMP
       if [ ! -z \${DB_USER_TEMP} ]; then
         DB_USER=\$DB_USER_TEMP
       else
-        DB_USER=xarisd_$DIR_NAME
+        DB_USER=$REMOTE_DB_NAME_PREFIX$DIR_NAME
       fi
 
       echo -n \" Remote Database password: \"
