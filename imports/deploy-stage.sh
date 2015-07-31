@@ -34,7 +34,7 @@ else
   IS_WORDPRESS=0
 fi
 if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
-  DB_PREFIX=`sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.table_prefix.?=.?'//g" | sed -E "s/'.+//g"`
+  DB_PREFIX=`sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.table_prefix {0,2}= {0,2}'//g" | sed -E "s/'.+//g"`
 else
   echo "$PATH_TO_WORDPRESS/wp-config.php does not exists! Exiting"
   exit
