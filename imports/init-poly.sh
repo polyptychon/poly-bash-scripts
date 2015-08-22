@@ -5,7 +5,9 @@ function init-poly {
 if [ -f .env ]; then
   source .env
 fi
-
+function get_db_prefix_from_sql_dump {
+  echo `sed -n "/DROP TABLE IF EXISTS/p" $1 | sed -E "s/DROP TABLE IF EXISTS .//g" | sed -E "s/_.+//g" | head -n1`
+}
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
 WP_USER=poly_admin
@@ -47,6 +49,12 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   read DB_PASSWORD_TEMP
   if [ ! -z ${DB_PASSWORD_TEMP} ]; then
     DB_PASSWORD=$DB_PASSWORD_TEMP
+  fi
+  DB_PREFIX=`get_db_prefix_from_sql_dump $PATH_TO_EXPORTS/local.sql`
+  if [ -z ${DB_PREFIX} ]; then
+    DB_PREFIX="poly_"
+  else
+    DB_PREFIX=$DB_PREFIX"_"
   fi
   wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
   wp db create
