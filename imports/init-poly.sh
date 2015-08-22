@@ -59,6 +59,21 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
   wp db create
   wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
+
+  echo "" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "# BEGIN WordPress" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "<IfModule mod_rewrite.c>" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteEngine On" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteBase /" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteRule ^index\.php$ - [L]" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteCond %{REQUEST_FILENAME} !-f" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteCond %{REQUEST_FILENAME} !-d" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "RewriteRule . /index.php [L]" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "</IfModule>" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "# END WordPress" >> $PATH_TO_WORDPRESS/.htaccess
+  echo "" >> $PATH_TO_WORDPRESS/.htaccess
+
   exit
 fi
 
