@@ -50,6 +50,7 @@ function create-gh-pages {
   else
     git checkout --orphan gh-pages
     cp -Rf ./static/builds/production/. ./
+    set +e
     git rm -rf $PATH_TO_WORDPRESS
     git rm -rf static
     git rm -rf $PATH_TO_EXPORTS
@@ -58,6 +59,7 @@ function create-gh-pages {
     git rm -f README.md
     git rm -f admin-password.txt
     git rm -f wp-cli.local.yml
+    set -e
   fi
 
   if [[ ! -f .gitignore ]]; then
