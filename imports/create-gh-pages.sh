@@ -56,6 +56,7 @@ function create-gh-pages {
     git rm -f .gitignore
     git rm -f .env
     git rm -f README.md
+    git rm -f admin-password.txt
     git rm -f wp-cli.local.yml
   fi
 
@@ -66,6 +67,7 @@ function create-gh-pages {
     echo "$PATH_TO_EXPORTS" >> .gitignore
     echo ".env" >> .gitignore
     echo "README.md" >> .gitignore
+    echo "admin-password.txt" >> .gitignore
     echo "wp-cli.local.yml" >> .gitignore
   fi
 
