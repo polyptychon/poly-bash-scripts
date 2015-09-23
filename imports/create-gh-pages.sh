@@ -64,6 +64,7 @@ function create-gh-pages {
 
   if [[ ! -f .gitignore ]]; then
     echo ".idea" > .gitignore
+    echo ".DS_Store" >> .gitignore
     echo "static" >> .gitignore
     echo "$PATH_TO_WORDPRESS" >> .gitignore
     echo "$PATH_TO_EXPORTS" >> .gitignore
