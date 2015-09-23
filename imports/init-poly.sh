@@ -249,9 +249,6 @@ git clone git@github.com:polyptychon/static.git
 rm -rf static/.git
 
 function cleanup_static {
-  if [[ ! -d $1 ]]; then
-    return
-  fi
   for f in $1;
   do
     if [[ -d $f ]]; then
@@ -298,24 +295,42 @@ set +e
   wp plugin activate contact-form-7-success-page-redirects
   wp plugin activate regenerate-thumbnails
   wp plugin activate ewww-image-optimizer
-
-  wp plugin update --all
+  wp plugin activate thumbnail-upscale
 set -e
 
 git clone git@github.com:polyptychon/wp-theme-template.git
 rm -rf wp-theme-template/.git
 mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
 
+set +e
+wp option update date_format "d\/m\/Y"
+wp option update permalink_structure "\/%year%\/%monthnum%\/%day%\/%postname%\/"
+wp option update category_base "\/posts"
+wp option update gmt_offset "3"
+wp option update rss_use_excerpt "1"
+wp option update comment_registration "1"
+
+wp option update thumbnail_size_w "263"
+wp option update thumbnail_size_h "200"
+wp option update medium_size_w "525"
+wp option update medium_size_h "394"
+wp option update large_size_w "1920"
+wp option update large_size_h "1280"
+wp option update image_default_size "medium"
+
+wp option update acf_pro_license "b3JkZXJfaWQ9NDEzOTV8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTEwLTA2IDEwOjIyOjAx"
+
+wp plugin update --all
+set -e
+
 function cleanup_theme {
-  if [[ ! -d $1 ]]; then
-    return
-  fi
   for f in $1;
   do
     if [[ -d $f ]]; then
       cleanup_theme "$f/*"
     fi
-    if [[ ! "$f" =~ .png &&  ! "$f" =~ .tmp && ! -d $f ]]; then
+    echo $f
+    if [[ "$f" =~ .json || "$f" =~ .php || "$f" =~ .css ]]; then
       sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
       mv -f $f.tmp $f
     fi
@@ -324,6 +339,12 @@ function cleanup_theme {
 cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
 
 wp theme activate $DIR_NAME
+
+set +e
+wp theme delete twentyfifteen
+wp theme delete twentyfourteen
+wp theme delete twentythirteen
+set -e
 
 set +e
 
