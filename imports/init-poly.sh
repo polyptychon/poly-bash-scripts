@@ -318,8 +318,6 @@ wp option update large_size_w "1920"
 wp option update large_size_h "1280"
 wp option update image_default_size "medium"
 
-wp option update acf_pro_license "b3JkZXJfaWQ9NDEzOTV8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTEwLTA2IDEwOjIyOjAx"
-
 wp plugin update --all
 set -e
 
