@@ -347,7 +347,7 @@ wp option update large_size_w "1920"
 wp option update large_size_h "1280"
 wp option update image_default_size "medium"
 
-wp post create --post_type=page --post_title='Homepage' --post_status=publish --page_template=homepage
+wp post create --post_type=page --post_title='Homepage' --post_status=publish --page_template='page-templates/homepage.php'
 wp post create --post_type=page --post_title='Νέα' --post_status=publish
 wp post create --post_type=page --post_title='Σύνδεσμοι' --post_status=publish
 wp post create --post_type=page --post_title='Επικοινωνία' --post_status=publish
