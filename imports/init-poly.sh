@@ -309,6 +309,23 @@ git clone git@github.com:polyptychon/wp-theme-template.git
 rm -rf wp-theme-template/.git
 mv -f wp-theme-template $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME
 
+function cleanup_theme {
+  for f in $1;
+  do
+    if [[ -d $f ]]; then
+      cleanup_theme "$f/*"
+    fi
+    echo $f
+    if [[ "$f" =~ .json || "$f" =~ .php || "$f" =~ .css ]]; then
+      sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
+      mv -f $f.tmp $f
+    fi
+  done
+}
+cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
+
+wp theme activate $DIR_NAME
+
 set +e
 wp option update date_format "d\/m\/Y"
 wp option update permalink_structure "\/%year%\/%monthnum%\/%day%\/%postname%\/"
@@ -330,7 +347,7 @@ wp option update large_size_w "1920"
 wp option update large_size_h "1280"
 wp option update image_default_size "medium"
 
-wp post create --post_type=page --post_title='Homepage' --post_status=publish --post_template=homepage
+wp post create --post_type=page --post_title='Homepage' --post_status=publish --page_template=homepage
 wp post create --post_type=page --post_title='Νέα' --post_status=publish
 wp post create --post_type=page --post_title='Σύνδεσμοι' --post_status=publish
 wp post create --post_type=page --post_title='Επικοινωνία' --post_status=publish
@@ -354,22 +371,6 @@ create_htaccess
 
 set -e
 
-function cleanup_theme {
-  for f in $1;
-  do
-    if [[ -d $f ]]; then
-      cleanup_theme "$f/*"
-    fi
-    echo $f
-    if [[ "$f" =~ .json || "$f" =~ .php || "$f" =~ .css ]]; then
-      sed -e "s/theme_name/$DIR_NAME/g" $f > $f.tmp
-      mv -f $f.tmp $f
-    fi
-  done
-}
-cleanup_theme "$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME/*"
-
-wp theme activate $DIR_NAME
 
 set +e
 wp theme delete twentyfifteen
