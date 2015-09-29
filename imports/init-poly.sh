@@ -316,6 +316,10 @@ wp option update category_base "\/posts"
 wp option update gmt_offset "3"
 wp option update rss_use_excerpt "1"
 wp option update comment_registration "1"
+wp option update default_comment_status "closed"
+wp option update comment_moderation "1"
+wp option update default_ping_status "closed"
+wp option update gzipcompression "1"
 
 wp option update thumbnail_size_w "263"
 wp option update thumbnail_size_h "200"
@@ -329,6 +333,9 @@ wp post create --post_type=page --post_title='Homepage' --post_status=publish
 wp post create --post_type=page --post_title='Νέα' --post_status=publish
 wp post create --post_type=page --post_title='Σύνδεσμοι' --post_status=publish
 wp post create --post_type=page --post_title='Επικοινωνία' --post_status=publish
+
+wp option update page_for_posts "5"
+wp option update page_on_front "4"
 
 wp menu create "Contact Menu"
 wp menu create "Main Nav Menu"
