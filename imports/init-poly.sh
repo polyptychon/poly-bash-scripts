@@ -323,6 +323,7 @@ wp option update gzipcompression "1"
 
 wp option update thumbnail_size_w "263"
 wp option update thumbnail_size_h "200"
+wp option update thumbnail_crop "1"
 wp option update medium_size_w "525"
 wp option update medium_size_h "394"
 wp option update large_size_w "1920"
@@ -334,6 +335,7 @@ wp post create --post_type=page --post_title='Νέα' --post_status=publish
 wp post create --post_type=page --post_title='Σύνδεσμοι' --post_status=publish
 wp post create --post_type=page --post_title='Επικοινωνία' --post_status=publish
 
+wp option update show_on_front "page"
 wp option update page_for_posts "5"
 wp option update page_on_front "4"
 
