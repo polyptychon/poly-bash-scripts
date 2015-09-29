@@ -1,5 +1,24 @@
 #!/bin/bash
 set -e
+function create_htaccess {
+  if [ ! -f $PATH_TO_WORDPRESS/.htaccess ]; then
+    echo "" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "# BEGIN WordPress" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "<IfModule mod_rewrite.c>" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteEngine On" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteBase /" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteRule ^index\.php$ - [L]" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteCond %{REQUEST_FILENAME} !-f" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteCond %{REQUEST_FILENAME} !-d" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "RewriteRule . /index.php [L]" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "</IfModule>" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "# END WordPress" >> $PATH_TO_WORDPRESS/.htaccess
+    echo "" >> $PATH_TO_WORDPRESS/.htaccess
+    wp rewrite flush
+  fi
+}
+
 function init-poly {
 
 if [ -f .env ]; then
@@ -60,19 +79,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   wp db create
   wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
 
-  echo "" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "# BEGIN WordPress" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "<IfModule mod_rewrite.c>" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteEngine On" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteBase /" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteRule ^index\.php$ - [L]" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteCond %{REQUEST_FILENAME} !-f" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteCond %{REQUEST_FILENAME} !-d" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "RewriteRule . /index.php [L]" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "</IfModule>" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "# END WordPress" >> $PATH_TO_WORDPRESS/.htaccess
-  echo "" >> $PATH_TO_WORDPRESS/.htaccess
+  create_htaccess
 
   exit
 fi
@@ -318,7 +325,24 @@ wp option update large_size_w "1920"
 wp option update large_size_h "1280"
 wp option update image_default_size "medium"
 
+wp post create --post_type=page --post_title='Homepage' --post_status=publish
+wp post create --post_type=page --post_title='Νέα' --post_status=publish
+wp post create --post_type=page --post_title='Σύνδεσμοι' --post_status=publish
+wp post create --post_type=page --post_title='Επικοινωνία' --post_status=publish
+
+wp menu create "Contact Menu"
+wp menu create "Main Nav Menu"
+
+# wp menu item add-post contact-menu 4 --title="Homepage"
+wp menu item add-post main-nav-menu 5 --title="Νέα"
+
+wp menu item add-post contact-menu 6 --title="Σύνδεσμοι"
+wp menu item add-post contact-menu 7 --title="Επικοινωνία"
+
 wp plugin update --all
+
+create_htaccess
+
 set -e
 
 function cleanup_theme {
