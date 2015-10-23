@@ -109,6 +109,23 @@ else
       wp db import $PATH_TO_EXPORTS/remote.sql --path=$PATH_TO_WORDPRESS
       rm -rf $PATH_TO_EXPORTS/remote.sql
     fi
+
+    if [ ! -f $PATH_TO_WORDPRESS/.htaccess ]; then
+      echo \"\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"# BEGIN WordPress\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"<IfModule mod_rewrite.c>\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteEngine On\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteBase /\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteRule ^index\.php$ - [L]\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteCond %{REQUEST_FILENAME} !-f\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteCond %{REQUEST_FILENAME} !-d\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"RewriteRule . /index.php [L]\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"</IfModule>\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"# END WordPress\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"\" >> $PATH_TO_WORDPRESS/.htaccess
+      wp rewrite flush
+    fi
   else
     echo \" Only wordpress installations supported for now.\"
     exit;
