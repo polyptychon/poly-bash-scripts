@@ -15,7 +15,9 @@ function create-gh-pages {
   function restore_master() {
     set +e
     git checkout master
-    rm -r assets
+    if [ -d assets ]; then
+      rm -r assets
+    fi
     git stash pop
     set -e
   }
@@ -74,6 +76,7 @@ function create-gh-pages {
     echo "wp-cli.local.yml" >> .gitignore
   fi
 
+  trap 'echo "nothing to commit, working directory clean"; restore_master' INT TERM EXIT
   set +e
   git status
   git add --all
