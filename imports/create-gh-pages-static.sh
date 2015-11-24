@@ -3,11 +3,9 @@
 function create-gh-pages {
   if [[ -f .env ]]; then
     source .env
-  elif [[ -f ../.env ]]; then
-    source ../.env
   fi
 
-  if [ ! -d static/node_modules ] && [ ! -d node_modules ]; then
+  if [ ! -d node_modules ] && [ ! -d node_modules ]; then
     echo "Please run 'npm install' first. Exiting..."
     exit;
   fi
@@ -25,20 +23,7 @@ function create-gh-pages {
   set -e
   DIR_NAME=${PWD##*/}
 
-  if [[ $DIR_NAME != 'static' ]] && [[ `ls -A ./static` ]]; then
-    cd ./static
-  elif [[ $DIR_NAME == 'static' ]]; then
-    cd .
-  else
-    exit
-  fi
-  DIR_NAME=${PWD##*/}
-
   gulp production
-
-  if [[ $DIR_NAME == 'static' ]]; then
-    cd ..
-  fi
 
   set +e
   git stash
@@ -48,32 +33,32 @@ function create-gh-pages {
 
   if [[ `git branch | grep -Fo gh-pages` == 'gh-pages' ]]; then
     git checkout gh-pages
-    cp -Rf ./static/builds/production/. ./
+    cp -Rf ./builds/production/. ./
   else
     git checkout --orphan gh-pages
-    cp -Rf ./static/builds/production/. ./
+    cp -Rf ./builds/production/. ./
     set +e
-    git rm -rf $PATH_TO_WORDPRESS
-    git rm -rf static
-    git rm -rf $PATH_TO_EXPORTS
-    git rm -f .gitignore
+    git rm -rf _mockups
+    git rm -rf _src
+    git rm -rf builds
+    git rm -f node_modules
     git rm -f .env
-    git rm -f README.md
-    git rm -f admin-password.txt
-    git rm -f wp-cli.local.yml
+    git rm -f gulpfile.js
+    git rm -f package.json
     set -e
   fi
 
   if [[ ! -f .gitignore ]]; then
     echo ".idea" > .gitignore
     echo ".DS_Store" >> .gitignore
-    echo "static" >> .gitignore
-    echo "$PATH_TO_WORDPRESS" >> .gitignore
-    echo "$PATH_TO_EXPORTS" >> .gitignore
+    echo "_mockups" >> .gitignore
+    echo "_src" >> .gitignore
+    echo "builds" >> .gitignore
+    echo "node_modules" >> .gitignore
     echo ".env" >> .gitignore
+    echo "gulpfile.js" >> .gitignore
+    echo "package.json" >> .gitignore
     echo "README.md" >> .gitignore
-    echo "admin-password.txt" >> .gitignore
-    echo "wp-cli.local.yml" >> .gitignore
   fi
 
   trap 'echo "nothing to commit, working directory clean"; restore_master' INT TERM EXIT

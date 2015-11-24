@@ -20,6 +20,7 @@ source $POLY_SCRIPTS_FOLDER/imports/copy-static-images-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-static-scripts-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-static-styles-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages.sh
+source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/deploy-stage.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
@@ -113,7 +114,11 @@ function create {
     echo "gh-pages"
     create-gh-pages
   }
-  options=("gh-pages")
+  function gh-pages-static {
+    echo "gh-pages-static"
+    create-gh-pages
+  }
+  options=("gh-pages" "gh-pages-static")
   exec_arguments options[@]
 }
 
