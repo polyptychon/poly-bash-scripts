@@ -15,6 +15,7 @@ function create-gh-pages {
     git checkout master
     if [ -d assets ]; then
       rm -r assets
+      rm -r *.html
     fi
     git stash pop
     set -e
