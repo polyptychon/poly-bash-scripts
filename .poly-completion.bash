@@ -24,7 +24,7 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "change" ]]; then
     COMPREPLY=( $( compgen -W 'git-upstream' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "create" ]]; then
-    COMPREPLY=( $( compgen -W 'gh-pages' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'gh-pages gh-pages-static' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "add" ]]; then
     COMPREPLY=( $( compgen -W 'custom-post-types taxonomies' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "deploy" ]]; then
