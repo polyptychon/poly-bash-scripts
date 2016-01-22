@@ -50,7 +50,7 @@ fi
 if [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS == 1 ]]; then
   echo "Initialization is already done"
   exit
-elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ ! -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS == 0 ]]; then
+elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ ! -f $PATH_TO_WORDPRESS/wp-config.php ]]; then
   echo "Do special init"
   echo -n " # Local Database name ($DB_NAME): "
   read DB_NAME_TEMP
@@ -76,9 +76,20 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
     DB_PREFIX=$DB_PREFIX"_"
   fi
   wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
-  wp db create
-  wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
-
+  if [[ $DATABASE_EXISTS == 1 ]]; then
+    echo -n "Database $DB_NAME already exists!. Do you want to drop database? Y/N: "
+    read DROP_DATABASE
+    if [[ $DROP_DATABASE =~ ^[Yy]$ ]]; then
+      echo "Dropping Database"
+      wp db drop --yes
+      DATABASE_EXISTS=0
+    fi
+  fi
+  if [[ $DATABASE_EXISTS == 0 ]]; then
+    echo "create database"
+    wp db create
+    wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
+  fi
   create_htaccess
 
   exit
