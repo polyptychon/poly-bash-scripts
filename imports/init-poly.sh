@@ -77,7 +77,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   fi
   wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
   if [[ $DATABASE_EXISTS == 1 ]]; then
-    echo -n "Database $DB_NAME already exists!. Do you want to drop database? Y/N: "
+    echo -n "Database $DB_NAME already exists!. Do you want to import local sql dump file to local database? Y/N: "
     read DROP_DATABASE
     if [[ $DROP_DATABASE =~ ^[Yy]$ ]]; then
       echo "Dropping Database"
