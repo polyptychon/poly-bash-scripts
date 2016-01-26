@@ -1,3 +1,4 @@
 .global-env
 test.sh
 .DS_Store
+.idea
