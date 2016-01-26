@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function create-gh-pages {
+function create-gh-pages-static {
   if [[ -f .env ]]; then
     source .env
   fi
