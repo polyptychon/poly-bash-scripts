@@ -387,6 +387,7 @@ set +e
 wp theme delete twentyfifteen
 wp theme delete twentyfourteen
 wp theme delete twentythirteen
+wp theme delete twentysixteen
 set -e
 
 set +e
