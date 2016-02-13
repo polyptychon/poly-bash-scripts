@@ -12,7 +12,7 @@ else
 fi
 
 DIR_NAME=${PWD##*/}
-REMOTE_DB_NAME_PREFIX="xarisd_"
+REMOTE_DB_NAME_PREFIX="polyptyc_"
 
 if [ -f .env ]; then
   GIT_REMOTE_ORIGIN_URL_TEMP=$(git config --get remote.origin.url)
@@ -85,6 +85,18 @@ else
         DB_PASSWORD=\$DB_PASSWORD_TEMP
       fi
 
+      echo -n \"Do you want to create a symlink? [y/n]: \"
+      read answer
+      if [[ \$answer == \"y\" ]]; then
+        echo -n \" Symlink path (~/public_html/$REMOTE_DOMAIN): \"
+        read SYMLINK_PATH_TEMP
+        if [ ! -z \${SYMLINK_PATH_TEMP} ]; then
+          SYMLINK_PATH=\$SYMLINK_PATH_TEMP
+        else
+          SYMLINK_PATH="~/public_html/$REMOTE_DOMAIN"
+        fi
+      fi
+
       FOLDER=\"\$(pwd)\"
       echo -n \"You are in folder \$FOLDER. Do you want to continue? [y/n]: \"
       read answer
@@ -101,12 +113,15 @@ else
     cd $DIR_NAME
     wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS  --dbprefix=$DB_PREFIX
 
-    if [ -f $PATH_TO_EXPORTS/remote.sql ]; then
-      wp db import $PATH_TO_EXPORTS/remote.sql --path=$PATH_TO_WORDPRESS
-    elif [ -f $PATH_TO_EXPORTS/local.sql ]; then
-      sed \"s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g\" $PATH_TO_EXPORTS/local.sql > $PATH_TO_EXPORTS/remote.sql
-      wp db import $PATH_TO_EXPORTS/remote.sql --path=$PATH_TO_WORDPRESS
-      rm -rf $PATH_TO_EXPORTS/remote.sql
+    if [ ! -z \${SYMLINK_PATH} ]; then
+      FOLDER=\"\$(pwd)\"
+      ln -s "\$FOLDER/$PATH_TO_WORDPRESS" \$SYMLINK_PATH
+    fi
+
+    if [ -f $PATH_TO_EXPORTS/local.sql ]; then
+      sed \"s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g\" $PATH_TO_EXPORTS/local.sql > $PATH_TO_EXPORTS/temp.sql
+      wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
+      rm -rf $PATH_TO_EXPORTS/temp.sql
     fi
 
     if [ ! -f $PATH_TO_WORDPRESS/.htaccess ]; then
