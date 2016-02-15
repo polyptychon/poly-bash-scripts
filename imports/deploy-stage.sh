@@ -42,7 +42,6 @@ else
 fi
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
-echo $DIR_NAME_LOWER
 if [[ -d $REMOTE_PATH ]]; then
 
   cd $REMOTE_PATH
@@ -117,7 +116,6 @@ else
       echo "$DIR_NAME does not exists! Exiting"
       exit
     fi
-    pwd
     wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS  --dbprefix=$DB_PREFIX
 
     if [ ! -z \${SYMLINK_PATH} ]; then
