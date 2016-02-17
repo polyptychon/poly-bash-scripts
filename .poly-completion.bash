@@ -28,7 +28,7 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "add" ]]; then
     COMPREPLY=( $( compgen -W 'custom-post-types taxonomies' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "deploy" ]]; then
-    COMPREPLY=( $( compgen -W 'stage production' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'stage static production' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "restore" ]]; then
     if [[ ${COMP_WORDS[2]} == "remote" ]]; then
       COMPREPLY=( $( compgen -W 'site repository config uploads database' -- $cur ) );

@@ -22,6 +22,7 @@ source $POLY_SCRIPTS_FOLDER/imports/copy-static-styles-to-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages.sh
 source $POLY_SCRIPTS_FOLDER/imports/create-gh-pages-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/deploy-stage.sh
+source $POLY_SCRIPTS_FOLDER/imports/deploy-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
@@ -156,10 +157,14 @@ function deploy {
     echo "deploy stage"
     deploy-stage
   }
+  function static {
+    echo "deploy static"
+    deploy-static
+  }
   function production {
     echo "not yet implemented production deploy"
   }
-  options=("stage" "production")
+  options=("stage" "static" "production")
   exec_arguments options[@]
 }
 
