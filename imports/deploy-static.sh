@@ -9,8 +9,8 @@ function deploy-static {
     exit;
   fi
   echo -n "Do you want to build static files? Y/N "
-  read answer
-  if [[ $answer =~ ^[Yy]$ ]]; then
+  read answer_static
+  if [[ $answer_static =~ ^[Yy]$ ]]; then
     gulp production
   fi
   echo -n "You want to sync remote files with local. Are you sure? Y/N "
