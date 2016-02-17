@@ -11,9 +11,6 @@ function deploy-static {
   echo -n "Do you want to build static files? Y/N "
   read answer
   if [[ $answer =~ ^[Yy]$ ]]; then
-    if [ !-z $PATH_TO_STATIC ]; then
-      $PATH_TO_STATIC/gulp production
-    fi
     gulp production
   fi
   echo -n "You want to sync remote files with local. Are you sure? Y/N "
