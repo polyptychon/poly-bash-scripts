@@ -9,6 +9,9 @@ fi
 source $POLY_SCRIPTS_FOLDER/imports/exec_arguments.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-databases.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-remote-db.sh
@@ -197,12 +200,33 @@ function restore {
   options=("remote")
   exec_arguments options[@]
 }
+
+#ALL
+function all {
+  function databases-import {
+    echo "all databases"
+    all-import-remote-databases
+  }
+  function deploy {
+    echo "all deploy"
+    all-deploy-sites
+  }
+  function update {
+    echo "all update"
+    all-update-sites
+  }
+  options=("databases-import" "deploy" "update")
+  exec_arguments options[@]
+}
+
+#CHANGE
 function change {
   options=("git-upstream")
   exec_arguments options[@]
 }
+
 function main {
-  options=("init" "import" "backup" "restore" "commit" "copy" "create" "add" "deploy" "change")
+  options=("init" "import" "backup" "restore" "commit" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 
