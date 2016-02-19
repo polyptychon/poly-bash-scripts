@@ -1,5 +1,16 @@
 #!/bin/bash
 
+function get_env_value {
+  if [[ -z $2 ]]; then
+    ENV=.env
+  else
+    ENV=$2
+  fi
+  echo `sed -n "/$1/p" $ENV | sed -E "s/$1=//g"`
+}
+
+function all-import-remote-to-local-db {
+
 if [[ -f .env ]]; then
   source .env
   if [[ -f .env_override ]]; then
@@ -10,19 +21,13 @@ else
   exit
 fi
 
-function get_env_value {
-  if [[ -z $2 ]]; then
-    ENV=.env
-  else
-    ENV=$2
-  fi
-  echo `sed -n "/$1/p" $ENV | sed -E "s/$1=//g"`
-}
-
-function all-import-remote-databases {
-
 LOCAL_PATHS=()
 PATH_TO_WORDPRESS=wordpress
+
+if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
+  PATH_TO_TEMP_EXPORTS="temp_dump"
+fi
+
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     PATH_NAME=$(echo $d | sed -E "s/\///g")

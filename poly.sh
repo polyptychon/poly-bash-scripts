@@ -11,7 +11,8 @@ source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
-source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-databases.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-open-local-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
@@ -128,7 +129,7 @@ function create {
   exec_arguments options[@]
 }
 
-#Commit
+#COMMIT
 function commit {
   function local-database {
     echo "commit local-database"
@@ -205,27 +206,31 @@ function restore {
 
 #ALL
 function all {
-  function databases-import {
-    echo "all databases"
-    all-import-remote-databases
+  function remote-databases-to-local {
+    echo "import all remote databases to local"
+    all-import-remote-to-local-db
+  }
+  function local-databases-to-remote {
+    echo "import all local databases to remote"
+    all-import-local-to-remote-db
   }
   function copy-remote-uploads {
-    echo "all copy remote uploads"
+    echo "copy all remote uploads to local"
     all-copy-remote-uploads
   }
   function open-local-sites {
-    echo "all open local sites"
+    echo "open all local sites"
     all-open-local-sites
   }
   function deploy {
-    echo "all deploy"
+    echo "deploy all sites to remote host"
     all-deploy-sites
   }
   function update {
-    echo "all update"
+    echo "update all sites"
     all-update-sites
   }
-  options=("databases-import" "deploy" "update" "copy-remote-uploads" "open-local-sites")
+  options=("remote-databases-to-local" "local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "open-local-sites")
   exec_arguments options[@]
 }
 

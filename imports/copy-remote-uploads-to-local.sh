@@ -7,6 +7,21 @@ function copy-remote-uploads-to-local {
       source .env_override
     fi
   fi
+  if [[ ! -z $1 ]]; then
+    SSH_HOST=$1
+  fi
+  if [[ ! -z $2 ]]; then
+    SSH_USERNAME=$2
+  fi
+  if [[ ! -z $3 ]]; then
+    SSH_PORT=$3
+  fi
+  if [[ ! -z $4 ]]; then
+    REMOTE_PATH=$4
+  fi
+  if [[ ! -z $5 ]]; then
+    PATH_TO_WORDPRESS=$5
+  fi
   rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
   if [[ $rsync_version != '3.1.0' ]]; then
     echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"

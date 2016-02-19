@@ -1,13 +1,4 @@
 #!/bin/bash
-if [[ -f .env ]]; then
-  source .env
-  if [[ -f .env_override ]]; then
-    source .env_override
-  fi
-else
-  echo "Could not find .env. Exiting..."
-  exit
-fi
 
 function get_env_value {
   echo `sed -n "/$1/p" .env | sed -E "s/$1=//g"`
@@ -22,6 +13,16 @@ function clean_up() {
 }
 
 function all-deploy-sites() {
+
+if [[ -f .env ]]; then
+  source .env
+  if [[ -f .env_override ]]; then
+    source .env_override
+  fi
+else
+  echo "Could not find .env. Exiting..."
+  exit
+fi
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS=wordpress
