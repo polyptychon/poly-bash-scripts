@@ -36,7 +36,7 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
   fi
   cd $REMOTE_PATH
   for d in ${LOCAL_PATHS[@]}; do
-    dl=$(echo \$d | tr '[:upper:]' '[:lower:]')
+    dl=\$(echo \$d | tr '[:upper:]' '[:lower:]')
     if [[ -d \$d ]] || [[ -d \$dl ]]; then
       if [[ -d \$d ]]; then
         cd \$d
@@ -62,15 +62,19 @@ fi
 rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:~/$PATH_TO_TEMP_EXPORTS ./
 
 for d in ${LOCAL_PATHS[@]}; do
-  cd $d
-  LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
-  REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
-  sed -e "s/$d.$SSH_HOST/$LOCAL_DOMAIN/g;s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
-  wp db import ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql --path=$PATH_TO_WORDPRESS
-  cd ..
+  if [[ -f $PATH_TO_TEMP_EXPORTS/$d.sql ]]; then
+    cd $d
+    LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
+    REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
+    sed -e "s/$d.$SSH_HOST/$LOCAL_DOMAIN/g;s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
+    wp db import ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql --path=$PATH_TO_WORDPRESS
+    cd ..
+  else
+    echo "could not find $d.sql"
+  fi
 done
 
-rm -rf $PATH_TO_TEMP_EXPORTS
+# rm -rf $PATH_TO_TEMP_EXPORTS
 ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
   rm -rf $PATH_TO_TEMP_EXPORTS
 EOF
