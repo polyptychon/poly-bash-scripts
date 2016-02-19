@@ -35,16 +35,23 @@ fi
 if [[ ! -d $PATH_TO_TEMP_EXPORTS ]]; then
   mkdir $PATH_TO_TEMP_EXPORTS
 fi
+bold=`tput bold`
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+reset_bold=`tput rmso`
 
 if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $REMOTE_PATH ]]; then
-  bold=`tput bold`
-  red=`tput setaf 1`
-  green=`tput setaf 2`
-  reset=`tput sgr0`
-  reset_bold=`tput rmso`
-  echo "import local databases to remote host: ${bold}${red}$SSH_HOST${reset}${reset_bold}"
+  echo "import all local databases to remote host: ${bold}${red}$SSH_HOST${reset}${reset_bold}"
 else
   echo "You must add a SSH_HOST, SSH_PORT, SSH_USERNAME and REMOTE_PATH variable to .env file. Exiting..."
+  exit
+fi
+
+echo -n "You want to replace ${bold}${red}ALL${reset}${reset_bold} remote databases with local. Are you sure? Y/N: "
+read REPLY
+if [[ $REPLY =~ ^[Nn]$ ]]; then
+  echo "Exiting..."
   exit
 fi
 
