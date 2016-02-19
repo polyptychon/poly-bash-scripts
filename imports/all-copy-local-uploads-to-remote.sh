@@ -20,6 +20,12 @@ if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS=wordpress
 fi
 
+bold=`tput bold`
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+reset_bold=`tput rmso`
+
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     cd "$d"
@@ -27,7 +33,9 @@ for d in */ ; do
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
     if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
       PATH_TO_SITE=$REMOTE_PATH/$d
+      echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
       copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS
+      echo "${bold}${red}Success${reset}${reset_bold}"
     else
       copy-local-uploads-to-remote
     fi
