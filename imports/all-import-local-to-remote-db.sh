@@ -96,7 +96,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
             export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -r "s/REMOTE_DOMAIN=//g")
           fi
           if [[ -f .env_override ]]; then
-            export REMOTE_DOMAIN=\$(sed -n "/REMOTE_SERVER/p" .env | sed -r "s/REMOTE_SERVER=//g")
+            export REMOTE_DOMAIN=\$(sed -n "/REMOTE_SERVER/p" .env_override | sed -r "s/REMOTE_SERVER=//g")
           fi
           echo -n \" Remote Domain (\$REMOTE_DOMAIN): \"
           read REMOTE_DOMAIN_TEMP
