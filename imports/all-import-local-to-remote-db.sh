@@ -104,7 +104,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
             REMOTE_DOMAIN=\$REMOTE_DOMAIN_TEMP
           fi
           sed -r \"s/\$LOCAL_DOMAIN/\$REMOTE_DOMAIN/g\" $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql > $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql
-          # wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql --path=$PATH_TO_WORDPRESS
+          wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql --path=$PATH_TO_WORDPRESS
         else
           echo \"Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql\"
         fi
