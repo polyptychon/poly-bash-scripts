@@ -4,7 +4,7 @@ function get_env_value {
   echo `sed -n "/$1/p" .env | sed -E "s/$1=//g"`
 }
 
-function all-copy-remote-uploads() {
+function all-copy-remote-uploads-to-local() {
 
 if [[ -f .env ]]; then
   source .env

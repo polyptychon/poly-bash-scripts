@@ -8,7 +8,21 @@ function copy-local-uploads-to-remote {
       source .env_override
     fi
   fi
-
+  if [[ ! -z $1 ]]; then
+    SSH_HOST=$1
+  fi
+  if [[ ! -z $2 ]]; then
+    SSH_USERNAME=$2
+  fi
+  if [[ ! -z $3 ]]; then
+    SSH_PORT=$3
+  fi
+  if [[ ! -z $4 ]]; then
+    REMOTE_PATH=$4
+  fi
+  if [[ ! -z $5 ]]; then
+    PATH_TO_WORDPRESS=$5
+  fi
   if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
     echo "Can not find wordpress installation. Exiting..."
     exit;

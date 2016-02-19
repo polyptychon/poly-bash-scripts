@@ -9,7 +9,8 @@ fi
 source $POLY_SCRIPTS_FOLDER/imports/exec_arguments.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
-source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-copy-local-uploads-to-remote.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads-to-local.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
@@ -216,7 +217,11 @@ function all {
   }
   function copy-remote-uploads {
     echo "copy all remote uploads to local"
-    all-copy-remote-uploads
+    all-copy-remote-uploads-to-local
+  }
+  function copy-local-uploads {
+    echo "copy all local uploads to remote"
+    all-copy-local-uploads-to-remote
   }
   function open-local-sites {
     echo "open all local sites"
@@ -230,7 +235,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("remote-databases-to-local" "local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "open-local-sites")
+  options=("remote-databases-to-local" "local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-local-sites")
   exec_arguments options[@]
 }
 
