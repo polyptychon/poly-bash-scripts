@@ -36,7 +36,7 @@ for d in */ ; do
       PATH_TO_SITE=$REMOTE_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
       copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS
-      echo "${bold}${red}Success${reset}${reset_bold}"
+      echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-local-uploads-to-remote
     fi
