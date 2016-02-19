@@ -26,8 +26,8 @@ for d in */ ; do
     set -e
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
     if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
-      REMOTE_PATH=$REMOTE_PATH/$d
-      copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $REMOTE_PATH $PATH_TO_WORDPRESS
+      PATH_TO_SITE=$REMOTE_PATH/$d
+      copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS
     else
       copy-remote-uploads-to-local
     fi
