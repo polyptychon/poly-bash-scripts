@@ -1,6 +1,9 @@
 #!/bin/bash
 if [[ -f .env ]]; then
   source .env
+  if [[ -f .env_override ]]; then
+    source .env_override
+  fi
 else
   echo "Could not find .env. Exiting..."
   exit
@@ -29,10 +32,7 @@ for d in */ ; do
     cd "$d"
     set -e
     trap 'echo "could not read .env"; clean_up' INT TERM EXIT
-    # REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
-    # SSH_PORT=`get_env_value "SSH_PORT"`
-    # SSH_USERNAME=`get_env_value "SSH_USERNAME"`
-    # SSH_HOST=`get_env_value "SSH_HOST"`
+
     REMOTE_PATH=`get_env_value "REMOTE_PATH"`
     REMOTE_PATH_LOWER=$(echo $REMOTE_PATH | tr '[:upper:]' '[:lower:]')
     echo $REMOTE_PATH
@@ -71,14 +71,9 @@ for d in */ ; do
         echo \"Could not find path $REMOTE_PATH in remote server\"
       fi
     '"
-    set -e
-
-    trap 'echo "could not open chrome"; clean_up' INT TERM EXIT
-    # open "http://"$REMOTE_DOMAIN/wp-admin/
     set +e
-
     git stash pop --quiet
-
+    set -e
     echo
     trap 'echo "OK"; clean_up' INT TERM EXIT
     cd ..

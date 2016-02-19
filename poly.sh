@@ -9,8 +9,10 @@ fi
 source $POLY_SCRIPTS_FOLDER/imports/exec_arguments.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-custom-post-types.sh
 source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-databases.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-open-local-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
@@ -207,6 +209,14 @@ function all {
     echo "all databases"
     all-import-remote-databases
   }
+  function copy-remote-uploads {
+    echo "all copy remote uploads"
+    all-copy-remote-uploads
+  }
+  function open-local-sites {
+    echo "all open local sites"
+    all-open-local-sites
+  }
   function deploy {
     echo "all deploy"
     all-deploy-sites
@@ -215,7 +225,7 @@ function all {
     echo "all update"
     all-update-sites
   }
-  options=("databases-import" "deploy" "update")
+  options=("databases-import" "deploy" "update" "copy-remote-uploads" "open-local-sites")
   exec_arguments options[@]
 }
 

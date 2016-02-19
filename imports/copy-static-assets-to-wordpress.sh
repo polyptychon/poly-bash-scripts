@@ -4,6 +4,9 @@ function copy-static-assets-to-wordpress {
 
   if [[ -f .env ]]; then
     source .env
+    if [[ -f .env_override ]]; then
+      source .env_override
+    fi
   fi
 
   if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then

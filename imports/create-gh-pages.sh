@@ -3,8 +3,14 @@
 function create-gh-pages {
   if [[ -f .env ]]; then
     source .env
+    if [[ -f .env_override ]]; then
+      source .env_override
+    fi
   elif [[ -f ../.env ]]; then
     source ../.env
+    if [[ -f ../env_override ]]; then
+      source ../env_override
+    fi
   fi
 
   if [ ! -d ./static/node_modules ] && [ ! -d ./node_modules ]; then

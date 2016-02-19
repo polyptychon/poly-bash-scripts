@@ -4,7 +4,12 @@ function import-local-to-remote-db {
 set -e
 
 # load variables
-source .env
+if [[ -f .env ]]; then
+  source .env
+  if [[ -f .env_override ]]; then
+    source .env_override
+  fi
+fi
 
 function clean_up
 {

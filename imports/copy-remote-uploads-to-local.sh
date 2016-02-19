@@ -1,7 +1,12 @@
 #!/bin/bash
 function copy-remote-uploads-to-local {
   set -e
-  source .env
+  if [[ -f .env ]]; then
+    source .env
+    if [[ -f .env_override ]]; then
+      source .env_override
+    fi
+  fi
   rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
   if [[ $rsync_version != '3.1.0' ]]; then
     echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"

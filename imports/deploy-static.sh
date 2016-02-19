@@ -2,7 +2,12 @@
 
 function deploy-static {
   set -e
-  source .env
+  if [[ -f .env ]]; then
+    source .env
+    if [[ -f .env_override ]]; then
+      source .env_override
+    fi
+  fi
 
   if [ -z $PATH_TO_STATIC_BUILD ] || [ ! -d $PATH_TO_STATIC_BUILD ]; then
     echo "Can not find static folder. Exiting..."

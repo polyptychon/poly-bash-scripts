@@ -3,6 +3,9 @@
 function create-gh-pages-static {
   if [[ -f .env ]]; then
     source .env
+    if [[ -f .env_override ]]; then
+      source .env_override
+    fi
   fi
 
   if [ ! -d node_modules ] && [ ! -d node_modules ]; then
