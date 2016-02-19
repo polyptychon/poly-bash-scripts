@@ -26,6 +26,8 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
+PATH=$REMOTE_PATH
+
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     cd "$d"
@@ -33,7 +35,7 @@ for d in */ ; do
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
     if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
       local PATH_NAME=$(echo $d | sed -E "s/\///g")
-      local PATH_TO_SITE=$REMOTE_PATH/$(echo $d | sed -E "s/\///g")
+      local PATH_TO_SITE=$PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
       copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS
       echo "${bold}${green}Success${reset}${reset_bold}"
