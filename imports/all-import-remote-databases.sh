@@ -74,7 +74,7 @@ for d in ${LOCAL_PATHS[@]}; do
   fi
 done
 
-# rm -rf $PATH_TO_TEMP_EXPORTS
+rm -rf $PATH_TO_TEMP_EXPORTS
 ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
   rm -rf $PATH_TO_TEMP_EXPORTS
 EOF
