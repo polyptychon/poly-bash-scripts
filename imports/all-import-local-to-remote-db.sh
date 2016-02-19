@@ -36,7 +36,7 @@ if [[ ! -d $PATH_TO_TEMP_EXPORTS ]]; then
   mkdir $PATH_TO_TEMP_EXPORTS
 fi
 
-if [[ ! -z $SSH_HOST ]]; then
+if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $REMOTE_PATH ]]; then
   bold=`tput bold`
   red=`tput setaf 1`
   green=`tput setaf 2`
@@ -44,7 +44,7 @@ if [[ ! -z $SSH_HOST ]]; then
   reset_bold=`tput rmso`
   echo "import local databases to remote host: ${bold}${red}$SSH_HOST${reset}${reset_bold}"
 else
-  echo "You must add a SSH_HOST variable to .env file. Exiting..."
+  echo "You must add a SSH_HOST, SSH_PORT, SSH_USERNAME and REMOTE_PATH variable to .env file. Exiting..."
   exit
 fi
 
@@ -85,9 +85,35 @@ for d in */ ; do
   fi
 done
 
-# rm -rf $PATH_TO_TEMP_EXPORTS
-# ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
-#   rm -rf $PATH_TO_TEMP_EXPORTS
-# EOF
+rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
+if [[ $rsync_version != '3.1.0' ]]; then
+  echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
+fi
+rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_TEMP_EXPORTS $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_TEMP_EXPORTS
+
+ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+  cd $REMOTE_PATH
+  for d in ${LOCAL_PATHS[@]}; do
+    dl=\$(echo \$d | tr '[:upper:]' '[:lower:]')
+    if [[ -d \$d ]] || [[ -d \$dl ]]; then
+      if [[ -d \$d ]]; then
+        cd \$d
+      elif [[ -d \$dl ]]; then
+        cd \$dl
+      fi
+      if [[ -d $PATH_TO_WORDPRESS ]]; then
+        echo \$d
+        if [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
+          wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql --path=$PATH_TO_WORDPRESS
+        else
+          echo "Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql"
+        fi
+      fi
+      cd ..
+    fi
+  done
+  rm -rf $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS
+EOF
+rm -rf $PATH_TO_TEMP_EXPORTS
 
 }
