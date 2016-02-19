@@ -25,11 +25,12 @@ for d in */ ; do
     cd "$d"
     set -e
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
-    if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
-      copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $REMOTE_PATH $PATH_TO_WORDPRESS
-    else
-      copy-remote-uploads-to-local
-    fi
+    copy-remote-uploads-to-local
+    # if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
+    #   copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $REMOTE_PATH $PATH_TO_WORDPRESS
+    # else
+    #   copy-remote-uploads-to-local
+    # fi
     echo
     trap 'echo "OK"' INT TERM EXIT
     cd ..
