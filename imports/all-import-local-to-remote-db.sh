@@ -61,33 +61,13 @@ for d in */ ; do
     LOCAL_PATHS+=($PATH_NAME)
     cd $d
 
-    if [[ -f .env_override ]]; then
-      LOCAL_DOMAIN=`get_env_value 'LOCAL_DOMAIN' '.env_override'`
-    else
-      LOCAL_DOMAIN=`get_env_value 'LOCAL_DOMAIN'`
-    fi
-
-    if [[ -f .env_override ]]; then
-      REMOTE_DOMAIN=`get_env_value 'REMOTE_DOMAIN' '.env_override'`
-    else
-      REMOTE_DOMAIN=`get_env_value 'REMOTE_DOMAIN'`
-    fi
-
     DB_NAME=`get_wp_config_value 'DB_NAME'`
     DB_USER=`get_wp_config_value 'DB_USER'`
     DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
 
-    echo -n " # Remote Domain ($REMOTE_DOMAIN): "
-    read REMOTE_DOMAIN_TEMP
-    if [ ! -z ${REMOTE_DOMAIN_TEMP} ]; then
-      REMOTE_DOMAIN=$REMOTE_DOMAIN_TEMP
-    fi
-
     # export local db to sql dump file
-    mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > ../$PATH_TO_TEMP_EXPORTS/temp.sql
-
-    #prepare local sql dump file for remote db import
-    sed "s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g" ../$PATH_TO_TEMP_EXPORTS/temp.sql > ../$PATH_TO_TEMP_EXPORTS/$PATH_NAME.sql
+    mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > ../$PATH_TO_TEMP_EXPORTS/$PATH_NAME.sql
+    echo "${bold}${green}Success${reset}${reset_bold}: File $PATH_NAME.sql"
     cd ..
   fi
 done
@@ -96,9 +76,9 @@ rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.ver
 if [[ $rsync_version != '3.1.0' ]]; then
   echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
 fi
-rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_TEMP_EXPORTS $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_TEMP_EXPORTS
+rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_TEMP_EXPORTS $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH
 
-ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
   cd $REMOTE_PATH
   for d in ${LOCAL_PATHS[@]}; do
     dl=\$(echo \$d | tr '[:upper:]' '[:lower:]')
@@ -111,16 +91,30 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
       if [[ -d $PATH_TO_WORDPRESS ]]; then
         echo \$d
         if [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
-          wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql --path=$PATH_TO_WORDPRESS
+          if [[ -f .env ]]; then
+            export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -r "s/LOCAL_DOMAIN=//g")
+            export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -r "s/REMOTE_DOMAIN=//g")
+          fi
+          if [[ -f .env_override ]]; then
+            export REMOTE_DOMAIN=\$(sed -n "/REMOTE_SERVER/p" .env | sed -r "s/REMOTE_SERVER=//g")
+          fi
+          echo -n \" Remote Domain (\$REMOTE_DOMAIN): \"
+          read REMOTE_DOMAIN_TEMP
+          if [ ! -z \${REMOTE_DOMAIN_TEMP} ]; then
+            REMOTE_DOMAIN=\$REMOTE_DOMAIN_TEMP
+          fi
+          sed -r \"s/\$LOCAL_DOMAIN/\$REMOTE_DOMAIN/g\" $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql > $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql
+          # wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql --path=$PATH_TO_WORDPRESS
         else
-          echo "Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql"
+          echo \"Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql\"
         fi
       fi
       cd ..
     fi
   done
   rm -rf $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS
-EOF
+
+'"
 rm -rf $PATH_TO_TEMP_EXPORTS
 
 }
