@@ -37,10 +37,12 @@ if [[ ! -d $PATH_TO_TEMP_EXPORTS ]]; then
 fi
 
 if [[ ! -z $SSH_HOST ]]; then
+  bold=`tput bold`
   red=`tput setaf 1`
   green=`tput setaf 2`
   reset=`tput sgr0`
-  echo "import local databases to remote host: ${red}$SSH_HOST${reset}"
+  reset_bold=`tput rmso`
+  echo "import local databases to remote host: ${bold}${red}$SSH_HOST${reset}${reset_bold}"
 else
   echo "You must add a SSH_HOST variable to .env file. Exiting..."
   exit
