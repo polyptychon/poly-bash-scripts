@@ -207,11 +207,11 @@ function restore {
 
 #ALL
 function all {
-  function remote-databases-to-local {
+  function import-remote-databases-to-local {
     echo "import all remote databases to local"
     all-import-remote-to-local-db
   }
-  function local-databases-to-remote {
+  function import-local-databases-to-remote {
     echo "import all local databases to remote"
     all-import-local-to-remote-db
   }
@@ -235,7 +235,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("remote-databases-to-local" "local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-local-sites")
+  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-local-sites")
   exec_arguments options[@]
 }
 
