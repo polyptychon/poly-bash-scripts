@@ -71,7 +71,7 @@ for d in ${LOCAL_PATHS[@]}; do
     cd $d
     LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
     REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
-    sed -e "s/$d.$SSH_HOST/$LOCAL_DOMAIN/g;s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
+    sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g;s/$d.$SSH_HOST/$LOCAL_DOMAIN/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
     wp db import ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql --path=$PATH_TO_WORDPRESS
     cd ..
   else
