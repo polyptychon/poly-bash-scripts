@@ -36,6 +36,12 @@ if [[ -d ~/.ssh ]]; then
   USE_CONTROL_MASTER=true
 fi
 
+echo -n "You are about to replace remote uploads for all sites with local. Are you sure? Y/N "
+read answer
+if [[ $answer =~ ^[Nn]$ ]]; then
+  exit
+fi
+
 DONT_ASK_FOR_CONFIRMATION=true
 
 for d in */ ; do
