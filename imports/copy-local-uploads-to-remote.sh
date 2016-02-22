@@ -29,16 +29,16 @@ function copy-local-uploads-to-remote {
     USE_CONTROLMASTER=false
   fi
   if [[ ! -z $7 ]]; then
-    ASK_FOR_CONFIRMATION=$7
+    DONT_ASK_FOR_CONFIRMATION=$7
   else
-    ASK_FOR_CONFIRMATION=true
+    DONT_ASK_FOR_CONFIRMATION=false
   fi
   if [ -z $PATH_TO_WORDPRESS ] || [ ! -d $PATH_TO_WORDPRESS ]; then
     echo "Can not find wordpress installation. Exiting..."
     exit;
   fi
 
-  if [[ $ASK_FOR_CONFIRMATION ]]; then
+  if [[ ! $DONT_ASK_FOR_CONFIRMATION ]]; then
     echo -n "You want to replace remote uploads with local. Are you sure? Y/N "
     read answer
     if [[ $answer =~ ^[Nn]$ ]]; then

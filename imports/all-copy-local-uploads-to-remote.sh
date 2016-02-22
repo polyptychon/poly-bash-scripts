@@ -36,7 +36,7 @@ if [[ -d ~/.ssh ]]; then
   USE_CONTROL_MASTER=true
 fi
 
-ASK_FOR_CONFIRMATION=false
+DONT_ASK_FOR_CONFIRMATION=true
 
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
@@ -47,7 +47,7 @@ for d in */ ; do
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
-      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $USE_CONTROL_MASTER $ASK_FOR_CONFIRMATION
+      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $USE_CONTROL_MASTER $DONT_ASK_FOR_CONFIRMATION
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-local-uploads-to-remote
