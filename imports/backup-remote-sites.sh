@@ -117,6 +117,13 @@ function backup-remote-sites {
     echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
   fi
 
+  if [[ -d ~/.ssh ]]; then
+    if [[ ! -d ~/.ssh/ctl ]]; then
+      mkdir ~/.ssh/ctl
+    fi
+    ssh -p $SSH_PORT -nNf -o ControlMaster=yes -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" $SSH_USERNAME@$SSH_HOST
+  fi
+
   getArray "sites.txt"
 
   for e in "${sites[@]}"
@@ -127,20 +134,20 @@ function backup-remote-sites {
     echo "start backup of: $e"
     REMOTE_PATH=$REMOTE_SSH_ROOT_PATH/$e
 
-    if ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/$PATH_TO_WORDPRESS ]; then # if is a wordpress site
+    if ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p' $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/$PATH_TO_WORDPRESS ]; then # if is a wordpress site
       if [ ! -d $e/$PATH_TO_WORDPRESS ]; then
         mkdir $e/$PATH_TO_WORDPRESS
         mkdir $e/$PATH_TO_WORDPRESS/wp-content/
       fi
       set +e
       sleep 10
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads $e/$PATH_TO_WORDPRESS/wp-content/
+      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads $e/$PATH_TO_WORDPRESS/wp-content/
       sleep 15
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php $e/$PATH_TO_WORDPRESS/wp-config.php
+      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php $e/$PATH_TO_WORDPRESS/wp-config.php
       # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads" $e/$PATH_TO_WORDPRESS/wp-content/
       # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php" $e/$PATH_TO_WORDPRESS/wp-config.php
       set -e
-ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+ssh -T -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p' $SSH_USERNAME@$SSH_HOST <<EOF
 cd $REMOTE_PATH
 
 export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_NAME'.?.?'//g" | sed -r "s/'.+//g")
@@ -153,7 +160,7 @@ EOF
         mkdir $e/$PATH_TO_EXPORTS
       fi
       set +e
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
+      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
       # scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
       set -e
     elif ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST [ -d $REMOTE_PATH/$PATH_TO_DRUPAL ]; then # if is a drupal site
@@ -163,12 +170,12 @@ EOF
       fi
       set +e
       sleep 10
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default $e/$PATH_TO_DRUPAL/sites/
+      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default $e/$PATH_TO_DRUPAL/sites/
       sleep 15
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/.htaccess $e/$PATH_TO_DRUPAL/.htaccess
+      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/.htaccess $e/$PATH_TO_DRUPAL/.htaccess
       # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default" $e/$PATH_TO_DRUPAL/sites/
       set -e
-ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+ssh -T -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p' $SSH_USERNAME@$SSH_HOST <<EOF
 cd $REMOTE_PATH
 
 export DB_NAME=\$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'database' => '//g" | sed -r "s/',$//g")
@@ -181,13 +188,13 @@ EOF
         mkdir $e/$PATH_TO_EXPORTS
       fi
       set +e
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
+      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
       # scp -CP $SSH_PORT $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql $e/$PATH_TO_EXPORTS/remote.sql
       set -e
     fi
 
     set +e
-    rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env $e/.env 2> /dev/null
+    rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o ControlPath='$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env $e/.env 2> /dev/null
     # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/.env" $e/.env 2> /dev/null
     set -e
     sleep 30
