@@ -41,6 +41,7 @@ function copy-local-uploads-to-remote {
   if [[ $ASK_FOR_CONFIRMATION ]]; then
     echo -n "You want to replace remote uploads with local. Are you sure? Y/N "
   fi
+
   read answer
   if [[ $answer =~ ^[Yy]$ ]]; then
     rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
