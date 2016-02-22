@@ -28,6 +28,16 @@ reset_bold=`tput rmso`
 
 THE_SITES_PATH=$REMOTE_PATH
 
+if [[ -d ~/.ssh ]]; then
+  if [[ ! -d ~/.ssh/ctl ]]; then
+    mkdir ~/.ssh/ctl
+  fi
+  ssh -p $SSH_PORT -nNf -o ControlMaster=yes -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" $SSH_USERNAME@$SSH_HOST
+  USE_CONTROL_MASTER=true
+fi
+
+ASK_FOR_CONFIRMATION=false
+
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     cd "$d"
@@ -37,7 +47,7 @@ for d in */ ; do
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
-      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS
+      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $USE_CONTROL_MASTER $ASK_FOR_CONFIRMATION
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-local-uploads-to-remote
