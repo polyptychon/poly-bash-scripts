@@ -28,6 +28,12 @@ if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS=wordpress
 fi
 
+if [[ -d ~/.ssh ]]; then
+  if [[ ! -d ~/.ssh/ctl ]]; then
+    mkdir ~/.ssh/ctl
+  fi
+  ssh -p $SSH_PORT -nNf -o ControlMaster=yes -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" $SSH_USERNAME@$SSH_HOST
+fi
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     cd "$d"
@@ -49,7 +55,7 @@ for d in */ ; do
 
     set +e
     LOCAL_COMMIT_HASH=$(git rev-parse HEAD)
-    ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
+    ssh -t -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p' $SSH_USERNAME@$SSH_HOST bash -c "'
       if [[ -d $REMOTE_PATH ]] || [[ -d $REMOTE_PATH_LOWER ]]; then
         if [[ -d $REMOTE_PATH ]]; then
           cd $REMOTE_PATH
