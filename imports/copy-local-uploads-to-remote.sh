@@ -28,7 +28,7 @@ function copy-local-uploads-to-remote {
   else
     USE_CONTROLMASTER=false
   fi
-  if [[ ! -z ${7+x} ]]; then
+  if [[ ! -z $7 ]]; then
     ASK_FOR_CONFIRMATION=$7
   else
     ASK_FOR_CONFIRMATION=true
@@ -40,18 +40,20 @@ function copy-local-uploads-to-remote {
 
   if [[ $ASK_FOR_CONFIRMATION ]]; then
     echo -n "You want to replace remote uploads with local. Are you sure? Y/N "
+    read answer
+    if [[ $answer =~ ^[Nn]$ ]]; then
+      exit
+    fi
   fi
 
-  read answer
-  if [[ $answer =~ ^[Yy]$ ]]; then
-    rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
-    if [[ $rsync_version != '3.1.0' ]]; then
-      echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
-    fi
-    if [[ $USE_CONTROLMASTER ]]; then
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $PATH_TO_WORDPRESS/wp-content/uploads $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
-    else
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
-    fi
+  rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
+  if [[ $rsync_version != '3.1.0' ]]; then
+    echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
   fi
+  if [[ $USE_CONTROLMASTER ]]; then
+    rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $PATH_TO_WORDPRESS/wp-content/uploads $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
+  else
+    rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/
+  fi
+
 }
