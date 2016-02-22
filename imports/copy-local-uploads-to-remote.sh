@@ -28,7 +28,7 @@ function copy-local-uploads-to-remote {
   else
     USE_CONTROLMASTER=false
   fi
-  if [[ ! -z $7 ]]; then
+  if [[ ! -z ${7+x} ]]; then
     ASK_FOR_CONFIRMATION=$7
   else
     ASK_FOR_CONFIRMATION=true
