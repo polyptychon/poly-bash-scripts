@@ -34,8 +34,14 @@ function copy-local-uploads-to-remote {
     ASK_FOR_CONFIRMATION="y"
   fi
 
+  bold=`tput bold`
+  red=`tput setaf 1`
+  green=`tput setaf 2`
+  reset=`tput sgr0`
+  reset_bold=`tput rmso`
+
   if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
-    echo -n "You want to replace remote uploads with local for host $SSH_HOST. Are you sure? Y/N "
+    echo -n "You want to replace remote uploads with local for host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
     read answer
     if [[ $answer =~ ^[Nn]$ ]]; then
       exit

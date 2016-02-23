@@ -19,7 +19,13 @@ function clean_up
   set -e
 }
 
-echo -n "You want to replace remote db with local to host $SSH_HOST. Are you sure? Y/N: "
+bold=`tput bold`
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+reset_bold=`tput rmso`
+
+echo -n "You want to replace remote db with local to host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
 read REPLY
 if [[ $REPLY =~ ^[Nn]$ ]]; then
   exit
