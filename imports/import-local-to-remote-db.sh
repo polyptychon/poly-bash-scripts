@@ -73,6 +73,8 @@ export DB_NAME=\$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/setti
 export DB_USER=\$(sed -n "/'username' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'username' => '//g" | sed -r "s/',$//g")
 export DB_PASSWORD=\$(sed -n "/'password' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'password' => '//g" | sed -r "s/',$//g")
 
+echo \$DB_NAME
+
 mysql -p\$DB_PASSWORD -u\$DB_USER \$DB_NAME < $PATH_TO_EXPORTS/temp.sql
 exit
 EOF
