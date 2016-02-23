@@ -12,6 +12,7 @@ source $POLY_SCRIPTS_FOLDER/imports/add-taxonomies.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-copy-local-uploads-to-remote.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads-to-local.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-exec-command.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
@@ -236,11 +237,15 @@ function all {
     echo "deploy all sites to remote host"
     all-deploy-sites
   }
+  function exec-command {
+    echo "deploy all sites to remote host"
+    all-exec-command
+  }
   function update {
     echo "update all sites"
     all-update-sites
   }
-  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads")
+  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads" "exec-command")
   exec_arguments options[@]
 }
 

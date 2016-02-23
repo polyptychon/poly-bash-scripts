@@ -55,6 +55,7 @@ for d in */ ; do
       set +e
       git add $PATH_TO_WORDPRESS/wp-admin
       git add $PATH_TO_WORDPRESS/wp-includes
+      git add $PATH_TO_WORDPRESS/wp-content/languages
       git commit -m "update wordpress"
       set -e
     fi
