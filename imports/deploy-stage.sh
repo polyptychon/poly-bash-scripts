@@ -55,6 +55,7 @@ if [[ -d $REMOTE_PATH ]]; then
     exit
   else
     echo \"Remember to git push your local changes first!\"
+    git stash clear
     git stash --quiet
     git status
     git pull

@@ -80,6 +80,7 @@ for d in */ ; do
           echo \"Everything is up to date. No action is required\"
           exit
         else
+          git stash clear
           git stash --quiet
           git status
           git pull
