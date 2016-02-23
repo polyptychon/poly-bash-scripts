@@ -19,12 +19,8 @@ fi
 
 while (true); do
   echo -n "Open local or remote sites? L/R "
-  read answer
-  if [[ $answer =~ ^[Ll]$ ]]; then
-    OPEN_LOCAL=true
-    break
-  elif [[ $answer =~ ^[Ll]$ ]]; then
-    OPEN_LOCAL=false
+  read OPEN_LOCAL_OR_REMOTE
+  if [[ $OPEN_LOCAL_OR_REMOTE =~ ^[Ll]$ ]] || [[ $OPEN_LOCAL_OR_REMOTE =~ ^[Rr]$ ]]; then
     break
   fi
 done
@@ -41,12 +37,12 @@ for d in */ ; do
     cd "$d"
     set -e
     trap 'echo "could not open chrome"' INT TERM EXIT
-    if [[ $OPEN_LOCAL ]]; then
+    if [[ $OPEN_LOCAL_OR_REMOTE =~ ^[Ll]$ ]]; then
       trap 'echo "could not read .env variable LOCAL_DOMAIN"' INT TERM EXIT
       LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
       open "http://$LOCAL_DOMAIN/$ADMIN_PATH"
       echo $LOCAL_DOMAIN
-    else
+    elif [[ $OPEN_LOCAL_OR_REMOTE =~ ^[Rr]$ ]]; then
       trap 'echo "could not read .env variable REMOTE_DOMAIN"' INT TERM EXIT
       REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
       open "http://$REMOTE_DOMAIN/$ADMIN_PATH"
