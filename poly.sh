@@ -14,7 +14,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-copy-remote-uploads-to-local.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
-source $POLY_SCRIPTS_FOLDER/imports/all-open-local-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
@@ -224,9 +224,9 @@ function all {
     echo "copy all local uploads to remote"
     all-copy-local-uploads-to-remote
   }
-  function open-local-sites {
+  function open-sites {
     echo "open all local sites"
-    all-open-local-sites
+    all-open-sites
   }
   function symlink-uploads {
     echo "Symlink uploads"
@@ -240,7 +240,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-local-sites" "symlink-uploads")
+  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads")
   exec_arguments options[@]
 }
 
