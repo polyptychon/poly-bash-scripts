@@ -37,6 +37,7 @@ reset_bold=`tput rmso`
 echo -n "You are about to ${bold}${red}delete${reset}${reset_bold} local uploads and create symlink for uploads. Are you sure? Y/N "
 read answer
 if [[ $answer =~ ^[Nn]$ ]]; then
+  echo "Exiting..."
   exit
 fi
 
