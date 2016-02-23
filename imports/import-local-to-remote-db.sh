@@ -76,6 +76,7 @@ export DB_PASSWORD=\$(sed -n "/'password' => /p" $PATH_TO_DRUPAL/sites/default/s
 echo \$DB_NAME
 
 mysql -p\$DB_PASSWORD -u\$DB_USER \$DB_NAME < $PATH_TO_EXPORTS/temp.sql
+echo "Success!"
 exit
 EOF
 
