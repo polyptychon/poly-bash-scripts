@@ -35,7 +35,7 @@ function copy-local-uploads-to-remote {
   fi
 
   if [[ ! $DONT_ASK_FOR_CONFIRMATION ]]; then
-    echo -n "You want to replace remote uploads with local. Are you sure? Y/N "
+    echo -n "You want to replace remote uploads with local for host $SSH_HOST. Are you sure? Y/N "
     read answer
     if [[ $answer =~ ^[Nn]$ ]]; then
       exit
