@@ -21,7 +21,13 @@ else
 fi
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
-  PATH_TO_WORDPRESS=wordpress
+  PATH_TO_WORDPRESS="wordpress"
+fi
+
+if [[ -z $REMOTE_PATH ]]; then
+  THE_SITES_PATH="~/domains"
+else
+  THE_SITES_PATH=$REMOTE_PATH
 fi
 
 bold=`tput bold`
@@ -30,7 +36,11 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-THE_SITES_PATH=$REMOTE_PATH
+echo -n "You are about to ${bold}${red}copy remote${reset}${reset_bold} uploads to ${bold}${red}local${reset}${reset_bold} from host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
+read answer
+if [[ $answer =~ ^[Nn]$ ]]; then
+  exit
+fi
 
 if [[ -d ~/.ssh ]]; then
   if [[ ! -d ~/.ssh/ctl ]]; then

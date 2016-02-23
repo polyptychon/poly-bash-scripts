@@ -17,7 +17,13 @@ else
 fi
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
-  PATH_TO_WORDPRESS=wordpress
+  PATH_TO_WORDPRESS="wordpress"
+fi
+
+if [[ -z $REMOTE_PATH ]]; then
+  THE_SITES_PATH="~/domains"
+else
+  THE_SITES_PATH=$REMOTE_PATH
 fi
 
 bold=`tput bold`
@@ -26,7 +32,11 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-THE_SITES_PATH=$REMOTE_PATH
+echo -n "You are about to ${bold}${red}replace remote uploads for all sites${reset}${reset_bold} with local to host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
+read answer
+if [[ $answer =~ ^[Nn]$ ]]; then
+  exit
+fi
 
 if [[ -d ~/.ssh ]]; then
   if [[ ! -d ~/.ssh/ctl ]]; then
@@ -34,12 +44,6 @@ if [[ -d ~/.ssh ]]; then
   fi
   ssh -p $SSH_PORT -nNf -o ControlMaster=yes -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" $SSH_USERNAME@$SSH_HOST
   USE_CONTROL_MASTER=true
-fi
-
-echo -n "You are about to replace remote uploads for all sites with local. Are you sure? Y/N "
-read answer
-if [[ $answer =~ ^[Nn]$ ]]; then
-  exit
 fi
 
 DONT_ASK_FOR_CONFIRMATION=true

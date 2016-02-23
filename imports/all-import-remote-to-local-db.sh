@@ -22,7 +22,17 @@ else
 fi
 
 LOCAL_PATHS=()
-PATH_TO_WORDPRESS=wordpress
+
+if [[ -z $PATH_TO_WORDPRESS ]]; then
+  PATH_TO_WORDPRESS="wordpress"
+fi
+
+echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
+read REPLY
+if [[ $REPLY =~ ^[Nn]$ ]]; then
+  echo "Exiting..."
+  exit
+fi
 
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
   PATH_TO_TEMP_EXPORTS="temp_dump"

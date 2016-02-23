@@ -26,7 +26,10 @@ else
 fi
 
 LOCAL_PATHS=()
-PATH_TO_WORDPRESS=wordpress
+
+if [[ -z $PATH_TO_WORDPRESS ]]; then
+  PATH_TO_WORDPRESS="wordpress"
+fi
 
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
   PATH_TO_TEMP_EXPORTS="temp_dump"
@@ -35,6 +38,7 @@ fi
 if [[ ! -d $PATH_TO_TEMP_EXPORTS ]]; then
   mkdir $PATH_TO_TEMP_EXPORTS
 fi
+
 bold=`tput bold`
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -48,7 +52,7 @@ else
   exit
 fi
 
-echo -n "You want to replace ${bold}${red}ALL${reset}${reset_bold} remote databases with local. Are you sure? Y/N: "
+echo -n "You are about to replace ${bold}${red}ALL${reset}${reset_bold} remote databases to host ${bold}${red}$SSH_HOST${reset}${reset_bold} with local. Are you sure? Y/N: "
 read REPLY
 if [[ $REPLY =~ ^[Nn]$ ]]; then
   echo "Exiting..."

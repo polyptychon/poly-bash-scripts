@@ -25,7 +25,19 @@ else
 fi
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
-  PATH_TO_WORDPRESS=wordpress
+  PATH_TO_WORDPRESS="wordpress"
+fi
+
+bold=`tput bold`
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+reset_bold=`tput rmso`
+
+echo -n "You are about to ${bold}${red}deploy all sites${reset}${reset_bold} to host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
+read answer
+if [[ $answer =~ ^[Nn]$ ]]; then
+  exit
 fi
 
 if [[ -d ~/.ssh ]]; then
