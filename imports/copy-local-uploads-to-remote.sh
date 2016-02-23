@@ -29,12 +29,12 @@ function copy-local-uploads-to-remote {
     USE_CONTROLMASTER=false
   fi
   if [[ ! -z $7 ]]; then
-    DONT_ASK_FOR_CONFIRMATION=$7
+    ASK_FOR_CONFIRMATION=$7
   else
-    DONT_ASK_FOR_CONFIRMATION=false
+    ASK_FOR_CONFIRMATION="y"
   fi
 
-  if [[ $DONT_ASK_FOR_CONFIRMATION ]]; then
+  if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
     echo -n "You want to replace remote uploads with local for host $SSH_HOST. Are you sure? Y/N "
     read answer
     if [[ $answer =~ ^[Nn]$ ]]; then
