@@ -42,7 +42,7 @@ for d in */ ; do
     set -e
     trap 'echo "Could not exec command"' INT TERM EXIT
     echo "${bold}${green}$d${reset}${reset_bold}"
-    eval $COMMAND_
+    ${COMMAND_}
     trap 'echo "OK"' INT TERM EXIT
     cd ..
   fi
