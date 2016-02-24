@@ -15,6 +15,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-exec-command.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-npm-install.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
@@ -225,6 +226,10 @@ function all {
     echo "copy all local uploads to remote"
     all-copy-local-uploads-to-remote
   }
+  function npm-install {
+    echo "run npm install to all folders"
+    all-npm-install
+  }
   function open-sites {
     echo "open all local sites"
     all-open-sites
@@ -245,7 +250,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads" "exec-command")
+  options=("import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads" "exec-command" "npm-install")
   exec_arguments options[@]
 }
 

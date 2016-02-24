@@ -10,7 +10,7 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "backup" ]]; then
     COMPREPLY=( $( compgen -W 'remote-sites' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "all" ]]; then
-    COMPREPLY=( $( compgen -W 'import-remote-databases-to-local import-local-databases-to-remote deploy update copy-remote-uploads copy-local-uploads open-sites symlink-uploads exec-command' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'import-remote-databases-to-local import-local-databases-to-remote deploy update copy-remote-uploads copy-local-uploads npm-install open-sites symlink-uploads exec-command' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "commit" ]]; then
     COMPREPLY=( $( compgen -W 'local-database remote-database' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "copy" ]]; then
