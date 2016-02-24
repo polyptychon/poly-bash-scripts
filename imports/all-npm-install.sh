@@ -30,7 +30,7 @@ for d in */ ; do
     cd "$d"
     set -e
     trap 'echo "Could not exec command npm install"' INT TERM EXIT
-    if [[ -f static/package.json]]; then
+    if [[ -f static/package.json ]]; then
       echo "${bold}${green}$d${reset}${reset_bold}"
       cd static
       npm install
