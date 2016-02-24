@@ -26,7 +26,7 @@ if [[ $answer =~ ^[Nn]$ ]]; then
 fi
 
 for d in */ ; do
-  if [[ -d $d/.env ]]; then
+  if [[ -f $d.env ]]; then
     cd "$d"
     set -e
     trap 'echo "Could not exec command npm install"' INT TERM EXIT
