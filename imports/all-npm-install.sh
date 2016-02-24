@@ -35,7 +35,7 @@ for d in */ ; do
       cd static
       npm install
       cd ..
-    elif [[ -f package.json]]; then
+    elif [[ -f package.json ]]; then
       echo "${bold}${green}$d${reset}${reset_bold}"
       npm install
     else
