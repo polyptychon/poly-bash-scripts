@@ -27,17 +27,27 @@ COMMAND_="git status"
 echo -n "Please type your command (git status):"
 read COMMAND_TEMP
 if [[ ! -z $COMMAND_TEMP ]]; then
-  COMMAND_=COMMAND_TEMP
+  COMMAND_=$COMMAND_TEMP
 fi
+
+echo -n "Please type your command (.):"
+read DIR_
 
 for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
     cd "$d"
     set -e
+    trap 'echo "Could not change directory $DIR_"' INT TERM EXIT
+    if [[ ! -z $DIR_ ]] && [[ -d $DIR_ ]]; then
+      cd $DIR_
+    fi
     trap 'echo "Could not exec command"' INT TERM EXIT
     echo "${bold}${green}$d${reset}${reset_bold}"
     ${COMMAND_}
     trap 'echo "OK"' INT TERM EXIT
+    if [[ ! -z $DIR_ ]] && [[ $DIR_!="." ]]; then
+      cd ..
+    fi
     cd ..
   fi
 done
