@@ -21,6 +21,12 @@ else
   exit
 fi
 
+UP=$(pgrep mysql | wc -l);
+if [[ "$UP" -ne 1 ]]; then
+  echo "Could not connect to mysql. Exiting..."
+  exit
+fi
+
 LOCAL_PATHS=()
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
