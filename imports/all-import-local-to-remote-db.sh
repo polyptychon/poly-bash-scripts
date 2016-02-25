@@ -27,7 +27,7 @@ fi
 
 UP=$(pgrep mysql | wc -l);
 if [[ "$UP" -ne 1 ]]; then
-  echo "Could not connect to mysql. Exiting..."
+  echo "Could not connect to local mysql. Exiting..."
   exit
 fi
 
