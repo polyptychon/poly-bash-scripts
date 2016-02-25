@@ -23,11 +23,11 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "Please type your command (Command example: git status):"
-read COMMAND_
-if [[ -z $COMMAND_ ]]; then
-  echo "You did not type a command. Exiting..."
-  exit
+COMMAND_="git status"
+echo -n "Please type your command (git status):"
+read COMMAND_TEMP
+if [[ ! -z $COMMAND_TEMP ]]; then
+  COMMAND_=COMMAND_TEMP
 fi
 
 for d in */ ; do
