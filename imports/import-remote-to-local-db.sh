@@ -85,8 +85,10 @@ if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   if [[ $DOMAIN_NAME_FROM_MYSQL==$LOCAL_DOMAIN ]]; then
     STATUS_COLOR=`tput setaf 2`
   fi
+  echo
   echo "LOCAL DOMAIN IN DATABASE: ${bold}${STATUS_COLOR}$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
   echo "LOCAL DOMAIN IN ENV     : ${bold}${STATUS_COLOR}$LOCAL_DOMAIN${reset}${reset_bold}"
+  echo
   sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g" $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.temp.sql
   wp db import $PATH_TO_EXPORTS/local.temp.sql --path=$PATH_TO_WORDPRESS
 elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
