@@ -17,12 +17,21 @@ if [[ "$UP" -ne 1 ]]; then
   exit
 fi
 
+bold=`tput bold`
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+reset_bold=`tput rmso`
+
 function clean_up
 {
   set +e
   rm -rf $PATH_TO_EXPORTS/local.temp.sql
   rm -rf $PATH_TO_EXPORTS/temp.sql
   set -e
+}
+function get_wp_config_value {
+  echo `sed -n "/$1/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+$1'.?.?'//g" | sed -E "s/');$//g"`
 }
 function get_drupal_config_value {
   echo `sed -n "/\'$1\'.\=\>/p" $PATH_TO_DRUPAL/sites/default/settings.php | sed -E "s/.+\'$1\'.\=\>//g" | sed -E "s/\'\,$//g" | sed -E "s/\'//g" | sed -E "s/$1|password|username|databasename|(\/path\/to\/databasefilename)//g"`
@@ -68,6 +77,16 @@ rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH
 #import converted sql dump file to local db
 if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   #prepare remote sql dump file for local db import
+  DB_NAME=`get_wp_config_value 'DB_NAME'`
+  DB_USER=`get_wp_config_value 'DB_USER'`
+  DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
+  DOMAIN_NAME_FROM_MYSQL=`mysql -u$DB_USER -p$DB_PASSWORD -s -N -e "SELECT option_value FROM $DB_NAME.poly_options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g'`
+  STATUS_COLOR=`tput setaf 1`
+  if [[ $DOMAIN_NAME_FROM_MYSQL==$LOCAL_DOMAIN ]]; then
+    STATUS_COLOR=`tput setaf 2`
+  fi
+  echo "LOCAL DOMAIN IN DATABASE: ${bold}${STATUS_COLOR}$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
+  echo "LOCAL DOMAIN IN ENV     : ${bold}${STATUS_COLOR}$LOCAL_DOMAIN${reset}${reset_bold}"
   sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g" $PATH_TO_EXPORTS/temp.sql > $PATH_TO_EXPORTS/local.temp.sql
   wp db import $PATH_TO_EXPORTS/local.temp.sql --path=$PATH_TO_WORDPRESS
 elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then

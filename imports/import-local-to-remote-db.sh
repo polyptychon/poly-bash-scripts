@@ -65,11 +65,28 @@ if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   # scp -rCP $SSH_PORT $PATH_TO_EXPORTS/remote.temp.sql "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_EXPORTS/temp.sql"
 
   #import local converted sql dump file to remote db
-  ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
-  cd $REMOTE_PATH
+ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash <<EOF
+cd $REMOTE_PATH
+if [[ -f .env ]]; then
+  export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_NAME'.?.?'//g" | sed -r "s/'\);$//g")
+  export DB_USER=\$(sed -n "/DB_USER/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_USER'.?.?'//g" | sed -r "s/'\);$//g")
+  export DB_PASSWORD=\$(sed -n "/DB_PASSWORD/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_PASSWORD'.?.?'//g" | sed -r "s/'\);$//g")
+  export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e "SELECT option_value FROM \$DB_NAME.poly_options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g')
+  export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -E "s/LOCAL_DOMAIN=//g")
+  export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -E "s/REMOTE_DOMAIN=//g")
+  echo
+  if [[ $DOMAIN_NAME_FROM_MYSQL==$LOCAL_DOMAIN ]]; then
+    echo "REMOTE DOMAIN IN DATABASE: ${bold}${green}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
+    echo "REMOTE DOMAIN IN ENV     : ${bold}${green}\$REMOTE_DOMAIN${reset}${reset_bold}"
+  else
+    echo "REMOTE DOMAIN IN DATABASE: ${bold}${red}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
+    echo "REMOTE DOMAIN IN ENV     : ${bold}${red}\$REMOTE_DOMAIN${reset}${reset_bold}"
+  fi
+  echo
   wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
-  exit
-  '"
+fi
+exit
+EOF
 elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
   export DB_NAME=$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^.\*/d' | sed -E "s/^.+'database' => '//g" | sed -E "s/',$//g")
   export DB_USER=$(sed -n "/'username' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^.\*/d' | sed -E "s/^.+'username' => '//g" | sed -E "s/',$//g")
