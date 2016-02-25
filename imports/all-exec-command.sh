@@ -23,12 +23,6 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "Host: ${bold}${red}$SSH_HOST${reset}${reset_bold}. Do you want to exec command to all sites? Y/N "
-read answer
-if [[ $answer =~ ^[Nn]$ ]]; then
-  exit
-fi
-
 echo -n "Please type your command (Command example: git status):"
 read COMMAND_
 if [[ -z $COMMAND_ ]]; then
