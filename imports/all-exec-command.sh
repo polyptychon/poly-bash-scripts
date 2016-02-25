@@ -30,7 +30,7 @@ if [[ ! -z $COMMAND_TEMP ]]; then
   COMMAND_=$COMMAND_TEMP
 fi
 
-echo -n "Please type your command (.):"
+echo -n "Please type project folder name to run command (.):"
 read DIR_
 
 for d in */ ; do
