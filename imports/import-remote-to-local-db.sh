@@ -11,6 +11,12 @@ if [[ -f .env ]]; then
   fi
 fi
 
+UP=$(pgrep mysql | wc -l);
+if [[ "$UP" -ne 1 ]]; then
+  echo "Could not connect to mysql. Exiting..."
+  exit
+fi
+
 function clean_up
 {
   set +e
