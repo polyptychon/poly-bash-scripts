@@ -71,7 +71,7 @@ if [[ -f .env ]]; then
   export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_NAME'.?.?'//g" | sed -r "s/'\);$//g")
   export DB_USER=\$(sed -n "/DB_USER/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_USER'.?.?'//g" | sed -r "s/'\);$//g")
   export DB_PASSWORD=\$(sed -n "/DB_PASSWORD/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_PASSWORD'.?.?'//g" | sed -r "s/'\);$//g")
-  export DB_TABLE_PREFIX=\$(sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/^.table_prefix\s?=\s?.//g" | sed -r "s/.;$//g")
+  export DB_TABLE_PREFIX=\$(sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/^.table_prefix\s?\s?=\s?\s?.//g" | sed -r "s/.;$//g")
   export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e "SELECT option_value FROM \$DB_NAME."\$DB_TABLE_PREFIX"options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g')
   export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -E "s/LOCAL_DOMAIN=//g")
   export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -E "s/REMOTE_DOMAIN=//g")

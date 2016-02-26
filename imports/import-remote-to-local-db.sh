@@ -80,7 +80,8 @@ if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
   DB_NAME=`get_wp_config_value 'DB_NAME'`
   DB_USER=`get_wp_config_value 'DB_USER'`
   DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
-  DB_TABLE_PREFIX=`sed -n '/table_prefix/p' $PATH_TO_WORDPRESS/wp-config.php | sed -E 's/.table_prefix.=..//g' | sed -E 's/.;$//g'`
+  DB_TABLE_PREFIX=`sed -n '/table_prefix/p' $PATH_TO_WORDPRESS/wp-config.php | sed -E 's/.table_prefix ? ?= ? ?.//g' | sed -E 's/.;$//g'`
+  echo $DB_TABLE_PREFIX
   DOMAIN_NAME_FROM_MYSQL=`mysql -u$DB_USER -p$DB_PASSWORD -s -N -e "SELECT option_value FROM \\\`$DB_NAME\\\`."$DB_TABLE_PREFIX"options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g'`
   STATUS_COLOR=`tput setaf 1`
   if [[ $DOMAIN_NAME_FROM_MYSQL==$LOCAL_DOMAIN ]]; then

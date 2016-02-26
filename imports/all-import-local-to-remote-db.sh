@@ -100,7 +100,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
       fi
       if [[ -d $PATH_TO_WORDPRESS ]]; then
         echo \$d
-        if [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
+        if [[ true ]] || [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
           if [[ -f .env ]]; then
             export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -r "s/LOCAL_DOMAIN=//g")
             export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -r "s/REMOTE_DOMAIN=//g")
@@ -108,6 +108,21 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
           if [[ -f .env_override ]]; then
             export REMOTE_DOMAIN=\$(sed -n "/REMOTE_SERVER/p" .env_override | sed -r "s/REMOTE_SERVER=//g")
           fi
+          export DB_NAME=\$(sed -n \"/DB_NAME/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/.+DB_NAME.,\s?.//g\" | sed -r \"s/.\);$//g\")
+          export DB_USER=\$(sed -n \"/DB_USER/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/.+DB_USER.,\s?.//g\" | sed -r \"s/.\);$//g\")
+          export DB_PASSWORD=\$(sed -n \"/DB_PASSWORD/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/.+DB_PASSWORD.,\s?.//g\" | sed -r \"s/.\);$//g\")
+          export DB_TABLE_PREFIX=\$(sed -n \"/table_prefix/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/^\s?\s?.table_prefix\s?\s?=\s?\s?.//g\" | sed -r \"s/.;$//g\")
+          export SQL_STRING=\"SELECT option_value FROM \\\`\$DB_NAME\\\`.\"\$DB_TABLE_PREFIX\"options WHERE option_name=\\\"siteurl\\\"\"
+          export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e \"\$SQL_STRING\" | sed -E \"s/^http(s)?:\/\///g\")
+
+          if [[ \$DOMAIN_NAME_FROM_MYSQL==\$LOCAL_DOMAIN ]]; then
+            echo \"REMOTE DOMAIN IN DATABASE: ${bold}${green}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}\"
+            echo \"REMOTE DOMAIN IN ENV     : ${bold}${green}\$REMOTE_DOMAIN${reset}${reset_bold}\"
+          else
+            echo \"REMOTE DOMAIN IN DATABASE: ${bold}${red}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}\"
+            echo \"REMOTE DOMAIN IN ENV     : ${bold}${red}\$REMOTE_DOMAIN${reset}${reset_bold}\"
+          fi
+
           echo -n \" Remote Domain (\$REMOTE_DOMAIN): \"
           read REMOTE_DOMAIN_TEMP
           if [ ! -z \${REMOTE_DOMAIN_TEMP} ]; then
