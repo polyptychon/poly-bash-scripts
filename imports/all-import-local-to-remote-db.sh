@@ -113,7 +113,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
           export DB_PASSWORD=\$(sed -n \"/DB_PASSWORD/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/.+DB_PASSWORD.,\s?.//g\" | sed -r \"s/.\);$//g\")
           export DB_TABLE_PREFIX=\$(sed -n \"/table_prefix/p\" $PATH_TO_WORDPRESS/wp-config.php | sed -r \"s/^\s?\s?.table_prefix\s?\s?=\s?\s?.//g\" | sed -r \"s/.;$//g\")
           export SQL_STRING=\"SELECT option_value FROM \\\`\$DB_NAME\\\`.\"\$DB_TABLE_PREFIX\"options WHERE option_name=\\\"siteurl\\\"\"
-          export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e \"\$SQL_STRING\" | sed -E \"s/^http(s)?:\/\///g\")
+          export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e \"\$SQL_STRING\" | sed -r \"s/^http(s)?:\/\///g\")
 
           if [[ \$DOMAIN_NAME_FROM_MYSQL==\$LOCAL_DOMAIN ]]; then
             echo \"REMOTE DOMAIN IN DATABASE: ${bold}${green}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}\"
@@ -130,6 +130,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
           fi
           sed -r \"s/\$LOCAL_DOMAIN/\$REMOTE_DOMAIN/g\" $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql > $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql
           wp db import $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.temp.sql --path=$PATH_TO_WORDPRESS
+          echo
         else
           echo \"Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql\"
         fi
