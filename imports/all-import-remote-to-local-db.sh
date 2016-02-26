@@ -93,6 +93,20 @@ for d in ${LOCAL_PATHS[@]}; do
     cd $d
     LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
     REMOTE_DOMAIN=`get_env_value "REMOTE_DOMAIN"`
+    DB_NAME=`get_wp_config_value 'DB_NAME'`
+    DB_USER=`get_wp_config_value 'DB_USER'`
+    DB_PASSWORD=`get_wp_config_value 'DB_PASSWORD'`
+    DB_TABLE_PREFIX=`sed -n '/table_prefix/p' $PATH_TO_WORDPRESS/wp-config.php | sed -E 's/.table_prefix ? ?= ? ?.//g' | sed -E 's/.;$//g'`
+
+    DOMAIN_NAME_FROM_MYSQL=`mysql -u$DB_USER -p$DB_PASSWORD -s -N -e "SELECT option_value FROM \\\`$DB_NAME\\\`."$DB_TABLE_PREFIX"options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g'`
+    STATUS_COLOR=`tput setaf 1`
+    if [[ $DOMAIN_NAME_FROM_MYSQL==$LOCAL_DOMAIN ]]; then
+      STATUS_COLOR=`tput setaf 2`
+    fi
+    echo
+    echo "LOCAL DOMAIN IN DATABASE: ${bold}${STATUS_COLOR}$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
+    echo "LOCAL DOMAIN IN ENV     : ${bold}${STATUS_COLOR}$LOCAL_DOMAIN${reset}${reset_bold}"
+    echo
     sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g;s/$d.$SSH_HOST/$LOCAL_DOMAIN/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
     wp db import ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql --path=$PATH_TO_WORDPRESS
     cd ..
