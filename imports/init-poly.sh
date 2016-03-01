@@ -33,6 +33,9 @@ WP_USER=poly_admin
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 DB_PREFIX="poly_"
+if [[ -z $REMOTE_DB_NAME_PREFIX ]]; then
+  REMOTE_DB_NAME_PREFIX="polyptyc_"
+fi
 
 if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
   set +e
@@ -150,6 +153,12 @@ while (true); do
     REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH_TEMP
   fi
 
+  echo -n " # Remote host database prefix ($REMOTE_DB_NAME_PREFIX): "
+  read REMOTE_DB_NAME_PREFIX_TEMP
+  if [ ! -z ${REMOTE_DB_NAME_PREFIX_TEMP} ]; then
+    REMOTE_DB_NAME_PREFIX=$REMOTE_DB_NAME_PREFIX
+  fi
+
   echo -n " # Relative path to wordpress ($PATH_TO_WORDPRESS): "
   read PATH_TO_WORDPRESS_TEMP
   if [ ! -z ${PATH_TO_WORDPRESS_TEMP} ]; then
@@ -219,6 +228,7 @@ fi
 echo "SSH_HOST=$SSH_HOST" > $POLY_SCRIPTS_FOLDER/.global-env
 echo "SSH_PORT=$SSH_PORT" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "SSH_USERNAME=$SSH_USERNAME" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "REMOTE_DB_NAME_PREFIX=$REMOTE_DB_NAME_PREFIX" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "DB_USER=$DB_USER" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "DB_PASSWORD=$DB_PASSWORD" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> $POLY_SCRIPTS_FOLDER/.global-env
