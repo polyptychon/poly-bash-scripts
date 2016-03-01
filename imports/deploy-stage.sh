@@ -16,7 +16,10 @@ fi
 
 DIR_NAME=${PWD##*/}
 DIR_NAME_LOWER=$(echo $DIR_NAME | tr '[:upper:]' '[:lower:]')
-REMOTE_DB_NAME_PREFIX="xarisd_"
+
+if [[ -z $REMOTE_DB_NAME_PREFIX ]]; then
+  REMOTE_DB_NAME_PREFIX="polyptyc_"
+fi
 
 if [ -f .env ]; then
   GIT_REMOTE_ORIGIN_URL_TEMP=$(git config --get remote.origin.url)
