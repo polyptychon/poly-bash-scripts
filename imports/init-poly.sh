@@ -32,7 +32,7 @@ WP_SITE_TITLE=$DIR_NAME
 WP_USER=poly_admin
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
-DB_PREFIX="poly_"
+DB_TABLE_PREFIX="poly_"
 if [[ -z $REMOTE_DB_NAME_PREFIX ]]; then
   REMOTE_DB_NAME_PREFIX="polyptyc_"
 fi
@@ -72,13 +72,13 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   if [ ! -z ${DB_PASSWORD_TEMP} ]; then
     DB_PASSWORD=$DB_PASSWORD_TEMP
   fi
-  DB_PREFIX=`get_db_prefix_from_sql_dump $PATH_TO_EXPORTS/local.sql`
-  if [ -z ${DB_PREFIX} ]; then
-    DB_PREFIX="poly_"
+  DB_TABLE_PREFIX=`get_db_prefix_from_sql_dump $PATH_TO_EXPORTS/local.sql`
+  if [ -z ${DB_TABLE_PREFIX} ]; then
+    DB_TABLE_PREFIX="poly_"
   else
-    DB_PREFIX=$DB_PREFIX"_"
+    DB_TABLE_PREFIX=$DB_TABLE_PREFIX"_"
   fi
-  wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
+  wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_TABLE_PREFIX
   if [[ $DATABASE_EXISTS == 1 ]]; then
     echo -n "Database $DB_NAME already exists!. Do you want to import local sql dump file to local database? Y/N: "
     read DROP_DATABASE
@@ -296,7 +296,7 @@ echo "#$WP_SITE_TITLE" > ./README.md
 echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
 
 wp core download
-wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_PREFIX
+wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_TABLE_PREFIX
 wp db create
 wp core install --title="$WP_SITE_TITLE" --admin_user="$WP_USER" --admin_password="$WP_USER_PASSWORD" --admin_email="$WP_USER_EMAIL"
 wp user update $WP_USER --display_name=administrator --nickname=administrator
