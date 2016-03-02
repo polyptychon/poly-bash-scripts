@@ -50,7 +50,7 @@ else
   DATABASE_EXISTS=0
 fi
 
-if [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS == 1 ]]; then
+if [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ -f $PATH_TO_WORDPRESS/wp-config.php ]] && [[ $DATABASE_EXISTS -eq 1 ]]; then
   echo "Initialization is already done"
   exit
 elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.sql ]] && [[ ! -f $PATH_TO_WORDPRESS/wp-config.php ]]; then
@@ -79,7 +79,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
     DB_TABLE_PREFIX=$DB_TABLE_PREFIX"_"
   fi
   wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_TABLE_PREFIX
-  if [[ $DATABASE_EXISTS == 1 ]]; then
+  if [[ $DATABASE_EXISTS -eq 1 ]]; then
     echo -n "Database $DB_NAME already exists!. Do you want to import local sql dump file to local database? Y/N: "
     read DROP_DATABASE
     if [[ $DROP_DATABASE =~ ^[Yy]$ ]]; then
@@ -88,7 +88,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
       DATABASE_EXISTS=0
     fi
   fi
-  if [[ $DATABASE_EXISTS == 0 ]]; then
+  if [[ $DATABASE_EXISTS -eq 0 ]]; then
     echo "create database"
     wp db create
     wp db import $PATH_TO_EXPORTS/local.sql --path=$PATH_TO_WORDPRESS
@@ -98,7 +98,7 @@ elif [[ -f wp-cli.local.yml ]] && [[ -f .env ]] && [[ -f $PATH_TO_EXPORTS/local.
   exit
 fi
 
-if [[ $DATABASE_EXISTS == 1 ]]; then
+if [[ $DATABASE_EXISTS -eq 1 ]]; then
   echo "Database $DB_NAME already exists!"
   exit
 fi
@@ -210,9 +210,9 @@ while (true); do
   FOLDER="$(pwd)"
   echo -n "You are in folder $FOLDER. Do you want to continue? [y/n]: "
   read answer
-  if [[ $answer == "y" ]]; then
+  if [[ $answer -eq "y" ]]; then
     break;
-  elif [[ $answer == "n" ]]; then
+  elif [[ $answer -eq "n" ]]; then
     exit;
   fi
 
@@ -220,7 +220,7 @@ done
 
 PASSWORD_IS_OK=`mysqladmin --user=$DB_USER --password=$DB_PASSWORD ping | grep -c "mysqld is alive"`
 
-if [ $PASSWORD_IS_OK == 0 ]; then
+if [ $PASSWORD_IS_OK -eq 0 ]; then
   exit;
 fi
 
@@ -413,7 +413,7 @@ commit-local-db
 
 set -e
 
-if [[ $CREATE_REMOTE_GIT == "y" ]]; then
+if [[ $CREATE_REMOTE_GIT -eq "y" ]]; then
   set +e
   hub create -p polyptychon/$DIR_NAME
   if [ -f .env ]; then
@@ -423,7 +423,7 @@ if [[ $CREATE_REMOTE_GIT == "y" ]]; then
   fi
   git push -u origin master
   set -e
-elif [[ $CREATE_REMOTE_GIT == "n" ]]; then
+elif [[ $CREATE_REMOTE_GIT -eq "n" ]]; then
   echo "exiting"
   exit;
 fi

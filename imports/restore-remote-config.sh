@@ -10,15 +10,15 @@ function restore-remote-config {
     echo ".env file does not exist"
     exit
   fi
-  if [ -z $1 ] && [ $1=="quiet" ]; then
+  if [ -z $1 ] && [ $1 -eq "quiet" ]; then
     while (true); do
       FOLDER="$(pwd)"
       echo "You are in folder $FOLDER."
       echo -n "Do you want to restore config to remote site? [y/n]: "
       read answer
-      if [[ $answer == "y" ]]; then
+      if [[ $answer -eq "y" ]]; then
         break;
-      elif [[ $answer == "n" ]]; then
+      elif [[ $answer -eq "n" ]]; then
         exit;
       else
         clear

@@ -53,7 +53,7 @@ if [[ -d $REMOTE_PATH ]]; then
   cd $REMOTE_PATH
   REMOTE_COMMIT_HASH=\$(git rev-parse HEAD)
 
-  if [ $LOCAL_COMMIT_HASH == \$REMOTE_COMMIT_HASH ]; then
+  if [ $LOCAL_COMMIT_HASH -eq \$REMOTE_COMMIT_HASH ]; then
     echo \"Everything is up to date. No action is required\"
     exit
   else
@@ -66,7 +66,7 @@ if [[ -d $REMOTE_PATH ]]; then
     exit
   fi
 else
-  if [ $IS_WORDPRESS==1 ]; then
+  if [ $IS_WORDPRESS -eq 1 ]; then
     cd $REMOTE_SSH_ROOT_PATH
 
     while (true); do
@@ -94,7 +94,7 @@ else
 
       echo -n \"Do you want to create a symlink? [y/n]: \"
       read answer
-      if [[ \$answer == \"y\" ]]; then
+      if [[ \$answer -eq \"y\" ]]; then
         echo -n \" Symlink path (~/public_html/$REMOTE_DOMAIN): \"
         read SYMLINK_PATH_TEMP
         if [ ! -z \${SYMLINK_PATH_TEMP} ]; then
@@ -107,9 +107,9 @@ else
       FOLDER=\"\$(pwd)\"
       echo -n \"You are in folder \$FOLDER. Do you want to continue? [y/n]: \"
       read answer
-      if [[ \$answer == \"y\" ]]; then
+      if [[ \$answer -eq \"y\" ]]; then
         break;
-      elif [[ \$answer == \"n\" ]]; then
+      elif [[ \$answer -eq \"n\" ]]; then
         exit;
       fi
     done

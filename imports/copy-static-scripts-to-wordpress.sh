@@ -34,7 +34,7 @@ function copy-static-scripts-to-wordpress {
 
   if [[ $DIR_NAME != 'static' ]] && [[ `ls -A ./static` ]]; then
     cd ./static
-  elif [[ $DIR_NAME == 'static' ]]; then
+  elif [[ $DIR_NAME -eq 'static' ]]; then
     cd .
   else
     exit

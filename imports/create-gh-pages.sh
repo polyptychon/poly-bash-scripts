@@ -33,7 +33,7 @@ function create-gh-pages {
 
   if [[ $DIR_NAME != 'static' ]] && [[ `ls -A ./static` ]]; then
     cd ./static
-  elif [[ $DIR_NAME == 'static' ]]; then
+  elif [[ $DIR_NAME -eq 'static' ]]; then
     cd .
   else
     exit
@@ -42,7 +42,7 @@ function create-gh-pages {
 
   gulp production
 
-  if [[ $DIR_NAME == 'static' ]]; then
+  if [[ $DIR_NAME -eq 'static' ]]; then
     cd ..
   fi
 
@@ -52,7 +52,7 @@ function create-gh-pages {
 
   trap 'echo "an error occurred"; restore_master' INT TERM EXIT
 
-  if [[ `git branch | grep -Fo gh-pages` == 'gh-pages' ]]; then
+  if [[ `git branch | grep -Fo gh-pages` -eq 'gh-pages' ]]; then
     git checkout gh-pages
     cp -Rf ./static/builds/production/. ./
   else

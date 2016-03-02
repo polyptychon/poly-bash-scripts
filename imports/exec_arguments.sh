@@ -12,7 +12,7 @@ function exec_arguments {
   fi
 
   containsElement "$argument" "${options[@]}"
-  if [[ $? == 1 ]]; then
+  if [[ $? -eq 1 ]]; then
     arguments=("${arguments[@]:1}")
     exec_arguments options[@]
     return
@@ -20,7 +20,7 @@ function exec_arguments {
 
   for option in ${options[@]}
   do
-    if [[  $option == $argument ]]; then
+    if [[  $option -eq $argument ]]; then
       arguments=("${arguments[@]:1}")
       eval "$option"
       break

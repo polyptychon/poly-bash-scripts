@@ -31,13 +31,13 @@ function add-taxonomies {
 
     echo -n "Do you want to generate terms for taxonomy $CUSTOM_TAXONOMY_NAME? [y/n]: "
     read generate_answer
-    if [[ $generate_answer == "y" ]]; then
+    if [[ $generate_answer -eq "y" ]]; then
       wp term generate $CUSTOM_TAXONOMY_NAME --count=10
     fi
 
     echo -n "Do you want to create another taxonomy? [y/n]: "
     read answer
-    if [[ $answer == "n" ]]; then
+    if [[ $answer -eq "n" ]]; then
       break;
     fi
   done

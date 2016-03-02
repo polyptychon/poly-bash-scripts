@@ -76,7 +76,7 @@ for d in */ ; do
         fi
 
         REMOTE_COMMIT_HASH=\$(git rev-parse HEAD)
-        if [ $LOCAL_COMMIT_HASH == \$REMOTE_COMMIT_HASH ]; then
+        if [ $LOCAL_COMMIT_HASH -eq \$REMOTE_COMMIT_HASH ]; then
           echo \"Everything is up to date. No action is required\"
           exit
         else

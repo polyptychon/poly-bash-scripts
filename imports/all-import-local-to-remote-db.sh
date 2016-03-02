@@ -115,7 +115,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
           export SQL_STRING=\"SELECT option_value FROM \\\`\$DB_NAME\\\`.\"\$DB_TABLE_PREFIX\"options WHERE option_name=\\\"siteurl\\\"\"
           export DOMAIN_NAME_FROM_MYSQL=\$(mysql -u\$DB_USER -p\$DB_PASSWORD -s -N -e \"\$SQL_STRING\" | sed -r \"s/^http(s)?:\/\///g\")
 
-          if [[ \$DOMAIN_NAME_FROM_MYSQL==\$LOCAL_DOMAIN ]]; then
+          if [[ \$DOMAIN_NAME_FROM_MYSQL -eq \$LOCAL_DOMAIN ]]; then
             echo \"REMOTE DOMAIN IN DATABASE: ${bold}${green}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}\"
             echo \"REMOTE DOMAIN IN ENV     : ${bold}${green}\$REMOTE_DOMAIN${reset}${reset_bold}\"
           else

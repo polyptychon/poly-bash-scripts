@@ -67,9 +67,9 @@ function backup-remote-sites {
       FOLDER="$(pwd)"
       echo -n "You are in folder $FOLDER. Do you want to continue? [y/n]: "
       read answer
-      if [[ $answer == "y" ]]; then
+      if [[ $answer -eq "y" ]]; then
         break;
-      elif [[ $answer == "n" ]]; then
+      elif [[ $answer -eq "n" ]]; then
         exit;
       fi
     done
@@ -92,7 +92,7 @@ function backup-remote-sites {
 
       echo -n "Do you want to add another remote site for backup? [y/n]: "
       read answer
-      if [[ $answer == "n" ]]; then
+      if [[ $answer -eq "n" ]]; then
         break;
       fi
 

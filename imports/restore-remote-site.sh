@@ -16,9 +16,9 @@ function restore-remote-site {
     echo "You are in folder $FOLDER."
     echo -n "Do you want to restore remote site? [y/n]: "
     read answer
-    if [[ $answer == "y" ]]; then
+    if [[ $answer -eq "y" ]]; then
       break;
-    elif [[ $answer == "n" ]]; then
+    elif [[ $answer -eq "n" ]]; then
       exit;
     else
       clear
