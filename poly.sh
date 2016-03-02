@@ -127,7 +127,7 @@ function create {
   }
   function gh-pages-static {
     echo "gh-pages-static"
-    create-gh-pages
+    create-gh-pages-static
   }
   options=("gh-pages" "gh-pages-static")
   exec_arguments options[@]
