@@ -39,7 +39,7 @@ function add-custom-post-types {
 
     echo -n "Do you want to create another custom post type? [y/n]: "
     read answer
-    if [[ $answer -eq "n" ]]; then
+    if [[ $answer == "n" ]]; then
       break;
     fi
   done

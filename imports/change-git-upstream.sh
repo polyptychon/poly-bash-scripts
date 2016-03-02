@@ -31,7 +31,7 @@ read GIT_REMOTE_ORIGIN_URL_TEMP
 
 if [ ! -z $GIT_REMOTE_ORIGIN_URL_TEMP ]; then
   GIT_REMOTE_ORIGIN_URL=$GIT_REMOTE_ORIGIN_URL_TEMP
-elif [ -z $GIT_REMOTE_ORIGIN_URL_TEMP ] || [ $GIT_REMOTE_ORIGIN_URL -eq $OLD_GIT_REMOTE_ORIGIN_URL ]; then
+elif [ -z $GIT_REMOTE_ORIGIN_URL_TEMP ] || [ $GIT_REMOTE_ORIGIN_URL == $OLD_GIT_REMOTE_ORIGIN_URL ]; then
   echo "You did not change remote origin. Aborting..."
   clean_up
   exit

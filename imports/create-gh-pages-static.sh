@@ -35,7 +35,7 @@ function create-gh-pages-static {
 
   trap 'echo "an error occurred"; restore_master' INT TERM EXIT
 
-  if [[ `git branch | grep -Fo gh-pages` -eq 'gh-pages' ]]; then
+  if [[ `git branch | grep -Fo gh-pages` == 'gh-pages' ]]; then
     git checkout gh-pages
     cp -Rf ./builds/production/. ./
   else

@@ -100,7 +100,7 @@ for d in ${LOCAL_PATHS[@]}; do
 
     DOMAIN_NAME_FROM_MYSQL=`mysql -u$DB_USER -p$DB_PASSWORD -s -N -e "SELECT option_value FROM \\\`$DB_NAME\\\`."$DB_TABLE_PREFIX"options WHERE option_name='siteurl'" | sed -E 's/^http(s)?:\/\///g'`
     STATUS_COLOR=`tput setaf 1`
-    if [[ $DOMAIN_NAME_FROM_MYSQL -eq $LOCAL_DOMAIN ]]; then
+    if [[ $DOMAIN_NAME_FROM_MYSQL == $LOCAL_DOMAIN ]]; then
       STATUS_COLOR=`tput setaf 2`
     fi
     echo

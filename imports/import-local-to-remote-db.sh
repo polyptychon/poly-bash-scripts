@@ -76,7 +76,7 @@ if [[ -f .env ]]; then
   export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -r "s/LOCAL_DOMAIN=//g")
   export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -r "s/REMOTE_DOMAIN=//g")
   echo
-  if [[ $DOMAIN_NAME_FROM_MYSQL -eq $LOCAL_DOMAIN ]]; then
+  if [[ $DOMAIN_NAME_FROM_MYSQL == $LOCAL_DOMAIN ]]; then
     echo "REMOTE DOMAIN IN DATABASE: ${bold}${green}\$DOMAIN_NAME_FROM_MYSQL${reset}${reset_bold}"
     echo "REMOTE DOMAIN IN ENV     : ${bold}${green}\$REMOTE_DOMAIN${reset}${reset_bold}"
   else

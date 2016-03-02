@@ -11,15 +11,15 @@ function restore-remote-db {
     exit
   fi
 
-  if [ -z $1 ] && [ $1 -eq "quiet" ]; then
+  if [ -z $1 ] && [ $1 == "quiet" ]; then
     while (true); do
       FOLDER="$(pwd)"
       echo "You are in folder $FOLDER."
       echo -n "Do you want to restore database to remote site? [y/n]: "
       read answer
-      if [[ $answer -eq "y" ]]; then
+      if [[ $answer == "y" ]]; then
         break;
-      elif [[ $answer -eq "n" ]]; then
+      elif [[ $answer == "n" ]]; then
         exit;
       else
         clear
