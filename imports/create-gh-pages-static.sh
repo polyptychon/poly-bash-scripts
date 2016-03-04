@@ -27,7 +27,7 @@ function create-gh-pages-static {
   set -e
   DIR_NAME=${PWD##*/}
 
-  gulp production
+  # gulp production
 
   set +e
   git stash

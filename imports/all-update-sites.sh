@@ -70,6 +70,7 @@ for d in */ ; do
     if [[ -d .git ]]; then
       set +e
       git add $PATH_TO_WORDPRESS/wp-content/plugins
+      git add $PATH_TO_WORDPRESS/wp-content/languages
       git commit -m "update plugins"
       set -e
     fi
