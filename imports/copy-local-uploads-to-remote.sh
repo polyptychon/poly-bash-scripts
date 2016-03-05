@@ -55,6 +55,7 @@ function copy-local-uploads-to-remote {
 
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
     if [[ $USE_CONTROLMASTER == true ]]; then
+      # --dry-run
       rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $PATH_TO_WORDPRESS/wp-content/uploads/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads
     else
       rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads
