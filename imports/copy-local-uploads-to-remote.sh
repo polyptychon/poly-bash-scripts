@@ -40,6 +40,11 @@ function copy-local-uploads-to-remote {
   reset=`tput sgr0`
   reset_bold=`tput rmso`
 
+  rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
+  if [[ $rsync_version != '3.1.0' ]]; then
+    echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
+  fi
+
   if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
     echo -n "You want to replace remote uploads with local for host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
     read answer
@@ -48,24 +53,18 @@ function copy-local-uploads-to-remote {
     fi
   fi
 
-  rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
-  if [[ $rsync_version != '3.1.0' ]]; then
-    echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
-  fi
-
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
-    if [[ $USE_CONTROLMASTER == true ]]; then
-      # --dry-run
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $PATH_TO_WORDPRESS/wp-content/uploads/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads
-    else
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_WORDPRESS/wp-content/uploads/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads
-    fi
+    PATH_TO_UPLOADS="$PATH_TO_WORDPRESS/wp-content/uploads"
   elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
-    if [[ $USE_CONTROLMASTER == true ]]; then
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $PATH_TO_DRUPAL/sites/default/files/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/files
-    else
-      rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_DRUPAL/sites/default/files/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/files
-    fi
+    PATH_TO_UPLOADS="$PATH_TO_DRUPAL/sites/default/files"
+  else
+    echo "Could not find path! Exiting..."
+    exit
   fi
-
+  CONTROL_PATH=""
+  if [[ $USE_CONTROLMASTER == true ]]; then
+    CONTROL_PATH="-o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'"
+  fi
+  # --dry-run
+  rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT $CONTROL_PATH" --progress $PATH_TO_UPLOADS/* $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_UPLOADS
 }
