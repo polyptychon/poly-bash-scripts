@@ -31,21 +31,20 @@ function copy-remote-uploads-to-local {
   if [[ $rsync_version != '3.1.0' ]]; then
     echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
   fi
+
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
-    if [[ $USE_CONTROLMASTER == true ]]; then
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads/* $PATH_TO_WORDPRESS/wp-content/uploads
-    else
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-content/uploads/* $PATH_TO_WORDPRESS/wp-content/uploads
-    fi
+    PATH_TO_UPLOADS="$PATH_TO_WORDPRESS/wp-content/uploads"
   elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
-    if [[ $USE_CONTROLMASTER == true ]]; then
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT -o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/files/* $PATH_TO_DRUPAL/sites/default/files
-    else
-      rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/files/* $PATH_TO_DRUPAL/sites/default/files
-    fi
-    # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/files" $PATH_TO_DRUPAL/sites/default/
+    PATH_TO_UPLOADS="$PATH_TO_DRUPAL/sites/default/files"
   else
-    echo "Can not find CMS installation. Exiting..."
-    exit;
+    echo "Could not find path! Exiting..."
+    exit
   fi
+  CONTROL_PATH=""
+  if [[ $USE_CONTROLMASTER == true ]]; then
+    CONTROL_PATH="-o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'"
+  fi
+
+  rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT $CONTROL_PATH" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_UPLOADS/* $PATH_TO_UPLOADS
+  # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/$PATH_TO_UPLOADS/*" $PATH_TO_UPLOADS
 }
