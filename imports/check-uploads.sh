@@ -48,7 +48,7 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
 
   if curl --output /dev/null --silent --head --fail "http://$REMOTE_DOMAIN/$URL"
   then
-    echo -ne "\r                                                                                                                \r"
+    seq 1 1000000 | while read i; do echo -en "\r$i"; done
     echo -ne "\rFile ${bold}${green} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} Exist\r"
   else
     echo "File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} does not Exist"
