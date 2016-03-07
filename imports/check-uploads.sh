@@ -39,7 +39,7 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   if [[ $FILENAME == $PATH_TO_UPLOADS ]]; then
     continue
   fi
-  if curl --output /dev/null --silent --head --fail "http://$REMOTE_DOMAIN/$FILENAME"
+  if curl --data-urlencode --output /dev/null --silent --head --fail "http://$REMOTE_DOMAIN/$FILENAME"
   then
     echo -ne "\r                                                                                                                \r"
     echo -ne "\rFile ${bold}${green} http://$REMOTE_DOMAIN/$FILENAME ${reset}${reset_bold} Exist\r"
