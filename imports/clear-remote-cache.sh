@@ -34,7 +34,7 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
     rm -rf $PATH_TO_WORDPRESS/$PATH_TO_CACHE/supercache/*
     wp cache flush
   elif [ -d $PATH_TO_DRUPAL ]  && [[ -d $PATH_TO_WORDPRESS/$PATH_TO_CACHE ]]; then
-
+    echo "Drupal is not supported"
   fi
   exit
 EOF
