@@ -48,7 +48,9 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   STATUS=`curl -s --head "http://$REMOTE_DOMAIN/$URL" | head -n 1`
   if [[ $STATUS =~ "HTTP/1.1 200 OK" ]]
   then
-    echo "File ${bold}${green} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
+    TEMP="\r                                                                                                         \r"
+    echo -ne "$TEMP"
+    echo -ne "\rFile ${bold}${green} $FILE_NAME ${reset}${reset_bold} $STATUS\r"
   else
     echo "File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
   fi
