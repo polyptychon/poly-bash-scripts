@@ -22,6 +22,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
 source $POLY_SCRIPTS_FOLDER/imports/check-uploads.sh
+source $POLY_SCRIPTS_FOLDER/imports/clear-remote-cache.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-local-uploads-to-remote.sh
@@ -179,6 +180,16 @@ function deploy {
   exec_arguments options[@]
 }
 
+#CLEAR
+function clear {
+  function remote-cache {
+    echo "clear remote-cache"
+    clear-remote-cache
+  }
+  options=("remote-cache")
+  exec_arguments options[@]
+}
+
 #CHECK
 function check {
   function uploads {
@@ -272,7 +283,7 @@ function change {
 }
 
 function main {
-  options=("init" "import" "backup" "restore" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
+  options=("init" "import" "backup" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 

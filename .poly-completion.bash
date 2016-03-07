@@ -10,6 +10,8 @@ _poly_complete() {
     COMPREPLY=( $( compgen -W 'local-database-to-remote remote-database-to-local' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "check" ]]; then
     COMPREPLY=( $( compgen -W 'uploads' -- $cur ) );
+  elif [[ ${COMP_WORDS[1]} == "clear" ]]; then
+    COMPREPLY=( $( compgen -W 'remote-cache' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "backup" ]]; then
     COMPREPLY=( $( compgen -W 'remote-sites' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "all" ]]; then
@@ -41,7 +43,7 @@ _poly_complete() {
       COMPREPLY=( $( compgen -W 'remote' -- $cur ) );
     fi
   else
-    COMPREPLY=( $( compgen -W 'init import backup restore commit check copy create add deploy change all' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'init import backup restore clear commit check copy create add deploy change all' -- $cur ) );
   fi
 }
 complete -o nospace -F _poly_complete poly
