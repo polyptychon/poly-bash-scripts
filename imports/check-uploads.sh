@@ -38,10 +38,10 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   fi
   if curl --output /dev/null --silent --head --fail "http://$REMOTE_DOMAIN/$FILENAME"
   then
-    echo -ne "\r                                                                                                     \r"
-    echo -ne "\rThis ${bold}${green}$FILENAME${reset}${reset_bold} Exist\r"
+    echo -ne "\r                                                                                                                \r"
+    echo -ne "\rFile ${bold}${green}$FILENAME${reset}${reset_bold} Exist\r"
   else
-    echo "This ${bold}${red}$FILENAME${reset}${reset_bold} Not Exist"
+    echo "File ${bold}${red}$FILENAME${reset}${reset_bold} does not Exist"
   fi
 done
 echo -ne '\n'
