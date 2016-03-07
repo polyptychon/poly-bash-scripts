@@ -110,8 +110,8 @@ for d in ${LOCAL_PATHS[@]}; do
       echo
       sed -e "s/$REMOTE_DOMAIN/$LOCAL_DOMAIN/g;s/\<wordpress@$LOCAL_DOMAIN\>/\<wordpress@$REMOTE_DOMAIN\>/g;s/$d.$SSH_HOST/$LOCAL_DOMAIN/g" ../$PATH_TO_TEMP_EXPORTS/$d.sql > ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql
       wp db import ../$PATH_TO_TEMP_EXPORTS/$d.temp.sql --path=$PATH_TO_WORDPRESS
-      cd ..
     fi
+    cd ..
   else
     echo "could not find $d.sql"
   fi
