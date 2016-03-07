@@ -37,7 +37,7 @@ else
   exit
 fi
 
-trap 'echo -ne "\nExiting..."; cd ..' INT TERM EXIT
+trap 'echo -ne "\nExiting...\n"; cd ..' INT TERM EXIT
 find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   if [[ $FILENAME == $PATH_TO_UPLOADS ]] || [[ -d $FILENAME ]]; then
     continue
