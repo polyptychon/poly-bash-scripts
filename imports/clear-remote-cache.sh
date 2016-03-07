@@ -1,12 +1,4 @@
 #!/bin/bash
-
-function get_env_value {
-  echo `sed -n "/$1/p" .env | sed -E "s/$1=//g"`
-}
-rawurlencode() {
-  local string="${1}"
-  echo "${string// /%20}"
-}
 function clear-remote-cache() {
 
 if [[ -f .env ]]; then
