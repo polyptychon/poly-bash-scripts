@@ -20,6 +20,8 @@ source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
+source $POLY_SCRIPTS_FOLDER/imports/check-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/commit-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/copy-local-uploads-to-remote.sh
@@ -41,7 +43,6 @@ source $POLY_SCRIPTS_FOLDER/imports/restore-remote-repository.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-config.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-db.sh
-source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
 
 #INIT
 function init {
@@ -178,6 +179,16 @@ function deploy {
   exec_arguments options[@]
 }
 
+#CHECK
+function check {
+  function uploads {
+    echo "check uploads"
+    check-uploads
+  }
+  options=("uploads")
+  exec_arguments options[@]
+}
+
 #DEPLOY
 function restore {
   function remote {
@@ -261,7 +272,7 @@ function change {
 }
 
 function main {
-  options=("init" "import" "backup" "restore" "commit" "copy" "create" "add" "deploy" "change" "all")
+  options=("init" "import" "backup" "restore" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 
