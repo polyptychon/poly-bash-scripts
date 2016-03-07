@@ -45,12 +45,12 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   FILE_NAME=`basename "${FILENAME}"`
   FILE_PATH=`dirname "${FILENAME}"`
   URL=$FILE_PATH/`rawurlencode "${FILE_NAME}"`
-
-  if curl --output /dev/null --silent --head --fail "http://$REMOTE_DOMAIN/$URL"
+  STATUS=`curl -s --head "http://$REMOTE_DOMAIN/$URL" | head -n 1`
+  if [[ $STATUS =~ "HTTP/1.1 200 OK" ]]
   then
-    echo "File ${bold}${green} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} Exist"
+    echo "File ${bold}${green} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
   else
-    echo "File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} does not Exist"
+    echo "File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
   fi
 done
 cd ..
