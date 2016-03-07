@@ -36,7 +36,6 @@ else
   echo "Could not find path! Exiting..."
   exit
 fi
-
 trap 'echo "Exiting..."; cd ..' INT TERM EXIT
 find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   if [[ $FILENAME == $PATH_TO_UPLOADS ]] || [[ -d $FILENAME ]]; then
@@ -48,12 +47,15 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
   STATUS=`curl -s --head "http://$REMOTE_DOMAIN/$URL" | head -n 1`
   if [[ $STATUS =~ "HTTP/1.1 200 OK" ]]
   then
-    TEMP="\r                                                                                                         \r"
-    echo -ne "$TEMP"
-    echo -ne "\rFile ${bold}${green} $FILE_NAME ${reset}${reset_bold} $STATUS\r"
+    OUTPUT_LENGTH=${#OUTPUT}
+    OUTPUT_LENGTH=$((OUTPUT_LENGTH+2))
+    CLEAN_LINE=`while [ $OUTPUT_LENGTH -gt 1 ]; do echo -n ' ';OUTPUT_LENGTH=$(($OUTPUT_LENGTH-1)); done`
+    echo -ne "\r$CLEAN_LINE\r"
+    OUTPUT="\rFile ${bold}${green} $FILE_NAME ${reset}${reset_bold} $STATUS\r"
   else
-    echo "File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
+    OUTPUT="File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
   fi
+  echo -ne "$OUTPUT"
 done
 cd ..
 echo -ne '\n'
