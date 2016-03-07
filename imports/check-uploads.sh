@@ -52,10 +52,12 @@ find $PATH_TO_UPLOADS '*.*' | while read FILENAME; do
     CLEAN_LINE=`while [ $OUTPUT_LENGTH -gt 1 ]; do echo -n ' ';OUTPUT_LENGTH=$(($OUTPUT_LENGTH-1)); done`
     echo -ne "\r$CLEAN_LINE\r"
     OUTPUT="\rFile ${bold}${green} $FILE_NAME ${reset}${reset_bold} $STATUS\r"
+    echo -ne "$OUTPUT"
   else
     OUTPUT="File ${bold}${red} http://$REMOTE_DOMAIN/$URL ${reset}${reset_bold} $STATUS"
+    echo "$OUTPUT"
   fi
-  echo -ne "$OUTPUT"
+
 done
 cd ..
 echo -ne '\n'
