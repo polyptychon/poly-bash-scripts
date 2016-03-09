@@ -1,6 +1,9 @@
 #!/bin/bash
 
 function backup-remote-sites {
+  function clean_up {
+    ssh -O exit -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" user@host
+  }
   set -e
   if [ ! -z $2 ] && [ -d "$1 $2" ]; then
     echo $1 $2
@@ -125,6 +128,8 @@ function backup-remote-sites {
   fi
 
   getArray "sites.txt"
+
+  trap 'echo "Error; clean_up"' INT TERM EXIT
 
   for e in "${sites[@]}"
   do
