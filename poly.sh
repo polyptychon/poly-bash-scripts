@@ -20,6 +20,8 @@ source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/bootstrap-wordpress.sh
+source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
 source $POLY_SCRIPTS_FOLDER/imports/check-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/clear-remote-cache.sh
@@ -200,6 +202,20 @@ function check {
   exec_arguments options[@]
 }
 
+#BOOTSTRAP
+function bootstrap {
+  function wordpress {
+    echo "check uploads"
+    bootstrap-wordpress
+  }
+  function static {
+    echo "check uploads"
+    bootstrap-static
+  }
+  options=("wordpress" "static")
+  exec_arguments options[@]
+}
+
 #DEPLOY
 function restore {
   function remote {
@@ -283,7 +299,7 @@ function change {
 }
 
 function main {
-  options=("init" "import" "backup" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
+  options=("init" "import" "backup" "bootstrap" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 
