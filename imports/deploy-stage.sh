@@ -161,7 +161,7 @@ else
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
 
       echo \"<IfModule mod_deflate.c>\" >> $PATH_TO_WORDPRESS/.htaccess
-      echo \"<FilesMatch \\\"\\\\\.(js|css|html|htm|php|xml|svg|woff|woff2)$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"<FilesMatch \\\"\\\.(js|css|html|htm|php|xml|svg|woff|woff2)$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"SetOutputFilter DEFLATE\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</IfModule>\" >> $PATH_TO_WORDPRESS/.htaccess
