@@ -154,20 +154,20 @@ else
       echo \"# BEGIN Optimization\" >> $PATH_TO_WORDPRESS/.htaccess
 
       echo \"# unset cookies for assets\" >> $PATH_TO_WORDPRESS/.htaccess
-      echo \"<FilesMatch \\\"\\\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|ico|swf|svg)\$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"<FilesMatch \\\"\\\.(js|css|jpg|png|jpeg|gif|xml|json|txt|pdf|mov|avi|otf|woff|woff2|ico|swf|svg)\$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"RequestHeader unset Cookie\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"Header unset Cookie\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"Header unset Set-Cookie\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
 
       echo \"<IfModule mod_deflate.c>\" >> $PATH_TO_WORDPRESS/.htaccess
-      echo \"<FilesMatch \\\"\\\\\.(js|css|html|htm|php|xml|svg)$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"<FilesMatch \\\"\\\\\.(js|css|html|htm|php|xml|svg|woff|woff2)$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"SetOutputFilter DEFLATE\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</IfModule>\" >> $PATH_TO_WORDPRESS/.htaccess
 
       echo \"# 480 weeks\" >> $PATH_TO_WORDPRESS/.htaccess
-      echo \"<FilesMatch \\\"\\\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|woff|svg)\$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"<FilesMatch \\\"\\\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|woff|woff2|svg)\$\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"Header set Cache-Control \\\"max-age=290304000, public\\\"\" >> $PATH_TO_WORDPRESS/.htaccess
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
 
