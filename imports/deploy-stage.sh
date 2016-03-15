@@ -92,19 +92,19 @@ else
         DB_PASSWORD=\$DB_PASSWORD_TEMP
       fi
 
+      FOLDER=\"\$(pwd)\"
       echo -n \"Do you want to create a symlink? [y/n]: \"
       read answer
       if [[ \$answer == \"y\" ]]; then
-        echo -n \" Symlink path (~/public_html/$REMOTE_DOMAIN): \"
+        echo -n \" Symlink path ($REMOTE_DOMAIN): \"
         read SYMLINK_PATH_TEMP
         if [ ! -z \${SYMLINK_PATH_TEMP} ]; then
           SYMLINK_PATH=\$SYMLINK_PATH_TEMP
         else
-          SYMLINK_PATH="~/public_html/$REMOTE_DOMAIN"
+          SYMLINK_PATH="$REMOTE_DOMAIN"
         fi
       fi
 
-      FOLDER=\"\$(pwd)\"
       echo -n \"You are in folder \$FOLDER. Do you want to continue? [y/n]: \"
       read answer
       if [[ \$answer == \"y\" ]]; then
@@ -127,7 +127,7 @@ else
 
     if [ ! -z \${SYMLINK_PATH} ]; then
       FOLDER=\"\$(pwd)\"
-      ln -s "\$FOLDER/$PATH_TO_WORDPRESS" \$SYMLINK_PATH
+      ln -s "\$FOLDER/$PATH_TO_WORDPRESS" "~/public_html/\$SYMLINK_PATH"
     fi
 
     if [ -f $PATH_TO_EXPORTS/local.sql ]; then
