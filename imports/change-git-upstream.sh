@@ -49,7 +49,7 @@ git remote rm origin
 git remote add origin $GIT_REMOTE_ORIGIN_URL
 git remote -v # Check new remote origin
 set +e
-git push --set-upstream origin master
+git push --set-upstream-to origin/master
 set -e
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
@@ -58,7 +58,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
   git remote add origin $GIT_REMOTE_ORIGIN_URL
   git remote -v
   git fetch
-  git branch --set-upstream master origin/master
+  git branch --set-upstream-to origin/master
   exit
 '"
 
