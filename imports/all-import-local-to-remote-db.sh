@@ -55,6 +55,11 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
+if [[ -z $REMOTE_PATH ]]; then
+  echo "REMOTE_PATH variable is not set!"
+  exit
+fi
+
 if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $REMOTE_PATH ]]; then
   echo "import all local databases to remote host: ${bold}${red}$SSH_HOST${reset}${reset_bold}"
 else
