@@ -24,6 +24,10 @@ if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
 
+if [[ -z $PATH_TO_DRUPAL ]]; then
+  PATH_TO_DRUPAL="drupal_site"
+fi
+
 if [[ -z $REMOTE_PATH ]]; then
   THE_SITES_PATH="~/domains"
 else
@@ -49,7 +53,7 @@ if [[ -d ~/.ssh ]]; then
   ssh -p $SSH_PORT -nNf -o ControlMaster=yes -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" $SSH_USERNAME@$SSH_HOST
 fi
 for d in */ ; do
-  if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
+  if [[ -d $d/$PATH_TO_WORDPRESS ]] || [[ -d $d/$PATH_TO_DRUPAL ]]; then
     cd "$d"
     set -e
     trap 'echo "could not copy remote uploads; clean_up"' INT TERM EXIT
@@ -57,7 +61,7 @@ for d in */ ; do
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
-      copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS true
+      copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $PATH_TO_DRUPAL true
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-remote-uploads-to-local

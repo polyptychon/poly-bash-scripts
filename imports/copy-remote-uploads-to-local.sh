@@ -23,10 +23,21 @@ function copy-remote-uploads-to-local {
     PATH_TO_WORDPRESS=$5
   fi
   if [[ ! -z $6 ]]; then
-    USE_CONTROLMASTER=$6
+    PATH_TO_DRUPAL=$6
+  fi
+  if [[ ! -z $6 ]]; then
+    USE_CONTROLMASTER=$7
   else
     USE_CONTROLMASTER=false
   fi
+
+  if [[ -z $PATH_TO_WORDPRESS ]]; then
+    PATH_TO_WORDPRESS="wordpress"
+  fi
+  if [[ -z $PATH_TO_DRUPAL ]]; then
+    PATH_TO_DRUPAL="drupal_site"
+  fi
+
   rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
   if [[ $rsync_version != '3.1.0' ]]; then
     echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
