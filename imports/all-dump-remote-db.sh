@@ -108,7 +108,7 @@ rsync -avz -e "ssh -p $SSH_PORT" --progress $SSH_USERNAME@$SSH_HOST:~/$PATH_TO_T
 for d in ${LOCAL_PATHS[@]}; do
   if [[ -f $PATH_TO_TEMP_EXPORTS/$d.sql ]]; then
     if [[ -d $d/exports ]]; then
-      cp ../$PATH_TO_TEMP_EXPORTS/$d.sql $d/exports/remote.sql
+      cp $PATH_TO_TEMP_EXPORTS/$d.sql $d/exports/remote.sql
     else
       echo "could not find path $d/exports"
     fi
