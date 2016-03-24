@@ -19,6 +19,9 @@ fi
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
+if [[ -z $PATH_TO_DRUPAL ]]; then
+  PATH_TO_DRUPAL="drupal_site"
+fi
 
 if [[ -z $REMOTE_PATH ]]; then
   THE_SITES_PATH="~/domains"
@@ -49,7 +52,7 @@ fi
 ASK_FOR_CONFIRMATION="n"
 
 for d in */ ; do
-  if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
+  if [[ -d $d/$PATH_TO_WORDPRESS ]] || [[ -d $d/$PATH_TO_DRUPAL ]]; then
     cd "$d"
     set -e
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
@@ -57,7 +60,7 @@ for d in */ ; do
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
-      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $USE_CONTROL_MASTER $ASK_FOR_CONFIRMATION
+      copy-local-uploads-to-remote $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $PATH_TO_DRUPAL $USE_CONTROL_MASTER $ASK_FOR_CONFIRMATION
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-local-uploads-to-remote

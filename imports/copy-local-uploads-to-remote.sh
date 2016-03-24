@@ -24,10 +24,21 @@ function copy-local-uploads-to-remote {
     PATH_TO_WORDPRESS=$5
   fi
   if [[ ! -z $6 ]]; then
-    USE_CONTROLMASTER=$6
+    PATH_TO_DRUPAL=$6
+  fi
+  if [[ ! -z $7 ]]; then
+    USE_CONTROLMASTER=$7
   else
     USE_CONTROLMASTER=false
   fi
+
+  if [[ -z $PATH_TO_WORDPRESS ]]; then
+    PATH_TO_WORDPRESS="wordpress"
+  fi
+  if [[ -z $PATH_TO_DRUPAL ]]; then
+    PATH_TO_DRUPAL="drupal_site"
+  fi
+
   if [[ ! -z $7 ]]; then
     ASK_FOR_CONFIRMATION=$7
   else

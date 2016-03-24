@@ -25,7 +25,7 @@ function copy-remote-uploads-to-local {
   if [[ ! -z $6 ]]; then
     PATH_TO_DRUPAL=$6
   fi
-  if [[ ! -z $6 ]]; then
+  if [[ ! -z $7 ]]; then
     USE_CONTROLMASTER=$7
   else
     USE_CONTROLMASTER=false
