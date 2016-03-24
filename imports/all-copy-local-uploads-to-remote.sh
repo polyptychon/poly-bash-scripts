@@ -56,7 +56,7 @@ for d in */ ; do
     cd "$d"
     set -e
     trap 'echo "could not copy remote uploads"' INT TERM EXIT
-    if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]] && [[ ! -z $PATH_TO_WORDPRESS ]]; then
+    if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]]; then
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
