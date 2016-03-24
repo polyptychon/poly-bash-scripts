@@ -109,6 +109,7 @@ for d in ${LOCAL_PATHS[@]}; do
   if [[ -f $PATH_TO_TEMP_EXPORTS/$d.sql ]]; then
     if [[ -d $d/exports ]]; then
       cp $PATH_TO_TEMP_EXPORTS/$d.sql $d/exports/remote.sql
+      echo "${bold}${green}Success${reset}${reset_bold}: Copy from ../$PATH_TO_TEMP_EXPORTS/$d.sql to $d/exports/remote.sql"
     else
       echo "could not find path $d/exports"
     fi
