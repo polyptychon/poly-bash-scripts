@@ -37,6 +37,10 @@ if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
 
+if [[ -z $PATH_TO_DRUPAL ]]; then
+  PATH_TO_DRUPAL="drupal_site"
+fi
+
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
   PATH_TO_TEMP_EXPORTS="temp_dump"
 fi
