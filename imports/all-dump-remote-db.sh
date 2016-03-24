@@ -29,6 +29,13 @@ fi
 
 LOCAL_PATHS=()
 
+if [[ -z $REMOTE_PATH ]] && [[ !-z REMOTE_SSH_ROOT_PATH ]]; then
+  REMOTE_PATH=$REMOTE_SSH_ROOT_PATH
+else
+  echo "REMOTE_PATH variable is not set!"
+  exit
+fi
+
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
