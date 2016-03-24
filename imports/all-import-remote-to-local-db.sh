@@ -137,6 +137,8 @@ for d in ${LOCAL_PATHS[@]}; do
       DB_USER=`get_drupal_config_value 'username'`
       DB_PASSWORD=`get_drupal_config_value 'password'`
       mysql -u$DB_USER -p$DB_PASSWORD $DB_NAME < ../$PATH_TO_TEMP_EXPORTS/$d.sql
+      echo
+      echo "${bold}${green}Success${reset}${reset_bold}: Imported from ../$PATH_TO_TEMP_EXPORTS/$d.sql"
     fi
     cd ..
   else
