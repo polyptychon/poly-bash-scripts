@@ -43,7 +43,7 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
+echo -n "You are about to download ${bold}${red}ALL remote${reset}${reset_bold} databases from remote host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
 read REPLY
 if [[ $REPLY =~ ^[Nn]$ ]]; then
   echo "Exiting..."
@@ -81,6 +81,7 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
         export DB_PASSWORD=\$(sed -n "/DB_PASSWORD/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_PASSWORD'.?.?'//g" | sed -r "s/'.+//g")
         mysqldump -u\$DB_USER -p\$DB_PASSWORD \$DB_NAME > ~/$PATH_TO_TEMP_EXPORTS/\$d.sql
       elif [[ -d $PATH_TO_DRUPAL ]]; then
+        echo \$d
         export DB_NAME=\$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'database' => '//g" | sed -r "s/',$//g")
         export DB_USER=\$(sed -n "/'username' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'username' => '//g" | sed -r "s/',$//g")
         export DB_PASSWORD=\$(sed -n "/'password' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^\s\*/d' | sed -r "s/^.+'password' => '//g" | sed -r "s/',$//g")
