@@ -3,6 +3,9 @@
 function get_wp_config_value {
   echo `sed -n "/$1/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.+$1'.?.?'//g" | sed -E "s/');$//g"`
 }
+function get_drupal_config_value {
+  echo `sed -n "/\'$1\'.\=\>/p" $PATH_TO_DRUPAL/sites/default/settings.php | sed -E "s/.+\'$1\'.\=\>//g" | sed -E "s/\'\,$//g" | sed -E "s/\'//g" | sed -E "s/$1|password|username|databasename|(\/path\/to\/databasefilename)//g"`
+}
 
 function get_env_value {
   if [[ -z $2 ]]; then
@@ -88,6 +91,19 @@ for d in */ ; do
     mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > ../$PATH_TO_TEMP_EXPORTS/$PATH_NAME.sql
     echo "${bold}${green}Success${reset}${reset_bold}: File $PATH_NAME.sql"
     cd ..
+  elif [[ -d $d/$PATH_TO_DRUPAL ]]; then
+    PATH_NAME=$(echo $d | sed -E "s/\///g")
+    LOCAL_PATHS+=($PATH_NAME)
+    cd $d
+
+    DB_NAME=`get_drupal_config_value 'DB_NAME'`
+    DB_USER=`get_drupal_config_value 'DB_USER'`
+    DB_PASSWORD=`get_drupal_config_value 'DB_PASSWORD'`
+
+    # export local db to sql dump file
+    mysqldump -u$DB_USER -p$DB_PASSWORD $DB_NAME > ../$PATH_TO_TEMP_EXPORTS/$PATH_NAME.sql
+    echo "${bold}${green}Success${reset}${reset_bold}: File $PATH_NAME.sql"
+    cd ..
   fi
 done
 
@@ -109,7 +125,7 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
       fi
       if [[ -d $PATH_TO_WORDPRESS ]]; then
         echo \$d
-        if [[ true ]] || [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
+        if [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
           if [[ -f .env ]]; then
             export LOCAL_DOMAIN=\$(sed -n "/LOCAL_DOMAIN/p" .env | sed -r "s/LOCAL_DOMAIN=//g")
             export REMOTE_DOMAIN=\$(sed -n "/REMOTE_DOMAIN/p" .env | sed -r "s/REMOTE_DOMAIN=//g")
@@ -142,6 +158,18 @@ ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
           echo
         else
           echo \"Could not find sqldump: $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql\"
+        fi
+      elif [[ -d $PATH_TO_DRUPAL ]]; then
+        if [[ -f $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql ]]; then
+          echo \$d
+          export DB_NAME=\$(sed -n "/'database' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^.\*/d' | sed -r "s/^.+'database' => '//g" | sed -r "s/',$//g")
+          export DB_USER=\$(sed -n "/'username' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^.\*/d' | sed -r "s/^.+'username' => '//g" | sed -r "s/',$//g")
+          export DB_PASSWORD=\$(sed -n "/'password' => /p" $PATH_TO_DRUPAL/sites/default/settings.php | sed '/^.\*/d' | sed -r "s/^.+'password' => '//g" | sed -r "s/',$//g")
+
+          echo \$DB_NAME
+
+          mysql -p\$DB_PASSWORD -u\$DB_USER \$DB_NAME < $REMOTE_PATH/$PATH_TO_TEMP_EXPORTS/\$d.sql
+          echo "Success!"
         fi
       fi
       cd ..
