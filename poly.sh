@@ -42,6 +42,8 @@ source $POLY_SCRIPTS_FOLDER/imports/deploy-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
+source $POLY_SCRIPTS_FOLDER/imports/optimize-local-assets.sh
+source $POLY_SCRIPTS_FOLDER/imports/optimize-local-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-site.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-repository.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-config.sh
@@ -303,8 +305,22 @@ function change {
   exec_arguments options[@]
 }
 
+#OPTIMIZE
+function optimize {
+  function local-assets {
+    echo "optimize local assets"
+    optimize-local-assets
+  }
+  function local-uploads {
+    echo "optimize local uploads"
+    optimize-local-uploads
+  }
+  options=("local-assets" "local-uploads")
+  exec_arguments options[@]
+}
+
 function main {
-  options=("init" "import" "backup" "bootstrap" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
+  options=("optimize" "init" "import" "backup" "bootstrap" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 
