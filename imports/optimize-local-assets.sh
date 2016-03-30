@@ -29,8 +29,7 @@ function optimize-local-assets {
   fi
   ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
   if [[ -z ${ACTIVE_THEME} ]]; then
-    echo "Could not find active theme! Exiting..."
-    exit
+    ACTIVE_THEME=${PWD##*/}
   fi
   if [[ -z $PATH_TO_WORDPRESS ]]; then
     PATH_TO_WORDPRESS="wordpress"
