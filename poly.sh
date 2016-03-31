@@ -18,6 +18,8 @@ source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-npm-install.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-open-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-open-pagespeed.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-open-validate-html.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
@@ -275,6 +277,14 @@ function all {
     echo "open all local sites"
     all-open-sites
   }
+  function open-pagespeed {
+    echo "open all local sites for pagespeed"
+    all-open-pagespeed
+  }
+  function open-validate-html {
+    echo "open all local sites for validation"
+    all-open-validate-html
+  }
   function symlink-uploads {
     echo "Symlink uploads"
     all-symlink-uploads
@@ -295,7 +305,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("dump-remote-db" "import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "symlink-uploads" "exec-command" "npm-install")
+  options=("dump-remote-db" "import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "open-pagespeed" "open-validate-html" "symlink-uploads" "exec-command" "npm-install")
   exec_arguments options[@]
 }
 
