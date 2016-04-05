@@ -17,6 +17,10 @@ if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS=wordpress
 fi
 
+if [[ -z $PATH_TO_DRUPAL ]]; then
+  PATH_TO_DRUPAL="drupal_site"
+fi
+
 bold=`tput bold`
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -34,7 +38,7 @@ echo -n "Please type project folder name to run command (.):"
 read DIR_
 
 for d in */ ; do
-  if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
+  if [[ -d $d/$PATH_TO_WORDPRESS ]] || [[ -d $d/$PATH_TO_DRUPAL ]]; then
     cd "$d"
     set -e
     trap 'echo "Could not change directory $DIR_"' INT TERM EXIT
