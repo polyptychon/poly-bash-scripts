@@ -34,6 +34,6 @@ function deploy-static {
     if [[ $rsync_version != '3.1.0' ]]; then
       echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
     fi
-    rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_STATIC_BUILD/ $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/
+    rsync --iconv=UTF-8-MAC,UTF-8 --exclude .DS_STORE -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_STATIC_BUILD/ $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/
   fi
 }
