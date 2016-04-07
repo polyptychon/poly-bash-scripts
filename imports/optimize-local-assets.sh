@@ -63,6 +63,10 @@ function optimize-local-assets {
     compress-images-in-folder ./static/_mockups/sprite
   fi
 
+  if [[ -d ./_mockups/sprite ]]; then
+    compress-images-in-folder ./_mockups/sprite
+  fi
+
   if [[ -d ./$PATH_TO_DRUPAL/sites/all/themes ]]; then
     for img in `find ./$PATH_TO_DRUPAL/sites/all/themes/ -type f -name "*.png" -or -name "*.jpg"`; do
       echo "crushing $img ..."
