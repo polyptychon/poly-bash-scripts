@@ -10,13 +10,22 @@ function deploy-static {
   fi
 
   if [ -z $PATH_TO_STATIC_BUILD ] || [ ! -d $PATH_TO_STATIC_BUILD ]; then
-    echo "Can not find static folder. Exiting..."
+    echo "Can not find static folder."
+    echo "You must define variable PATH_TO_STATIC_BUILD to .env file."
+    echo "Exiting..."
     exit;
   fi
-  echo -n "Do you want to build static files? Y/N "
-  read answer_static
-  if [[ $answer_static =~ ^[Yy]$ ]]; then
-    gulp production
+  if [ -z $REMOTE_PATH ]; then
+    echo "You must define variable REMOTE_PATH to .env file."
+    echo "Exiting..."
+    exit;
+  fi
+  if [[ -f gulpfile.js ]] && [[ -f package.json ]]; then
+    echo -n "Do you want to build static files? Y/N "
+    read answer_static
+    if [[ $answer_static =~ ^[Yy]$ ]]; then
+      gulp production
+    fi
   fi
   echo -n "You want to sync remote files with local. Are you sure? Y/N "
   read answer
@@ -25,6 +34,6 @@ function deploy-static {
     if [[ $rsync_version != '3.1.0' ]]; then
       echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
     fi
-    rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_STATIC_BUILD/ $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/
+    rsync --iconv=UTF-8-MAC,UTF-8 -avz -e "ssh -p $SSH_PORT" --progress $PATH_TO_STATIC_BUILD/ $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/
   fi
 }
