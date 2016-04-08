@@ -54,7 +54,7 @@ for d in */ ; do
 
     REMOTE_PATH=`get_env_value "REMOTE_PATH"`
     REMOTE_PATH_LOWER=$(echo $REMOTE_PATH | tr '[:upper:]' '[:lower:]')
-    echo $REMOTE_PATH
+    echo ${bold}${green}$REMOTE_PATH${reset}${reset_bold}
 
     set +e
     git stash --quiet
