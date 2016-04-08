@@ -104,7 +104,7 @@ for d in ${LOCAL_PATHS[@]}; do
     if [[ -d $d/$PATH_TO_WORDPRESS ]]; then
       cp $PATH_TO_TEMP_EXPORTS/.htaccess-$d $d/$PATH_TO_WORDPRESS/.htaccess
       echo "${bold}${green}Success${reset}${reset_bold}: Copy from ../$PATH_TO_TEMP_EXPORTS/.htaccess-$d to $d/$PATH_TO_WORDPRESS/.htaccess"
-    elif [[ ]]; then
+    elif [[ -d $d/$PATH_TO_DRUPAL ]]; then
       cp $PATH_TO_TEMP_EXPORTS/.htaccess-$d $d/$PATH_TO_DRUPAL/.htaccess
       echo "${bold}${green}Success${reset}${reset_bold}: Copy from ../$PATH_TO_TEMP_EXPORTS/.htaccess-$d to $d/$PATH_TO_DRUPAL/.htaccess"
     else
