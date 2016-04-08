@@ -81,10 +81,10 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
       elif [[ -d \$dl ]]; then
         cd \$dl
       fi
-      if [[ -d $PATH_TO_WORDPRESS ]]; then
+      if [[ -d $PATH_TO_WORDPRESS ]] && [[ -f $PATH_TO_WORDPRESS/.htaccess ]]; then
         echo \$d
         cp $PATH_TO_WORDPRESS/.htaccess ~/$PATH_TO_TEMP_EXPORTS/.htaccess-\$d
-      elif [[ -d $PATH_TO_DRUPAL ]]; then
+      elif [[ -d $PATH_TO_DRUPAL ]] && [[ -f $PATH_TO_DRUPAL/.htaccess ]]; then
         echo \$d
         cp $PATH_TO_DRUPAL/.htaccess ~/$PATH_TO_TEMP_EXPORTS/.htaccess-\$d
       fi
