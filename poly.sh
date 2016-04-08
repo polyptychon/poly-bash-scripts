@@ -15,6 +15,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-deploy-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-dump-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-dump-remote-htaccess.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-dump-remote-env.sh
+source $POLY_SCRIPTS_FOLDER/imports/all-dump-remote-config.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-exec-command.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-import-local-to-remote-db.sh
@@ -312,6 +313,10 @@ function all {
     echo "dump all remote .env files"
     all-dump-remote-env
   }
+  function dump-remote-config {
+    echo "dump all remote config files"
+    all-dump-remote-config
+  }
   function exec-command {
     echo "deploy all sites to remote host"
     all-exec-command
@@ -320,7 +325,7 @@ function all {
     echo "update all sites"
     all-update-sites
   }
-  options=("dump-remote-db" "dump-remote-htaccess" "dump-remote-env" "import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "open-pagespeed" "open-validate-html" "open-resizer" "symlink-uploads" "exec-command" "npm-install")
+  options=("dump-remote-db" "dump-remote-htaccess" "dump-remote-env" "dump-remote-config" "import-remote-databases-to-local" "import-local-databases-to-remote" "deploy" "update" "copy-remote-uploads" "copy-local-uploads" "open-sites" "open-pagespeed" "open-validate-html" "open-resizer" "symlink-uploads" "exec-command" "npm-install")
   exec_arguments options[@]
 }
 
