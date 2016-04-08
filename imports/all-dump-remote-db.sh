@@ -21,12 +21,6 @@ else
   exit
 fi
 
-UP=$(pgrep mysql | wc -l);
-if [[ "$UP" -ne 1 ]]; then
-  echo "Could not connect to local mysql. Exiting..."
-  exit
-fi
-
 LOCAL_PATHS=()
 
 if [[ -z $REMOTE_PATH ]] && [[ ! -z REMOTE_SSH_ROOT_PATH ]]; then
