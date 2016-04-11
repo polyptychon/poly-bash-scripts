@@ -15,8 +15,13 @@ if [[ -f .env ]]; then
   echo "${bold}${red}.env${reset}${reset_bold} file already exists!"
   exit
 fi
+if [[ -z $DEFAULT_WP_USER ]]; then
+  echo "You must define a DEFAULT_WP_USER variable in .global-env. example: DEFAULT_WP_USER=admin"
+  echo "Exiting..."
+  exit
+fi
 
-WP_USER=poly_admin
+WP_USER=$DEFAULT_WP_USER
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
 

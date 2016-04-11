@@ -31,7 +31,11 @@ function restore-remote-repository {
     echo "Variable REMOTE_PATH is not set"
     exit
   fi
-
+  if [[ -z $GITHUB_ACCOUNT ]]; then
+    echo "You must define a GITHUB_ACCOUNT variable in .global-env. example: GITHUB_ACCOUNT=polyptychon"
+    echo "Exiting..."
+    exit
+  fi
   set +e
   DIR_NAME=${PWD##*/}
   ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
@@ -53,12 +57,12 @@ function restore-remote-repository {
     cd $REMOTE_SSH_ROOT_PATH
     echo ${GIT_REMOTE_ORIGIN_URL}
     if [ -z ${GIT_REMOTE_ORIGIN_URL} ]; then
-      echo -n \"git SSH clone URL (git@github.com:polyptychon/$DIR_NAME.git): \"
+      echo -n \"git SSH clone URL (git@github.com:$GITHUB_ACCOUNT/$DIR_NAME.git): \"
       read GIT_REMOTE_ORIGIN_URL
       if [ ! -z \${GIT_REMOTE_ORIGIN_URL} ]; then
         git clone \$GIT_REMOTE_ORIGIN_URL
       else
-        git clone git@github.com:polyptychon/$DIR_NAME.git
+        git clone git@github.com:$GITHUB_ACCOUNT/$DIR_NAME.git
       fi
     else
       git clone $GIT_REMOTE_ORIGIN_URL

@@ -27,14 +27,41 @@ fi
 function get_db_prefix_from_sql_dump {
   echo `sed -n "/DROP TABLE IF EXISTS/p" $1 | sed -E "s/DROP TABLE IF EXISTS .//g" | sed -E "s/_.+//g" | head -n1`
 }
+
+if [[ -z $DEFAULT_WP_USER ]]; then
+  echo "You must define a DEFAULT_WP_USER variable in .global-env. example: DEFAULT_WP_USER=admin"
+  echo "Exiting..."
+  exit
+fi
+if [[ -z $DEFAULT_DB_TABLE_PREFIX ]]; then
+  echo "You must define a DEFAULT_DB_TABLE_PREFIX variable in .global-env. example: DEFAULT_DB_TABLE_PREFIX=test_"
+  echo "Exiting..."
+  exit
+fi
+if [[ -z $GITHUB_ACCOUNT ]]; then
+  echo "You must define a GITHUB_ACCOUNT variable in .global-env. example: GITHUB_ACCOUNT=polyptychon"
+  echo "Exiting..."
+  exit
+fi
+if [[ -z $DEFAULT_DOMAIN ]]; then
+  echo "You must define a DEFAULT_DOMAIN variable in .global-env. example: DEFAULT_DOMAIN=polyptychon.gr"
+  echo "Exiting..."
+  exit
+fi
 DIR_NAME=${PWD##*/}
 WP_SITE_TITLE=$DIR_NAME
-WP_USER=poly_admin
+WP_USER=$DEFAULT_WP_USER
 WP_USER_PASSWORD="$(date | md5)"
 DB_NAME="$(echo -e "${PWD##*/}" | sed -e 's/[[:space:]]/_/g;s/-/_/g')"
-DB_TABLE_PREFIX="poly_"
+DB_TABLE_PREFIX=$DEFAULT_DB_TABLE_PREFIX
 if [[ -z $REMOTE_DB_NAME_PREFIX ]]; then
-  REMOTE_DB_NAME_PREFIX="polyptyc_"
+  if [[ ! -z $SSH_USERNAME ]]; then
+    REMOTE_DB_NAME_PREFIX=$SSH_USERNAME"_"
+  else
+    echo "You must define a REMOTE_DB_NAME_PREFIX in .global-env."
+    echo "Exiting..."
+    exit
+  fi
 fi
 
 if [ ! -z ${DB_USER} ] && [ ! -z ${DB_PASSWORD} ] && [ ! -z ${DB_NAME} ]; then
@@ -235,6 +262,10 @@ echo "SSH_HOST=$SSH_HOST" > $POLY_SCRIPTS_FOLDER/.global-env
 echo "SSH_PORT=$SSH_PORT" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "SSH_USERNAME=$SSH_USERNAME" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "REMOTE_DB_NAME_PREFIX=$REMOTE_DB_NAME_PREFIX" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "DEFAULT_DOMAIN=$DEFAULT_DOMAIN" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "DEFAULT_WP_USER=$DEFAULT_WP_USER" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "DEFAULT_DB_TABLE_PREFIX=$DEFAULT_DB_TABLE_PREFIX" >> $POLY_SCRIPTS_FOLDER/.global-env
+echo "GITHUB_ACCOUNT=$GITHUB_ACCOUNT" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "DB_USER=$DB_USER" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "DB_PASSWORD=$DB_PASSWORD" >> $POLY_SCRIPTS_FOLDER/.global-env
 echo "REMOTE_SSH_ROOT_PATH=$REMOTE_SSH_ROOT_PATH" >> $POLY_SCRIPTS_FOLDER/.global-env
@@ -263,7 +294,7 @@ if [ ! -f .env ]; then
   echo "SSH_HOST=$SSH_HOST" > .env
   echo "SSH_PORT=$SSH_PORT" >> .env
   echo "SSH_USERNAME=$SSH_USERNAME" >> .env
-  echo "REMOTE_DOMAIN=$DIR_NAME.$SSH_HOST" >> .env
+  echo "REMOTE_DOMAIN=$DIR_NAME.$DEFAULT_DOMAIN" >> .env
   echo "LOCAL_DOMAIN=$DIR_NAME.local:8888" >> .env
   echo "REMOTE_PATH=$REMOTE_SSH_ROOT_PATH/$DIR_NAME" >> .env
   echo "PATH_TO_WORDPRESS=$PATH_TO_WORDPRESS" >> .env
@@ -299,7 +330,7 @@ sed -e "s/wordpress/$PATH_TO_WORDPRESS/g;s/exports/$PATH_TO_EXPORTS/g" ./.gitign
 mv -f ./.gitignore.tmp ./.gitignore
 
 echo "#$WP_SITE_TITLE" > ./README.md
-echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
+echo "http://$GITHUB_ACCOUNT.github.io/$DIR_NAME/" >> ./README.md
 
 wp core download
 wp core config --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD --dbprefix=$DB_TABLE_PREFIX
@@ -422,9 +453,9 @@ set -e
 
 if [[ $CREATE_REMOTE_GIT == "y" ]]; then
   set +e
-  hub create -p polyptychon/$DIR_NAME
+  hub create -p $GITHUB_ACCOUNT/$DIR_NAME
   if [ -f .env ]; then
-    echo "GIT_REMOTE_ORIGIN_URL=git@github.com:polyptychon/$DIR_NAME.git" >> .env
+    echo "GIT_REMOTE_ORIGIN_URL=git@github.com:$GITHUB_ACCOUNT/$DIR_NAME.git" >> .env
     git add .env
     git commit -m "add GIT_REMOTE_ORIGIN_URL variable to .env"
   fi

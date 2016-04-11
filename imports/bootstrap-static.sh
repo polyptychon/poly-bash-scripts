@@ -13,6 +13,16 @@ if [[ -f .env ]]; then
   echo "Initialization is already done"
   exit
 fi
+if [[ -z $GITHUB_ACCOUNT ]]; then
+  echo "You must define a GITHUB_ACCOUNT variable in .global-env. example: GITHUB_ACCOUNT=polyptychon"
+  echo "Exiting..."
+  exit
+fi
+if [[ -z $DEFAULT_DOMAIN ]]; then
+  echo "You must define a DEFAULT_DOMAIN variable in .global-env. example: DEFAULT_DOMAIN=polyptychon.gr"
+  echo "Exiting..."
+  exit
+fi
 
 bold=`tput bold`
 red=`tput setaf 1`
@@ -68,7 +78,7 @@ if [ ! -f .env ]; then
   echo "SSH_HOST=$SSH_HOST" > .env
   echo "SSH_PORT=$SSH_PORT" >> .env
   echo "SSH_USERNAME=$SSH_USERNAME" >> .env
-  echo "REMOTE_DOMAIN=$DIR_NAME.$SSH_HOST" >> .env
+  echo "REMOTE_DOMAIN=$DIR_NAME.$DEFAULT_DOMAIN" >> .env
   echo "LOCAL_DOMAIN=$DIR_NAME.local:8888" >> .env
   echo "REMOTE_PATH=$REMOTE_SSH_ROOT_PATH/$DIR_NAME" >> .env
 else
@@ -90,7 +100,7 @@ function cleanup_static {
 cleanup_static "./*"
 
 echo "#$DIR_NAME" > ./README.md
-echo "http://polyptychon.github.io/$DIR_NAME/" >> ./README.md
+echo "http://$GITHUB_ACCOUNT.github.io/$DIR_NAME/" >> ./README.md
 
 set +e
 
@@ -102,9 +112,9 @@ set -e
 
 if [[ $CREATE_REMOTE_GIT == "y" ]]; then
   set +e
-  hub create -p polyptychon/$DIR_NAME
+  hub create -p $GITHUB_ACCOUNT/$DIR_NAME
   if [ -f .env ]; then
-    echo "GIT_REMOTE_ORIGIN_URL=git@github.com:polyptychon/$DIR_NAME.git" >> .env
+    echo "GIT_REMOTE_ORIGIN_URL=git@github.com:$GITHUB_ACCOUNT/$DIR_NAME.git" >> .env
     git add .env
     git commit -m "add GIT_REMOTE_ORIGIN_URL variable to .env"
   fi
