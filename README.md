@@ -52,7 +52,7 @@ PATH_TO_EXPORTS=./relative/path/to/sql/exports
 
 ```
 
-###Set ".global_env" inside ~/poly-bash-scripts directory
+###Set ".global-env" inside ~/poly-bash-scripts directory
 
 ```
 SSH_HOST=example.com
