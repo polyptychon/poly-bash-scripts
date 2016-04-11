@@ -67,6 +67,7 @@ DB_USER=db-user
 DB_PASSWORD=db-password
 REMOTE_SSH_ROOT_PATH=./remote-path
 PATH_TO_WORDPRESS=wordpress
+PATH_TO_DRUPAL=drupal_site
 PATH_TO_EXPORTS=exports
 WP_USER_EMAIL=webadmin@example.com
 ```
