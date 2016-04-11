@@ -18,7 +18,14 @@ DIR_NAME=${PWD##*/}
 DIR_NAME_LOWER=$(echo $DIR_NAME | tr '[:upper:]' '[:lower:]')
 
 if [[ -z $REMOTE_DB_NAME_PREFIX ]]; then
-  REMOTE_DB_NAME_PREFIX="polyptyc_"
+  if [[ ! -z $SSH_USERNAME ]]; then
+    REMOTE_DB_NAME_PREFIX=$SSH_USERNAME"_"
+  else
+    echo "You must define a REMOTE_DB_NAME_PREFIX in .global-env."
+    echo "Exiting..."
+    exit
+  fi
+
 fi
 
 if [ -f .env ]; then
