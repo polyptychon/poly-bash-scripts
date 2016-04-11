@@ -66,6 +66,7 @@ for d in */ ; do
       set -e
     fi
     trap 'echo "could not update plugins"; clean_up' INT TERM EXIT
+    wp plugin update --all --dry-run
     wp plugin update --all
     if [[ -d .git ]]; then
       set +e

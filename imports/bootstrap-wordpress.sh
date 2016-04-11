@@ -327,9 +327,10 @@ set +e
   wp plugin activate wpml-xliff
   wp plugin activate contact-form-7
   wp plugin activate contact-form-7-success-page-redirects
-  wp plugin activate regenerate-thumbnails
+  # wp plugin activate regenerate-thumbnails
   wp plugin activate ewww-image-optimizer
   wp plugin activate thumbnail-upscale
+  wp plugin activate wp-author-slug
 set -e
 
 git clone git@github.com:polyptychon/wp-theme-template.git
