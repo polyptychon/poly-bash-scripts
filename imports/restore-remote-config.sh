@@ -32,6 +32,9 @@ function restore-remote-config {
       if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
         scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/wp-config.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/wp-config.php"
       fi
+      if [ -f $PATH_TO_WORDPRESS/.htaccess ]; then
+        scp -rCP $SSH_PORT $PATH_TO_WORDPRESS/.htaccess "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_WORDPRESS/.htaccess"
+      fi
     elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
       if [ -f $PATH_TO_DRUPAL/sites/default/settings.php ]; then
         scp -rCP $SSH_PORT $PATH_TO_DRUPAL/sites/default/settings.php "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/sites/default/settings.php"
