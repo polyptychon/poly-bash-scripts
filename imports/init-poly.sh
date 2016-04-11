@@ -93,14 +93,6 @@ while (true); do
     WP_USER=$WP_USER_TEMP
   fi
 
-  if [ ! -f admin-password.txt ]; then
-    echo -n " # Wordpress admin password ($WP_USER_PASSWORD):"
-    read WP_USER_PASSWORD_TEMP
-    if [ ! -z ${WP_USER_PASSWORD_TEMP} ]; then
-      WP_USER_PASSWORD=$WP_USER_PASSWORD_TEMP
-    fi
-  fi
-
   echo -n " # Wordpress admin email ($WP_USER_EMAIL):"
   read WP_USER_EMAIL_TEMP
   if [ ! -z ${WP_USER_EMAIL_TEMP} ]; then
@@ -131,10 +123,6 @@ if [ ! -f .env ]; then
 else
   echo "WARNING: .env file already exists"
   exit;
-fi
-
-if [ ! -f admin-password.txt ]; then
-  echo "WP_USER_PASSWORD: $WP_USER_PASSWORD" > ./admin-password.txt
 fi
 
 }
