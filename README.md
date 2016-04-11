@@ -51,3 +51,22 @@ PATH_TO_WORDPRESS=./relative/path/to/wordpress
 PATH_TO_EXPORTS=./relative/path/to/sql/exports
 
 ```
+
+###Set ".global_env" inside ~/poly-bash-scripts directory
+
+```
+SSH_HOST=example.com
+SSH_PORT=22
+SSH_USERNAME=user
+REMOTE_DB_NAME_PREFIX=wp_
+DEFAULT_DOMAIN=example.com
+DEFAULT_WP_USER=example_admin
+DEFAULT_DB_TABLE_PREFIX=example_
+GITHUB_ACCOUNT=example
+DB_USER=db-user
+DB_PASSWORD=db-password
+REMOTE_SSH_ROOT_PATH=./remote-path
+PATH_TO_WORDPRESS=wordpress
+PATH_TO_EXPORTS=exports
+WP_USER_EMAIL=webadmin@example.com
+```
