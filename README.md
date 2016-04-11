@@ -57,8 +57,8 @@ PATH_TO_EXPORTS=./relative/path/to/sql/exports
 ```
 SSH_HOST=example.com
 SSH_PORT=22
-SSH_USERNAME=ssh-user
-REMOTE_DB_NAME_PREFIX=ssh-user_
+SSH_USERNAME=ssh_user
+REMOTE_DB_NAME_PREFIX=ssh_user_
 DEFAULT_DOMAIN=example.com
 DEFAULT_WP_USER=example_admin
 DEFAULT_DB_TABLE_PREFIX=example_
