@@ -75,6 +75,16 @@ for d in */ ; do
       git commit -m "update plugins"
       set -e
     fi
+    trap 'echo "could not update themes"; clean_up' INT TERM EXIT
+    wp theme update --all --dry-run
+    wp theme update --all
+    if [[ -d .git ]]; then
+      set +e
+      git add $PATH_TO_WORDPRESS/wp-content/themes
+      git add $PATH_TO_WORDPRESS/wp-content/languages
+      git commit -m "update themes"
+      set -e
+    fi
     trap 'echo "could not open chrome"; clean_up' INT TERM EXIT
     open "http://"$LOCAL_DOMAIN/wp-admin/update-core.php
     set +e
