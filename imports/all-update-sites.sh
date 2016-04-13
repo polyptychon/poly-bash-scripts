@@ -59,7 +59,7 @@ for d in */ ; do
     wp core update
     if [[ -d .git ]]; then
       set +e
-      git add $PATH_TO_WORDPRESS
+      git add --all $PATH_TO_WORDPRESS
       git commit -m "update wordpress"
       set -e
     fi
@@ -68,8 +68,8 @@ for d in */ ; do
     wp plugin update --all
     if [[ -d .git ]]; then
       set +e
-      git add $PATH_TO_WORDPRESS/wp-content/plugins
-      git add $PATH_TO_WORDPRESS/wp-content/languages
+      git add --all $PATH_TO_WORDPRESS/wp-content/plugins
+      git add --all $PATH_TO_WORDPRESS/wp-content/languages
       git commit -m "update plugins"
       set -e
     fi
@@ -78,8 +78,8 @@ for d in */ ; do
     wp theme update --all
     if [[ -d .git ]]; then
       set +e
-      git add $PATH_TO_WORDPRESS/wp-content/themes
-      git add $PATH_TO_WORDPRESS/wp-content/languages
+      git add --all $PATH_TO_WORDPRESS/wp-content/themes
+      git add --all $PATH_TO_WORDPRESS/wp-content/languages
       git commit -m "update themes"
       set -e
     fi
