@@ -56,6 +56,8 @@ function copy-remote-uploads-to-local {
     CONTROL_PATH="-o 'ControlPath=$HOME/.ssh/ctl/%L-%r@%h:%p'"
   fi
   # --dry-run --iconv=UTF-8-MAC,UTF-8
+  set +e
   rsync --iconv=UTF-8-MAC,UTF-8 --delete -avz -e "ssh -p $SSH_PORT $CONTROL_PATH" --progress $SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_UPLOADS/* $PATH_TO_UPLOADS
+  set -e
   # scp -rCP $SSH_PORT "$SSH_USERNAME@$SSH_HOST:$REMOTE_PATH/$PATH_TO_DRUPAL/$PATH_TO_UPLOADS/*" $PATH_TO_UPLOADS
 }

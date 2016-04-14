@@ -61,9 +61,7 @@ for d in */ ; do
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
       echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
-      set +e
       copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $PATH_TO_DRUPAL true
-      set -e
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
       copy-remote-uploads-to-local
