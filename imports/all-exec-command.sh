@@ -45,9 +45,11 @@ for d in */ ; do
     if [[ ! -z $DIR_ ]] && [[ -d $DIR_ ]]; then
       cd $DIR_
     fi
-    trap 'echo "Could not exec command"' INT TERM EXIT
+    # trap 'echo "Could not exec command"' INT TERM EXIT
+    set +e
     echo "${bold}${green}$d${reset}${reset_bold}"
     ${COMMAND_}
+    set -e
     trap 'echo "OK"' INT TERM EXIT
     if [[ ! -z $DIR_ ]] && [[ $DIR_!="." ]]; then
       cd ..
