@@ -49,9 +49,6 @@ else
 fi
 if [ -f $PATH_TO_WORDPRESS/wp-config.php ]; then
   DB_PREFIX=`sed -n "/table_prefix/p" $PATH_TO_WORDPRESS/wp-config.php | sed -E "s/.table_prefix {0,2}= {0,2}'//g" | sed -E "s/'.+//g"`
-else
-  echo "$PATH_TO_WORDPRESS/wp-config.php does not exists! Exiting"
-  exit
 fi
 
 ssh -t -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
