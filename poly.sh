@@ -224,7 +224,7 @@ function bootstrap {
   }
   function static-spa {
     echo "static spa"
-    bootstrap-static
+    bootstrap-static-spa
   }
   options=("wordpress" "static" "static-spa")
   exec_arguments options[@]
