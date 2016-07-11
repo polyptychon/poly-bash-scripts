@@ -13,7 +13,7 @@ _poly_complete() {
   elif [[ ${COMP_WORDS[1]} == "optimize" ]]; then
     COMPREPLY=( $( compgen -W 'local-assets local-uploads' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "bootstrap" ]]; then
-    COMPREPLY=( $( compgen -W 'wordpress static' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'wordpress static static-spa' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "clear" ]]; then
     COMPREPLY=( $( compgen -W 'remote-cache' -- $cur ) );
   elif [[ ${COMP_WORDS[1]} == "backup" ]]; then
@@ -51,4 +51,3 @@ _poly_complete() {
   fi
 }
 complete -o nospace -F _poly_complete poly
-

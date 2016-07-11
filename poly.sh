@@ -29,6 +29,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static.sh
+source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static-spa.sh
 source $POLY_SCRIPTS_FOLDER/imports/change-git-upstream.sh
 source $POLY_SCRIPTS_FOLDER/imports/check-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/clear-remote-cache.sh
@@ -214,14 +215,18 @@ function check {
 #BOOTSTRAP
 function bootstrap {
   function wordpress {
-    echo "check uploads"
+    echo "wordpress"
     bootstrap-wordpress
   }
   function static {
-    echo "check uploads"
+    echo "static"
     bootstrap-static
   }
-  options=("wordpress" "static")
+  function static-spa {
+    echo "static spa"
+    bootstrap-static
+  }
+  options=("wordpress" "static" "static-spa")
   exec_arguments options[@]
 }
 

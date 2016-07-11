@@ -45,10 +45,11 @@ function create-gh-pages-static {
     git rm -rf _mockups
     git rm -rf _src
     git rm -rf builds
-    git rm -f node_modules
+    git rm -rf node_modules
     git rm -f .env
     git rm -f gulpfile.js
     git rm -f package.json
+    git rm -f .gitignore
     set -e
   fi
 
