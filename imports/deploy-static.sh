@@ -30,8 +30,8 @@ function deploy-static {
   echo -n "You want to sync remote files with local. Are you sure? Y/N "
   read answer
   if [[ $answer =~ ^[Yy]$ ]]; then
-    find $PATH_TO_STATIC_BUILD -type f -print -exec chmod 644 {} \;
     find $PATH_TO_STATIC_BUILD -type d -print -exec chmod 755 {} \;
+    find $PATH_TO_STATIC_BUILD -type f -print -exec chmod 644 {} \;
     rsync_version=`rsync --version | sed -n "/version/p" | sed -E "s/rsync.{1,3}.version //g" | sed -E "s/  protocol version.{1,5}//g"`
     if [[ $rsync_version != '3.1.0' ]]; then
       echo "Warning! You must upgrade rsync. Your rsync version is : $rsync_version"
