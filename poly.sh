@@ -49,6 +49,7 @@ source $POLY_SCRIPTS_FOLDER/imports/deploy-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-local-to-remote-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/import-remote-to-local-db.sh
 source $POLY_SCRIPTS_FOLDER/imports/init-poly.sh
+source $POLY_SCRIPTS_FOLDER/imports/init-static-poly.sh
 source $POLY_SCRIPTS_FOLDER/imports/optimize-local-assets.sh
 source $POLY_SCRIPTS_FOLDER/imports/optimize-local-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/restore-remote-site.sh
@@ -61,6 +62,12 @@ source $POLY_SCRIPTS_FOLDER/imports/restore-remote-db.sh
 function init {
   echo "init"
   init-poly
+}
+
+#INIT
+function init-static {
+  echo "init static"
+  init-static-poly
 }
 
 #IMPORT
@@ -355,7 +362,7 @@ function optimize {
 }
 
 function main {
-  options=("optimize" "init" "import" "backup" "bootstrap" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
+  options=("optimize" "init" "init-static" "import" "backup" "bootstrap" "restore" "clear" "commit" "check" "copy" "create" "add" "deploy" "change" "all")
   exec_arguments options[@]
 }
 

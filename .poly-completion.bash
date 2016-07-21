@@ -47,7 +47,7 @@ _poly_complete() {
       COMPREPLY=( $( compgen -W 'remote' -- $cur ) );
     fi
   else
-    COMPREPLY=( $( compgen -W 'init optimize import backup bootstrap restore clear commit check copy create add deploy change all' -- $cur ) );
+    COMPREPLY=( $( compgen -W 'init init-static optimize import backup bootstrap restore clear commit check copy create add deploy change all' -- $cur ) );
   fi
 }
 complete -o nospace -F _poly_complete poly
