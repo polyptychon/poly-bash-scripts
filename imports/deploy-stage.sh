@@ -186,6 +186,12 @@ else
       echo \"</FilesMatch>\" >> $PATH_TO_WORDPRESS/.htaccess
 
       echo \"# END Optimization\" >> $PATH_TO_WORDPRESS/.htaccess
+
+      echo \"<Files \\\"xmlrpc.php\\\">\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"Order Allow,Deny\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"deny from all\" >> $PATH_TO_WORDPRESS/.htaccess
+      echo \"</Files>\" >> $PATH_TO_WORDPRESS/.htaccess
+
       echo \"\" >> $PATH_TO_WORDPRESS/.htaccess
       wp rewrite flush
     fi
