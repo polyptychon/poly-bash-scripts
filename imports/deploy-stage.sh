@@ -128,6 +128,7 @@ else
       exit
     fi
     wp core config --dbname=\$DB_NAME --dbuser=\$DB_USER --dbpass=\$DB_PASSWORD --path=$PATH_TO_WORDPRESS  --dbprefix=$DB_PREFIX
+    chmod 600 $PATH_TO_WORDPRESS\wp-config.php
 
     if [ ! -z \${SYMLINK_PATH} ]; then
       FOLDER=\"\$(pwd)\"
