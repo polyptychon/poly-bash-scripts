@@ -21,6 +21,12 @@ else
   exit
 fi
 
+if [[ ! -z $1 ]]; then
+  ASK_FOR_CONFIRMATION=$1
+else
+  ASK_FOR_CONFIRMATION="y"
+fi
+
 LOCAL_PATHS=()
 
 if [[ -z $REMOTE_PATH ]] && [[ ! -z REMOTE_SSH_ROOT_PATH ]]; then
@@ -44,11 +50,13 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "You are about to download ${bold}${red}ALL remote${reset}${reset_bold} databases from remote host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
-read REPLY
-if [[ $REPLY =~ ^[Nn]$ ]]; then
-  echo "Exiting..."
-  exit
+if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
+  echo -n "You are about to download ${bold}${red}ALL remote${reset}${reset_bold} databases from remote host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
+  read REPLY
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo "Exiting..."
+    exit
+  fi
 fi
 
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
