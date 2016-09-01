@@ -27,6 +27,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-open-resizer.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites-light.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static-spa.sh
@@ -90,7 +91,11 @@ function backup {
     echo "backup remote-sites"
     backup-remote-sites ${arguments[0]}
   }
-  options=("remote-sites")
+  function remote-sites-light {
+    echo "backup remote-sites-light"
+    backup-remote-sites-light ${arguments[0]}
+  }
+  options=("remote-sites" "remote-sites-light")
   exec_arguments options[@]
 }
 
