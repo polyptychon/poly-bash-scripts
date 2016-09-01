@@ -68,7 +68,7 @@ for d in */ ; do
     if [[ ! -z $SSH_HOST ]] && [[ ! -z $SSH_USERNAME ]] && [[ ! -z $SSH_PORT ]] && [[ ! -z $REMOTE_PATH ]]; then
       PATH_NAME=$(echo $d | sed -E "s/\///g")
       PATH_TO_SITE=$THE_SITES_PATH/$PATH_NAME
-      echo "Copying to... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
+      echo "Copying from... ${bold}${red}$PATH_TO_SITE${reset}${reset_bold}"
       copy-remote-uploads-to-local $SSH_HOST $SSH_USERNAME $SSH_PORT $PATH_TO_SITE $PATH_TO_WORDPRESS $PATH_TO_DRUPAL true
       echo "${bold}${green}Success${reset}${reset_bold}"
     else
