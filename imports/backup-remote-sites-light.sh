@@ -1,7 +1,4 @@
 #!/bin/bash
-source ./all-copy-remote-uploads-to-local.sh
-source ./all-import-remote-to-local-db.sh
-
 
 function backup-remote-sites-light {
   now="$(date +'%d/%m/%Y')"
