@@ -79,5 +79,7 @@ for d in */ ; do
     cd ..
   fi
 done
-clean_up
+if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
+  clean_up
+fi
 }
