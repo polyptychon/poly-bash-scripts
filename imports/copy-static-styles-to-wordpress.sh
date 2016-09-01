@@ -29,6 +29,7 @@ function copy-static-styles-to-wordpress {
   ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
 
   if [[ -z ${ACTIVE_THEME} ]]; then
+    echo "Could not find active theme. Exiting..."
     exit
   fi
 
