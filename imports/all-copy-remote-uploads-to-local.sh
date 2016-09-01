@@ -26,9 +26,6 @@ else
   ASK_FOR_CONFIRMATION="y"
 fi
 
-echo $0
-echo $1
-
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
