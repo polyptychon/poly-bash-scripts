@@ -26,7 +26,7 @@ fi
 
 if [[ ! -z $1 ]]; then
   ASK_FOR_CONFIRMATION=$1
-else
+elsecat
   ASK_FOR_CONFIRMATION="y"
 fi
 
