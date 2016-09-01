@@ -59,7 +59,7 @@ fi
 if [[ -z $PATH_TO_DRUPAL ]]; then
   PATH_TO_DRUPAL="drupal_site"
 fi
-echo $REMOTE_PATH
+
 if [[ -z $REMOTE_PATH ]]; then
   echo "REMOTE_PATH variable is not set!"
   exit
