@@ -20,6 +20,12 @@ else
   exit
 fi
 
+if [[ ! -z $1 ]]; then
+  ASK_FOR_CONFIRMATION=$1
+else
+  ASK_FOR_CONFIRMATION="y"
+fi
+
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
 fi
@@ -40,10 +46,12 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "You are about to ${bold}${red}copy remote${reset}${reset_bold} uploads to ${bold}${red}local${reset}${reset_bold} from host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
-read answer
-if [[ $answer =~ ^[Nn]$ ]]; then
-  exit
+if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
+  echo -n "You are about to ${bold}${red}copy remote${reset}${reset_bold} uploads to ${bold}${red}local${reset}${reset_bold} from host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N "
+  read answer
+  if [[ $answer =~ ^[Nn]$ ]]; then
+    exit
+  fi
 fi
 
 if [[ -d ~/.ssh ]]; then
