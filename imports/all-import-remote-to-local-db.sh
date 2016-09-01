@@ -24,6 +24,12 @@ else
   exit
 fi
 
+if [[ ! -z $1 ]]; then
+  ASK_FOR_CONFIRMATION=$1
+else
+  ASK_FOR_CONFIRMATION="y"
+fi
+
 UP=$(pgrep mysql | wc -l);
 if [[ "$UP" -ne 1 ]]; then
   echo "Could not connect to local mysql. Exiting..."
@@ -42,11 +48,13 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
-read REPLY
-if [[ $REPLY =~ ^[Nn]$ ]]; then
-  echo "Exiting..."
-  exit
+if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
+  echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
+  read REPLY
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo "Exiting..."
+    exit
+  fi
 fi
 
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
