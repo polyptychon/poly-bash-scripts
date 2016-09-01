@@ -38,6 +38,7 @@ function copy-static-styles-to-wordpress {
   elif [[ $DIR_NAME == 'static' ]]; then
     cd .
   else
+    echo "Could not find static folder. Exiting..."
     exit
   fi
 
