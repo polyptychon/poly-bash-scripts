@@ -48,15 +48,6 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 reset_bold=`tput rmso`
 
-if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
-  echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
-  read REPLY
-  if [[ $REPLY =~ ^[Nn]$ ]]; then
-    echo "Exiting..."
-    exit
-  fi
-fi
-
 if [[ -z $PATH_TO_TEMP_EXPORTS ]]; then
   PATH_TO_TEMP_EXPORTS="temp_dump"
 fi
@@ -68,10 +59,19 @@ fi
 if [[ -z $PATH_TO_DRUPAL ]]; then
   PATH_TO_DRUPAL="drupal_site"
 fi
-
+echo $REMOTE_PATH
 if [[ -z $REMOTE_PATH ]]; then
   echo "REMOTE_PATH variable is not set!"
   exit
+fi
+
+if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
+  echo -n "You are about to replace ${bold}${red}ALL local${reset}${reset_bold} databases with remote form host ${bold}${red}$SSH_HOST${reset}${reset_bold}. Are you sure? Y/N: "
+  read REPLY
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo "Exiting..."
+    exit
+  fi
 fi
 
 for d in */ ; do
