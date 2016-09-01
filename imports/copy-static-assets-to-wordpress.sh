@@ -26,16 +26,20 @@ function copy-static-assets-to-wordpress {
 
   DIR_NAME=${PWD##*/}
   ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
-
+  echo $ACTIVE_THEME
   if [[ -z ${ACTIVE_THEME} ]]; then
-    exit
+    if [[ `ls -A ../$PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME` ]]; then
+      ACTIVE_THEME=$DIR_NAME
+    else
+      echo "Could not find theme folder. Exiting..."
+      exit
+    fi
   fi
 
   if [[ $DIR_NAME != 'static' ]] && [[ `ls -A ./static` ]]; then
     cd ./static
-  elif [[ $DIR_NAME == 'static' ]]; then
-    cd .
   else
+    echo "Could not find static folder. Exiting..."
     exit
   fi
 
