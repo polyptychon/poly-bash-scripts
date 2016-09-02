@@ -28,6 +28,7 @@ source $POLY_SCRIPTS_FOLDER/imports/all-symlink-uploads.sh
 source $POLY_SCRIPTS_FOLDER/imports/all-update-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites.sh
 source $POLY_SCRIPTS_FOLDER/imports/backup-remote-sites-light.sh
+source $POLY_SCRIPTS_FOLDER/imports/backup-remote-files.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-wordpress.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static.sh
 source $POLY_SCRIPTS_FOLDER/imports/bootstrap-static-spa.sh
@@ -90,6 +91,10 @@ function backup {
   function remote-sites {
     echo "backup remote-sites"
     backup-remote-sites ${arguments[0]}
+  }
+  function remote-files {
+    echo "backup remote-files"
+    backup-remote-files ${arguments[0]}
   }
   function remote-sites-light {
     echo "backup remote-sites-light"
@@ -284,7 +289,7 @@ function all {
   }
   function copy-remote-uploads {
     echo "copy all remote uploads to local"
-    all-copy-remote-uploads-to-local ${arguments[0]}
+    all-copy-remote-uploads-to-local
   }
   function copy-local-uploads {
     echo "copy all local uploads to remote"
