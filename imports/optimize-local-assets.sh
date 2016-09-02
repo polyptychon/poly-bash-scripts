@@ -27,7 +27,18 @@ function optimize-local-assets {
       source .env_override
     fi
   fi
-  ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
+  DIR_NAME=${PWD##*/}
+  if [ -z $ACTIVE_THEME ] || [ ! -d $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME ]; then
+    ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
+  fi
+  if [[ -z ${ACTIVE_THEME} ]]; then
+    if [[ -d $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME ]]; then
+      ACTIVE_THEME=$DIR_NAME
+    else
+      echo "Could not find theme folder. Exiting..."
+      exit
+    fi
+  fi
   if [[ -z ${ACTIVE_THEME} ]]; then
     ACTIVE_THEME=${PWD##*/}
   fi

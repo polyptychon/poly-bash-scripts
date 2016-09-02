@@ -16,7 +16,17 @@ function add-custom-post-types {
   fi
 
   DIR_NAME=${PWD##*/}
-  ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
+  if [ -z $ACTIVE_THEME ] || [ ! -d $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME ]; then
+    ACTIVE_THEME=`wp theme list --status=active --format=csv | grep -o "^.*,active" | sed 's/,active//g'`
+  fi
+  if [[ -z ${ACTIVE_THEME} ]]; then
+    if [[ -d $PATH_TO_WORDPRESS/wp-content/themes/$DIR_NAME ]]; then
+      ACTIVE_THEME=$DIR_NAME
+    else
+      echo "Could not find theme folder. Exiting..."
+      exit
+    fi
+  fi
 
   wp scaffold plugin $DIR_NAME-custom-post-types --activate
 
