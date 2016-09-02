@@ -10,6 +10,14 @@ function get_env_value {
 
 function all-copy-remote-uploads-to-local() {
 
+if [ ! -z $2 ] && [ -d "$1 $2" ]; then
+  echo $1 $2
+  cd "$1 $2"
+elif [ ! -z $1 ] && [ -d $1 ]; then
+  echo $1
+  cd $1
+fi
+
 if [[ -f .env ]]; then
   source .env
   if [[ -f .env_override ]]; then

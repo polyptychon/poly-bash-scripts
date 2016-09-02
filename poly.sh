@@ -284,7 +284,7 @@ function all {
   }
   function copy-remote-uploads {
     echo "copy all remote uploads to local"
-    all-copy-remote-uploads-to-local
+    all-copy-remote-uploads-to-local ${arguments[0]}
   }
   function copy-local-uploads {
     echo "copy all local uploads to remote"
