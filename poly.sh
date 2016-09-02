@@ -100,7 +100,7 @@ function backup {
     echo "backup remote-sites-light"
     backup-remote-sites-light ${arguments[0]}
   }
-  options=("remote-sites" "remote-sites-light")
+  options=("remote-files" "remote-sites" "remote-sites-light")
   exec_arguments options[@]
 }
 
