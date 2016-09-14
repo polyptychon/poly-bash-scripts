@@ -2,6 +2,7 @@
 
 function clean_up {
   ssh -O exit -o ControlPath="$HOME/.ssh/ctl/%L-%r@%h:%p" user@host
+  rm -rf ~/.ssh/ctl
 }
 
 function get_env_value {
