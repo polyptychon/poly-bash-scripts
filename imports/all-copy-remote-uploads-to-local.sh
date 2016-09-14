@@ -80,6 +80,7 @@ for d in */ ; do
     cd ..
   fi
 done
+rm -rf ~/.ssh/ctl
 if [[ $ASK_FOR_CONFIRMATION =~ ^[Yy]$  ]]; then
   clean_up
 fi
