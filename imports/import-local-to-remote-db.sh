@@ -84,7 +84,8 @@ if [[ -f .env ]]; then
     echo "REMOTE DOMAIN IN ENV     : ${bold}${red}\$REMOTE_DOMAIN${reset}${reset_bold}"
   fi
   echo
-  wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
+  mysql -p\$DB_PASSWORD -u\$DB_USER \$DB_NAME < $PATH_TO_EXPORTS/temp.sql
+  # wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
 fi
 exit
 EOF
