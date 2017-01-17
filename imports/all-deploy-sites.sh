@@ -86,7 +86,7 @@ ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
       git status
       git pull
       git stash pop --quiet
-
+      echo ""
       cd ..
     fi
   done
