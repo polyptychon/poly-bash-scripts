@@ -29,12 +29,12 @@ fi
 
 LOCAL_PATHS=()
 
-if [[ -z $REMOTE_PATH ]] && [[ ! -z REMOTE_SSH_ROOT_PATH ]]; then
-  REMOTE_PATH=$REMOTE_SSH_ROOT_PATH
-else
-  echo "REMOTE_PATH variable is not set!"
-  exit
-fi
+# if [[ -z $REMOTE_PATH ]] && [[ ! -z $REMOTE_SSH_ROOT_PATH ]]; then
+#   REMOTE_PATH=$REMOTE_SSH_ROOT_PATH
+# else
+#   echo "REMOTE_PATH variable is not set!"
+#   exit
+# fi
 
 if [[ -z $PATH_TO_WORDPRESS ]]; then
   PATH_TO_WORDPRESS="wordpress"
@@ -63,14 +63,6 @@ for d in */ ; do
   if [[ -d $d/$PATH_TO_WORDPRESS ]] || [[ -d $d/$PATH_TO_DRUPAL ]]; then
     PATH_NAME=$(echo $d | sed -E "s/\///g")
     LOCAL_PATHS+=($PATH_NAME)
-    set +e
-    git stash --quiet
-    git pull --quiet
-    set -e
-
-    set -e
-    trap 'echo "could not push"; git stash pop --quiet' INT TERM EXIT
-    git push
   fi
 done
 
