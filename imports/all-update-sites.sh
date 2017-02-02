@@ -92,6 +92,37 @@ for d in */ ; do
     echo
     trap 'echo "OK"; clean_up' INT TERM EXIT
     cd ..
+  elif [[ -d $d/$PATH_TO_DRUPAL ]]; then
+    cd "$d/$PATH_TO_DRUPAL"
+    LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
+    echo $LOCAL_DOMAIN
+    if [[ -d .git ]]; then
+      set +e
+      git stash --quiet
+      git pull --quiet
+      set -e
+    fi
+    set -e
+    trap 'echo "could not update wordpress"; clean_up' INT TERM EXIT
+
+    drush vset --exact maintenance_mode 1 drush cache-clear all
+    drush pm-update drupal
+    drush vset --exact maintenance_mode 0 drush cache-clear all
+
+    if [[ -d .git ]]; then
+      set +e
+      git add --all $PATH_TO_DRUPAL
+      git commit -m "update drupal"
+      set -e
+    fi
+
+    set +e
+    if [[ -d .git ]]; then
+      git stash pop --quiet
+    fi
+    echo
+    trap 'echo "OK"; clean_up' INT TERM EXIT
+    cd ../../
   fi
 done
 
