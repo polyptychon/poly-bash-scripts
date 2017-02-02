@@ -93,9 +93,10 @@ for d in */ ; do
     trap 'echo "OK"; clean_up' INT TERM EXIT
     cd ..
   elif [[ -d $d/$PATH_TO_DRUPAL ]]; then
-    cd "$d/$PATH_TO_DRUPAL"
+    cd "$d"
     LOCAL_DOMAIN=`get_env_value "LOCAL_DOMAIN"`
     echo $LOCAL_DOMAIN
+    cd "$PATH_TO_DRUPAL"
     if [[ -d .git ]]; then
       set +e
       git stash --quiet
