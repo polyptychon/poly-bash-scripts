@@ -108,6 +108,7 @@ for d in */ ; do
 
     drush vset --exact maintenance_mode 1 drush cache-clear all
     drush pm-update drupal
+    drush up
     drush vset --exact maintenance_mode 0 drush cache-clear all
 
     if [[ -d .git ]]; then
