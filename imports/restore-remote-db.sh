@@ -36,12 +36,15 @@ function restore-remote-db {
   fi
   if [ ! -z $PATH_TO_WORDPRESS ] && [ -d $PATH_TO_WORDPRESS ]; then
     #import local converted sql dump file to remote db
-    ssh -p $SSH_PORT $SSH_USERNAME@$SSH_HOST bash -c "'
-    cd $REMOTE_PATH
-    wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
-    rm $PATH_TO_EXPORTS/temp.sql
-    exit
-    '"
+    ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
+cd $REMOTE_PATH
+export DB_NAME=\$(sed -n "/DB_NAME/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_NAME'.?.?'//g" | sed -r "s/'.+//g")
+export DB_USER=\$(sed -n "/DB_USER/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_USER'.?.?'//g" | sed -r "s/'.+//g")
+export DB_PASSWORD=\$(sed -n "/DB_PASSWORD/p" $PATH_TO_WORDPRESS/wp-config.php | sed -r "s/.+DB_PASSWORD'.?.?'//g" | sed -r "s/'.+//g")
+mysql -u\$DB_USER -p\$DB_PASSWORD \$DB_NAME < $PATH_TO_EXPORTS/temp.sql
+rm $PATH_TO_EXPORTS/temp.sql
+exit
+EOF
   elif [ ! -z $PATH_TO_DRUPAL ] && [ -d $PATH_TO_DRUPAL ]; then
     #import local converted sql dump file to remote db
 ssh -T -p $SSH_PORT $SSH_USERNAME@$SSH_HOST <<EOF
