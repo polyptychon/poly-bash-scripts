@@ -137,7 +137,7 @@ else
 
     if [ -f $PATH_TO_EXPORTS/local.sql ]; then
       sed \"s/$LOCAL_DOMAIN/$REMOTE_DOMAIN/g\" $PATH_TO_EXPORTS/local.sql > $PATH_TO_EXPORTS/temp.sql
-      wp db import $PATH_TO_EXPORTS/temp.sql --path=$PATH_TO_WORDPRESS
+      mysql -p\$DB_PASSWORD -u\$DB_USER \$DB_NAME < $PATH_TO_EXPORTS/temp.sql
       rm -rf $PATH_TO_EXPORTS/temp.sql
     fi
 
